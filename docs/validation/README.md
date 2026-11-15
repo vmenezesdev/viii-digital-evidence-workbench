@@ -6,6 +6,7 @@ This directory contains the desk-research and interview materials for [issue #6]
 
 | Artifact | Purpose | Status |
 | --- | --- | --- |
+| [Open-source services model](open-source-services-model.md) | Evaluate fully open-source delivery with optional deployment, operations, expert review and support; licensing and business-model constraints | **Plausible model**, commercial validation missing |
 | [Differentiation hypothesis](differentiation-hypothesis.md) | Reviewability-gap candidate tested against direct competitors, specific Brazilian case law and publicly listed triage prices | **Hypothesis only**; customer validation missing |
 | [Task-based competitive baseline](competitive-baseline.md) | What existing tools demonstrably do, potential handoff friction, and what still needs testing | Desk research only |
 | [Synthetic review package](synthetic-review-package.md) | Show a human-reviewable **output**, not a new parser or application | Hand-authored illustration |

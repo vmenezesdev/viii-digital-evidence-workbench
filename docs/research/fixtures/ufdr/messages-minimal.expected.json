@@ -1,0 +1,32 @@
+{
+  "messages": [
+    {
+      "id": "synthetic-message-0001",
+      "source_index": "13",
+      "chat_id": "synthetic-chat-0001",
+      "body": "Meet at the library at noon.",
+      "timestamp": "2025-01-15T12:00:00+00:00",
+      "from": {
+        "id": "synthetic-party-0001",
+        "name": "Alex Example"
+      },
+      "to": null
+    }
+  ],
+  "participants": [
+    {
+      "id": "synthetic-party-0001",
+      "name": "Alex Example"
+    },
+    {
+      "id": "synthetic-party-0002",
+      "name": "Robin Sample"
+    }
+  ],
+  "notes": [
+    "All identifiers and message content are fictional.",
+    "source_index is preserved as a report reference; it is not asserted to be a byte offset.",
+    "The source XML contains no To field, so the expected recipient is null."
+  ]
+}
+

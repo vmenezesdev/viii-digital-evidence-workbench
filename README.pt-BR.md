@@ -93,6 +93,8 @@ Manter os módulos de processamento por trás de uma interface estável deve per
 
 ## Ajude a definir o VIII
 
+Contribuições são bem-vindas em qualquer idioma. Consulte [Como contribuir](CONTRIBUTING.pt-BR.md) ou [Contributing](CONTRIBUTING.md) e use o [seletor de issues](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/new/choose). A coordenação técnica ocorre, em geral, em inglês; quando viável, os mantenedores retornam os avanços relevantes no idioma original do contribuidor.
+
 **Você não precisa escrever código.** Nesta fase, uma descrição clara de um fluxo de trabalho difícil pode ser mais valiosa do que um pull request extenso.
 
 Alguns pontos de partida úteis:

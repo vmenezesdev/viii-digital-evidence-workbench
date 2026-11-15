@@ -6,6 +6,7 @@ This directory contains the desk-research and interview materials for [issue #6]
 
 | Artifact | Purpose | Status |
 | --- | --- | --- |
+| [Assisted workstation setup hypothesis](workstation-setup-services-hypothesis.md) | Free capability profiles, optional Docker/Codex configuration, Environment Doctor concept, installation services and validation economics | **Commercial hypothesis**; no setups sold |
 | [Open-source services model](open-source-services-model.md) | Evaluate fully open-source delivery with optional deployment, operations, expert review and support; licensing and business-model constraints | **Plausible model**, commercial validation missing |
 | [Differentiation hypothesis](differentiation-hypothesis.md) | Reviewability-gap candidate tested against direct competitors, specific Brazilian case law and publicly listed triage prices | **Hypothesis only**; customer validation missing |
 | [Task-based competitive baseline](competitive-baseline.md) | What existing tools demonstrably do, potential handoff friction, and what still needs testing | Desk research only |

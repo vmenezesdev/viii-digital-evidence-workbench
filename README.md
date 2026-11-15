@@ -1,6 +1,6 @@
 # VIII: Digital Evidence Workbench
 
-**Language:** English · [Português (Brasil)](README.pt-BR.md)
+**Language:** English · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md)
 
 **An open-source workbench in the making for exploring digital evidence, understanding what it shows, and tracing findings back to their sources.**
 

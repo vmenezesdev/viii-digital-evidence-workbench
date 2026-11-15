@@ -1,6 +1,6 @@
 # VIII: Digital Evidence Workbench
 
-**Idioma:** [English](README.md) · Português (Brasil)
+**Idioma:** [English](README.md) · Português (Brasil) · [Français](README.fr.md)
 
 **Uma plataforma de código aberto em desenvolvimento para explorar evidências digitais, compreender o que elas mostram e rastrear os achados até suas fontes.**
 

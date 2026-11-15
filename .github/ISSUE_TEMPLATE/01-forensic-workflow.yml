@@ -1,0 +1,42 @@
+name: "Forensic workflow / Fluxo forense"
+description: "Describe a real investigative need without sharing case material. Descreva uma necessidade de investigação sem enviar material de casos."
+title: "[workflow] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **All languages welcome / Todos os idiomas são bem-vindos.**
+        You do not need technical expertise or a proposed solution. / Você não precisa saber programar nem propor uma solução.
+
+        **Safety / Segurança:** Do not include real evidence, sealed documents, personal or client data, privileged communications, or sensitive files. Use fictional examples only. / Não inclua provas reais, processos sob sigilo, dados pessoais ou de clientes, comunicações sigilosas nem arquivos sensíveis. Use apenas exemplos fictícios.
+
+        Read [Contributing](../../CONTRIBUTING.md) or [Como contribuir](../../CONTRIBUTING.pt-BR.md).
+  - type: textarea
+    id: investigative-question
+    attributes:
+      label: "What are you trying to investigate? / O que você precisa investigar?"
+      description: "Explain the question or task in everyday language. / Explique a pergunta ou tarefa com suas palavras."
+      placeholder: "For example: Compare timestamps across two synthetic exports. / Exemplo: Comparar horários entre duas exportações sintéticas."
+    validations:
+      required: true
+  - type: textarea
+    id: current-workflow
+    attributes:
+      label: "How is this handled today? / Como você faz isso hoje?"
+      description: "Current tools, limitations, or manual steps (optional). / Ferramentas, dificuldades ou etapas manuais (opcional)."
+    validations:
+      required: false
+  - type: textarea
+    id: verification
+    attributes:
+      label: "What would make the result useful and verifiable? / Como conferir um resultado útil?"
+      description: "What would you need to review or trace back to a source? / O que você precisaria revisar ou rastrear até a fonte?"
+    validations:
+      required: false
+  - type: textarea
+    id: fictional-example
+    attributes:
+      label: "Optional fictional example / Exemplo fictício opcional"
+      description: "Describe synthetic formats or data in text only. Never upload real case material. / Descreva apenas formatos ou dados fictícios em texto. Nunca envie material de casos reais."
+    validations:
+      required: false

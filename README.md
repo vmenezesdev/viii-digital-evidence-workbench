@@ -93,6 +93,8 @@ Keeping workers behind a stable interface should make it possible to run suitabl
 
 ## Help shape VIII
 
+Contributions are welcome in any language. Read [Contributing](CONTRIBUTING.md) or [Como contribuir](CONTRIBUTING.pt-BR.md), then use the [issue chooser](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/new/choose). Technical coordination is generally in English; maintainers aim to keep the original contributor informed in their language when feasible.
+
 **You do not need to write code.** At this stage, a clear description of a difficult workflow can be more valuable than a large pull request.
 
 Here are useful starting points:

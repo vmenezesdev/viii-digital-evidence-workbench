@@ -93,6 +93,8 @@ Une interface stable pour les modules de traitement devrait permettre d’exécu
 
 ## Aidez à définir VIII
 
+Vous pouvez contribuer dans la langue de votre choix. Consultez [Contributing (English)](CONTRIBUTING.md) ou [Como contribuir (portugais)](CONTRIBUTING.pt-BR.md), puis [choisissez un formulaire](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/new/choose). La coordination technique se fait généralement en anglais ; dans la mesure du possible, les mainteneurs communiquent les décisions importantes dans la langue de la contribution originale.
+
 **Vous n’avez pas besoin d’écrire du code.** À ce stade, une description claire d’un processus difficile peut être plus précieuse qu’une pull request volumineuse.
 
 Quelques pistes pour commencer :

@@ -1,0 +1,54 @@
+name: "Technical issue / Issue técnica"
+description: "Report a technical problem, research question, or engineering proposal. Relate um problema, pesquisa ou proposta técnica."
+title: "[tech] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **English is preferred for technical coordination, but contributions in any language are welcome.**
+        **O inglês é preferível para a coordenação técnica, mas você pode escrever em qualquer idioma.**
+
+        VIII is pre-alpha. Do not upload real evidence, client data, privileged communications, credentials, or confidential exports. Do not disclose exploitable security issues publicly.
+
+        See [Contributing](../../CONTRIBUTING.md) / [Como contribuir](../../CONTRIBUTING.pt-BR.md).
+  - type: dropdown
+    id: kind
+    attributes:
+      label: "Type / Tipo"
+      description: "Choose the closest match; this is only for triage. / Escolha o mais próximo; serve apenas à triagem."
+      options:
+        - "Research / Pesquisa"
+        - "Bug / Defeito"
+        - "Feature or design / Funcionalidade ou design"
+        - "Documentation or tests / Documentação ou testes"
+        - "Other / Outro"
+    validations:
+      required: false
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problem or research question / Problema ou pergunta"
+      description: "State the goal and context; distinguish observations from assumptions. / Descreva o objetivo e o contexto; diferencie observações de hipóteses."
+    validations:
+      required: true
+  - type: textarea
+    id: expected-outcome
+    attributes:
+      label: "Expected outcome / Resultado esperado"
+      description: "What should change, be learned, or become testable? / O que deveria mudar, ser esclarecido ou se tornar testável?"
+    validations:
+      required: false
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: "Reproduction or evidence / Reprodução ou evidências"
+      description: "Synthetic examples, relevant public references, expected vs. actual behavior (if applicable). No sensitive files. / Exemplos sintéticos, referências públicas, comportamento esperado e observado (quando aplicável). Sem arquivos sensíveis."
+    validations:
+      required: false
+  - type: textarea
+    id: validation
+    attributes:
+      label: "Validation and constraints / Validação e restrições"
+      description: "Proposed tests, provenance requirements, trade-offs, risks, or unknowns (optional). / Testes, requisitos de proveniência, trade-offs, riscos ou dúvidas (opcional)."
+    validations:
+      required: false

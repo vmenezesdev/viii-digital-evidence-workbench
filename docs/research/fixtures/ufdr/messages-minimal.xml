@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project id="synthetic-project-0001" name="VIII synthetic message fixture" reportVersion="8.5" extractionType="Physical" xmlns="http://pa.cellebrite.com/report/2.0">
+  <decodedData>
+    <model type="Chat" id="synthetic-chat-0001" source_index="10" extractionId="0">
+      <field name="Source" type="String"><![CDATA[Example Messenger]]></field>
+      <field name="Name" type="String"><![CDATA[Project room]]></field>
+      <multiModelField name="Participants" type="Party">
+        <model type="Party" id="synthetic-party-0001" source_index="11" extractionId="0">
+          <field name="Name" type="String"><![CDATA[Alex Example]]></field>
+        </model>
+        <model type="Party" id="synthetic-party-0002" source_index="12" extractionId="0">
+          <field name="Name" type="String"><![CDATA[Robin Sample]]></field>
+        </model>
+      </multiModelField>
+      <multiModelField name="Messages" type="InstantMessage">
+        <model type="InstantMessage" id="synthetic-message-0001" source_index="13" extractionId="0" deleted_state="Intact" decoding_confidence="High">
+          <field name="Source" type="String"><![CDATA[Example Messenger]]></field>
+          <modelField name="From" type="Party">
+            <model type="Party" id="synthetic-party-0001" source_index="11" extractionId="0">
+              <field name="Name" type="String"><![CDATA[Alex Example]]></field>
+            </model>
+          </modelField>
+          <field name="Body" type="String"><![CDATA[Meet at the library at noon.]]></field>
+          <field name="TimeStamp" type="TimeStamp">
+            <value type="TimeStamp" format="TimeStampKnown" formattedTimestamp="2025-01-15T12:00:00+00:00">2025-01-15T12:00:00.000+00:00</value>
+          </field>
+        </model>
+      </multiModelField>
+    </model>
+  </decodedData>
+</project>
+

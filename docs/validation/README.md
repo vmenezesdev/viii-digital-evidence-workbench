@@ -6,11 +6,15 @@ This directory contains the desk-research and interview materials for [issue #6]
 
 | Artifact | Purpose | Status |
 | --- | --- | --- |
+| [Differentiation hypothesis](differentiation-hypothesis.md) | Reviewability-gap candidate tested against direct competitors, specific Brazilian case law and publicly listed triage prices | **Hypothesis only**; customer validation missing |
 | [Task-based competitive baseline](competitive-baseline.md) | What existing tools demonstrably do, potential handoff friction, and what still needs testing | Desk research only |
 | [Synthetic review package](synthetic-review-package.md) | Show a human-reviewable **output**, not a new parser or application | Hand-authored illustration |
 | [Customer discovery protocol](discovery-protocol.md) | Interview guide, privacy-safe notes, paid-pilot test, and decision thresholds | Ready to use; **zero interviews claimed** |
 
 ## Working hypotheses (not findings)
+
+**Current research priority:** test a narrowly defined **reviewability-gap assessment for materials actually supplied to defense counsel**, before commissioning a full expert review. This is not a novel category: specialized providers, AI tools and checklists already address overlapping tasks. See [differentiation hypothesis](differentiation-hypothesis.md). Do not mistake a missing exhibit in a delivered package for evidence of an incomplete source acquisition, and do not infer inadmissibility from a checklist.
+
 
 - **H1 — Review-to-expert handoff:** lawyers may need a lightweight, reviewable list of observations, source references, limitations, and questions for an independent expert.
 - **H2 — Mixed-source reconciliation:** teams may have trouble explaining how a finding joins records from multiple export/report formats.

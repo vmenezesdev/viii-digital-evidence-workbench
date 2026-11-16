@@ -1,16 +1,13 @@
-// VIII development PoC. Synthetic inputs only; no remote execution is authorized.
+// VIII development PoC. Synthetic inputs only.
 package main
 
 import (
 	"context"
-	"crypto/sha256"
+
 	"embed"
-	"encoding/base64"
-	"encoding/hex"
+
 	"encoding/json"
 	"fmt"
-	"github.com/vmenezesdev/viii-digital-evidence-workbench/internal/ufdr"
-	"github.com/wailsapp/wails/v3/pkg/application"
 	"io"
 	"io/fs"
 	"log"
@@ -21,17 +18,22 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/vmenezesdev/viii-digital-evidence-workbench/internal/ufdr"
+	"github.com/vmenezesdev/viii-digital-evidence-workbench/internal/wasijob"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 //go:embed assets/*
 var assets embed.FS
 
 type workbench struct {
-	root string
-	mu   sync.Mutex
+	root      string
+	mu        sync.Mutex
+	placement *wasijob.Placement
 }
 
-func digest(b []byte) string { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
+func digest(b []byte) string { return wasijob.Digest(b) }
 func (s *workbench) cli(ctx context.Context, args ...string) ([]byte, error) {
 	args = append(args, "--data-dir", filepath.Join(s.root, "client"), "--api-host", "127.0.0.1", "--api-port", "2234")
 	c := exec.CommandContext(ctx, `C:\Bacalhau\bin\bacalhau.exe`, args...)
@@ -94,13 +96,15 @@ func (s *workbench) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if e == nil {
 			result, e = json.Marshal(v)
 		}
+	} else if record["mode"] == "bacalhau" && s.placement != nil {
+		ctx, cancel := context.WithTimeout(r.Context(), 45*time.Second)
+		defer cancel()
+		result, e = s.placement.Run(ctx, attempt, r.URL.Query().Get("node"), input, record)
+		record["location"] = "isolated-spike"
 	} else if record["mode"] == "bacalhau" {
 		ctx, cancel := context.WithTimeout(context.Background(), 45*time.Second)
 		defer cancel()
-		source := func(kind, url, target string) any {
-			return map[string]any{"Source": map[string]any{"Type": kind, "Params": map[string]string{"URL": url}}, "Target": target}
-		}
-		spec := map[string]any{"Name": "viii-" + attempt, "Type": "batch", "Count": 1, "Tasks": []any{map[string]any{"Name": "main", "Engine": map[string]any{"Type": "wasm", "Params": map[string]any{"EntryModule": "/worker.wasm", "Entrypoint": "_start", "Parameters": []string{"/input.xml"}}}, "InputSources": []any{source("urldownload", "http://127.0.0.1:28080/worker.wasm", "/worker.wasm"), source("inline", "data:text/xml;base64,"+base64.StdEncoding.EncodeToString(input), "/input.xml")}}}}
+		spec := wasijob.Spec("viii-"+attempt, "", "http://127.0.0.1:28080/worker.wasm", wasijob.Input{Kind: "inline", URL: wasijob.InlineXML(input), Target: "/input.xml"}, []string{"/input.xml"}, 0)
 		b, _ := json.Marshal(spec)
 		path := filepath.Join(evidence, attempt+"-request.json")
 		e = os.WriteFile(path, b, 0600)

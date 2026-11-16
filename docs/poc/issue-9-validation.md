@@ -2,9 +2,9 @@
 
 Date: 2026-11-15 (America/Fortaleza; job records cross into November 16 UTC).
 
-**Recommendation: Revise ADR-0001. Keep its status Proposed.** Docker-free WASI normalization works on Windows, but this development spike does not satisfy issue #9's installation, lifecycle, distributed authorization, or update gates. Do not merge it as completion of #9. No public redistribution artifact is supplied.
+**Recommendation: Revise ADR-0001. Keep its status Proposed.** Docker-free WASI normalization works on Windows, but the authorized two-node synthetic test now passes on one Windows/Docker Desktop host. Installation, lifecycle, cross-host behavior and updates still need validation. Do not merge it as completion of #9. No public redistribution artifact is supplied.
 
-## Environment and identity
+## Original run environment and identity
 
 Observed Windows 11 Home Single Language 25H2, build 26200, amd64; Go 1.27.4; Wails 3.1.0; Node 22.19.0; npm 10.9.3; WebView2 157.0.4341.46; NSIS 3.13 (absolute path required). `wails3 doctor` passes, although NSIS is not discovered on this shell's PATH. Docker CLI 28.2.2 exists, daemon not running. The Bacalhau engine was explicitly disabled for all runs described here.
 
@@ -72,7 +72,11 @@ Raw inline WASM (4,757,443 bytes) exceeded NATS maximum payload, left the job Pe
 
 ## C. Authorized distributed execution
 
-All requirements **not tested**: no second controlled machine/node established, no remote selection, application allow/deny policy, denied transfer test, integrity-verified remote staging, remote provenance equivalence or unreachable-node recovery. Loopback staging is development-only and has no remote authorization mechanism. Node APPROVED/CONNECTED is execution membership, not VIII evidence permission. Inline data travels in the job specification; URL input requires node reachability. Do not expose this staging service outside loopback or advertise remote operation.
+**Passed on one host.** An isolated Windows Bacalhau hybrid and separate Linux compute container at v1.9.5 executed the same UFDR WASI contract through the existing VIII handler. Docker execution was disabled on both nodes. The fixture results were semantically equal to native Go and the two WASI stdout hashes matched. The original evidence ID and worker hash matched, and the job, execution and node IDs distinguished the attempts.
+
+Bacalhau manual admission rejected B and a job constrained to that node failed with zero executions. Separately, with B approved and connected, VIII denied placement for the fixture's SHA-256 evidence ID before generating or submitting a spec. The denial added zero jobs and zero staging requests. A subsequent explicit allow executed on B. Accepted specs were checked for the exact inline bytes, WASM engine and required node constraint. The staging service binds to Windows loopback and serves an allowlist of synthetic artifacts; Docker Desktop reaches it via `host.docker.internal`.
+
+[Reproduction, raw records and limitations](distributed-latency.md). Independent hosts, interruption/recovery after acceptance and production-grade authorization and artifact attestation remain open.
 
 ## D. Failure recovery and idempotency
 
@@ -90,6 +94,10 @@ All requirements **not tested/not implemented**: maintenance admission, protecti
 
 ## F. Operational measurements and native comparison
 
+The follow-up benchmarks Go in-process, a native subprocess and WASI on Windows and Docker Linux. It holds the input and iteration count constant within each CPU comparison, separates measured worker compute from elapsed time, and varies input size and concurrency in dedicated cells. With one active job, the native-calibrated CPU cells showed about 1.5–1.7 s outside WASI worker computation. The residual grew with four concurrent jobs. The same arithmetic kernel took roughly 17 times longer within WASI than in native Go. At about 56–58 s of measured WASI compute, the outside-compute share was 2.7–3.4%, with two samples per node. See the [latency and resource results, raw samples and reproduction](distributed-latency.md) and the [ADR-0001 follow-up](../adr/0001-follow-up-distributed-runtime.md).
+
+### Earlier single-fixture measurements
+
 Executed `scripts/validate-worker.ps1`: native/WASI semantic JSON equivalence **passed**. Repeat submission job `j-2d0c6c90-739b-4daf-bb4f-df58b21c467c`: submission 566 ms, total submission/polling/completion 3,685 ms. Native process wall samples: 286.1287, 13.2086, 12.5381, 12.0684, 11.8401 ms. First sample includes cold-launch effects. A prior run measured 313.8778, 9.4097, 9.3682, 28.2946, 19.3511 ms. Single tiny fixture, sequential samples, no statistical or throughput claim. In-process desktop native execution is a different timing scope.
 
 Observed Bacalhau working set snapshots: 206,209,024 bytes after transport failures; 97,202,176 bytes later on fresh node. CPU time 13.265625 seconds at latter snapshot is cumulative process time, **not idle CPU utilization**. No reliable idle/processing resource series collected. Native executable 4,294,656 bytes; WASM 4,757,443 bytes; runtime 108,743,680 bytes. Working WASM SHA-256 `80A2368B1E5AAE451FE205F6C30880207F27EAFA023B887B2A3DFF4F58ECD503` (rebuilds may differ).
@@ -98,6 +106,6 @@ Development topology adds Bacalhau and staging processes to the desktop; native 
 
 ## Decision and remaining gates
 
-Revise the proposal to explicitly account for staged worker distribution, transport limits, worker exit interpretation, and Windows profile-migration privileges. Default native Go is materially simpler for this tiny local workload; retain Bacalhau as a candidate for an explicitly authorized distributed path, subject to further evidence. This recommendation is provisional because remote benefits were not measured.
+Revise the proposal to explicitly account for staged worker distribution, transport limits, worker exit interpretation, and Windows profile-migration privileges. Default native Go is materially simpler for this tiny local workload; retain Bacalhau as a candidate for an explicitly authorized distributed path, subject to further evidence. The same-host test establishes correct placement and provenance. Performance and recovery across hosts remain open.
 
-Do not accept the ADR from these tests. Complete managed lifecycle/cancellation/reconciliation, artifact-pinned provenance, adapter extraction, manual UI validation, second-node policy tests, clean installer and update/rollback tests before revisiting acceptance. The core execution premise passed; the remaining work was not falsified or completed by this spike.
+Do not accept the ADR from these tests. Complete managed lifecycle/cancellation/reconciliation, artifact-pinned provenance, adapter extraction, manual UI validation, cross-host policy and failure tests, clean installer and update/rollback tests before revisiting acceptance. The core execution premise passed; the remaining work was not falsified or completed by this spike.

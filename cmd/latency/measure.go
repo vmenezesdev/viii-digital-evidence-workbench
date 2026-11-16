@@ -31,7 +31,7 @@ type workload struct {
 	Count       int    `json:"count"`
 }
 type path struct {
-	name, node, stage string
+	name, node, stage, image, cpu string
 }
 type sample struct {
 	Workload        workload         `json:"workload"`
@@ -44,6 +44,8 @@ type sample struct {
 	DecodeNS        int64            `json:"decode_ns"`
 	SubprocessCPUNS int64            `json:"subprocess_cpu_ns,omitempty"`
 	ExpectedSHA256  string           `json:"expected_input_sha256"`
+	OutputSHA256    string           `json:"stdout_sha256,omitempty"`
+	ExitCode        *int             `json:"exit_code,omitempty"`
 	Result          spikework.Output `json:"result"`
 	Bacalhau        *wasijob.Trace   `json:"bacalhau,omitempty"`
 	Error           string           `json:"error,omitempty"`
@@ -94,7 +96,7 @@ func calibrate(input []byte) float64 {
 func runSample(executable, root string, client wasijob.Client, p path, w workload, phase string, index int, input []byte, expected spikework.Output) (s sample) {
 	timeout := 45 * time.Second
 	if w.TargetMS >= 10000 {
-		timeout = 2 * time.Minute
+		timeout = 2 * time.Minute * time.Duration(w.Concurrency)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
@@ -111,6 +113,8 @@ func runSample(executable, root string, client wasijob.Client, p path, w workloa
 		s.PrepareNS = time.Since(started).Nanoseconds()
 		data, err = cmd.Output()
 		if cmd.ProcessState != nil {
+			code := cmd.ProcessState.ExitCode()
+			s.ExitCode = &code
 			s.SubprocessCPUNS = (cmd.ProcessState.UserTime() + cmd.ProcessState.SystemTime()).Nanoseconds()
 		}
 		var exit *exec.ExitError
@@ -118,18 +122,32 @@ func runSample(executable, root string, client wasijob.Client, p path, w workloa
 			err = fmt.Errorf("%w: %s", err, exit.Stderr)
 		}
 	default:
-		spec := wasijob.Spec(fmt.Sprintf("viii-bench-%d-%d", started.UnixNano(), index), p.node,
-			wasijob.StageURL(p.stage, "bench-worker.wasm"), wasijob.Input{Kind: "urldownload", URL: wasijob.StageURL(p.stage, filename), Target: "/inputs"},
-			[]string{"/inputs/" + filename, strconv.FormatUint(w.Rounds, 10)}, int(timeout.Seconds())-5)
+		name := fmt.Sprintf("viii-bench-%d-%d", started.UnixNano(), index)
+		input := wasijob.Input{Kind: "urldownload", URL: wasijob.StageURL(p.stage, filename), Target: "/inputs"}
+		args := []string{"/inputs/" + filename, strconv.FormatUint(w.Rounds, 10)}
+		options := wasijob.Options{TotalTimeout: int(timeout.Seconds()) - 5, CPU: p.cpu}
+		engine := "wasm"
+		var spec map[string]any
+		if p.image != "" {
+			engine = "docker"
+			spec = wasijob.DockerSpec(name, p.node, p.image, input, args, options)
+		} else {
+			spec = wasijob.WASISpec(name, p.node, wasijob.StageURL(p.stage, "bench-worker.wasm"), input, args, options)
+		}
 		s.PrepareNS = time.Since(started).Nanoseconds()
 		var result wasijob.Trace
 		data, result, err = client.Run(ctx, p.node, spec)
 		s.Bacalhau = &result
+		s.ExitCode = result.ExitCode
+		if err == nil && result.Engine != engine {
+			err = fmt.Errorf("expected persisted engine %q, got %q", engine, result.Engine)
+		}
 	}
 	if err == nil && p.name != "in-process" {
 		decode := time.Now()
 		err = json.Unmarshal(data, &s.Result)
 		s.DecodeNS = time.Since(decode).Nanoseconds()
+		s.OutputSHA256 = wasijob.Digest(data)
 	}
 	if err == nil && (s.Result.InputSHA256 != expected.InputSHA256 || s.Result.Checksum != expected.Checksum) {
 		err = fmt.Errorf("output diverged from deterministic in-process reference")
@@ -147,11 +165,16 @@ func measure(args []string) error {
 	flags := flag.NewFlagSet("measure", flag.ContinueOnError)
 	short := flags.Bool("short", false, "smoke run of the core matrix")
 	scaledOnly := flags.Bool("scaled-only", false, "run only the duration sweep calibrated against WASI")
+	comparison := flags.String("comparison", "", "executor comparison matrix: sweep, full, control, or smoke")
+	comparisonRate := flags.Uint64("rounds-per-ms", 40000, "fixed comparison rounds per target millisecond, from the prior WASI sweep")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	if *short && *scaledOnly {
 		return errors.New("-short and -scaled-only are mutually exclusive")
+	}
+	if *comparison != "" && (*short || *scaledOnly || *comparisonRate == 0) {
+		return errors.New("comparison requires a positive rounds rate and its own matrix selector")
 	}
 	root := os.Getenv("VIII_SPIKE_RESULTS")
 	if root == "" {
@@ -166,10 +189,22 @@ func measure(args []string) error {
 	if *scaledOnly && client.Base == "" {
 		return errors.New("WASI calibration requires the experiment cluster")
 	}
-	if client.Base != "" {
-		paths = append(paths, path{"wasi-a", "viii-a", os.Getenv("VIII_SPIKE_STAGE_A")})
+	if *comparison != "" {
+		if client.Base != "" {
+			cpu := os.Getenv("VIII_SPIKE_JOB_CPU")
+			if image := os.Getenv("VIII_SPIKE_DOCKER_IMAGE"); image != "" {
+				stage := os.Getenv("VIII_SPIKE_STAGE_B")
+				paths = append(paths, path{name: "docker", node: "viii-b", stage: stage, image: image, cpu: cpu},
+					path{name: "wasi-linux", node: "viii-b", stage: stage, cpu: cpu})
+			}
+			if stage := os.Getenv("VIII_SPIKE_STAGE_A"); stage != "" {
+				paths = append(paths, path{name: "wasi-windows", node: "viii-a", stage: stage, cpu: cpu})
+			}
+		}
+	} else if client.Base != "" {
+		paths = append(paths, path{name: "wasi-a", node: "viii-a", stage: os.Getenv("VIII_SPIKE_STAGE_A")})
 		if stage := os.Getenv("VIII_SPIKE_STAGE_B"); stage != "" {
-			paths = append(paths, path{"wasi-b", "viii-b", stage})
+			paths = append(paths, path{name: "wasi-b", node: "viii-b", stage: stage})
 		}
 	}
 	sizes := []int{10 * 1024, 100 * 1024, 1024 * 1024}
@@ -180,13 +215,22 @@ func measure(args []string) error {
 			b[i] = byte((i*31 + i/257) % 251)
 		}
 		inputs[size] = b
-		if err := os.WriteFile(filepath.Join(root, fmt.Sprintf("input-%d.bin", size)), b, 0600); err != nil {
+		if err := os.WriteFile(filepath.Join(root, fmt.Sprintf("input-%d.bin", size)), b, 0644); err != nil {
 			return err
 		}
 	}
-	roundsPerMS := calibrate(inputs[sizes[0]])
+	var roundsPerMS float64
 	var matrix []workload
-	if !*scaledOnly {
+	if *comparison != "" {
+		roundsPerMS = float64(*comparisonRate)
+		matrix, err = comparisonMatrix(*comparison, *comparisonRate, sizes)
+		if err != nil {
+			return err
+		}
+	} else {
+		roundsPerMS = calibrate(inputs[sizes[0]])
+	}
+	if *comparison == "" && !*scaledOnly {
 		count := 10
 		if *short {
 			count = 4
@@ -216,7 +260,7 @@ func measure(args []string) error {
 	if err := encoder.Encode(map[string]any{
 		"event": "metadata", "topology": os.Getenv("VIII_SPIKE_TOPOLOGY"), "go": runtime.Version(), "os": runtime.GOOS,
 		"arch": runtime.GOARCH, "cpus": runtime.NumCPU(), "rounds_per_ms": roundsPerMS, "started": time.Now().UTC(),
-		"short": *short, "scaled_only": *scaledOnly, "binary_sha256": binaryHashes, "matrix": matrix,
+		"short": *short, "scaled_only": *scaledOnly, "comparison": *comparison, "binary_sha256": binaryHashes, "matrix": matrix,
 	}); err != nil {
 		return err
 	}
@@ -302,7 +346,7 @@ func measure(args []string) error {
 	if err := runMatrix(matrix); err != nil {
 		return err
 	}
-	if !*short {
+	if *comparison == "" && !*short {
 		// Calibrate WASI with one common round count. The derived workloads
 		// still use identical rounds and byte content on every path.
 		input := inputs[sizes[0]]
@@ -354,4 +398,47 @@ func measure(args []string) error {
 		return fmt.Errorf("%d samples or warm-ups failed; see latency.jsonl", failed)
 	}
 	return nil
+}
+
+func comparisonMatrix(mode string, roundsPerMS uint64, sizes []int) ([]workload, error) {
+	var matrix []workload
+	add := func(target, size, concurrency, count int) {
+		matrix = append(matrix, workload{"comparison", target, size, roundsPerMS * uint64(target), concurrency, count})
+	}
+	switch mode {
+	case "smoke":
+		add(10, sizes[0], 1, 1)
+	case "control":
+		add(10, sizes[0], 1, 10)
+		add(10000, sizes[0], 1, 2)
+	case "sweep":
+		for _, target := range []int{10, 100, 1000, 10000, 60000} {
+			count := 10
+			if target >= 10000 {
+				count = 2
+			}
+			add(target, sizes[0], 1, count)
+		}
+		for _, size := range sizes[1:] {
+			add(10, size, 1, 10)
+		}
+		for _, concurrency := range []int{2, 4} {
+			add(100, sizes[0], concurrency, 12)
+		}
+	case "full":
+		for _, target := range []int{10, 100, 1000, 10000, 60000} {
+			for _, size := range sizes {
+				for _, concurrency := range []int{1, 2, 4} {
+					count := 12
+					if target >= 10000 {
+						count = max(2, concurrency)
+					}
+					add(target, size, concurrency, count)
+				}
+			}
+		}
+	default:
+		return nil, fmt.Errorf("unknown comparison matrix %q", mode)
+	}
+	return matrix, nil
 }

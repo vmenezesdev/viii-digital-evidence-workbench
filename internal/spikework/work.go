@@ -9,10 +9,13 @@ import (
 )
 
 type Output struct {
-	InputSHA256 string `json:"input_sha256"`
-	Checksum    uint64 `json:"checksum"`
-	ReadNS      int64  `json:"read_ns"`
-	ComputeNS   int64  `json:"compute_ns"`
+	InputSHA256         string `json:"input_sha256"`
+	Checksum            uint64 `json:"checksum"`
+	ReadNS              int64  `json:"read_ns"`
+	ComputeNS           int64  `json:"compute_ns"`
+	ProcessCPUNS        int64  `json:"process_cpu_ns,omitempty"`
+	ProcessPeakRSSBytes int64  `json:"process_peak_rss_bytes,omitempty"`
+	ProcessCPUQuota     string `json:"process_cpu_quota,omitempty"`
 }
 
 func Run(ctx context.Context, input []byte, rounds uint64) (Output, error) {

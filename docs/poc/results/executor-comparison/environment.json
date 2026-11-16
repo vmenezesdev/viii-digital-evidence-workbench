@@ -1,0 +1,109 @@
+{
+  "registry_image": "docker.io/library/registry@sha256:6c5666b861f3505b116bb9aa9b25175e71210414bd010d92035ff64018f9457e",
+  "bacalhau_windows_sha256": "6ee846f8352246be157bb6e502185277438c22781201f3635a50354dd0228964",
+  "binaries": {
+    "bench-worker.wasm": {
+      "sha256": "affc0e937e331bce3ab4d6924e2a98651b8eff041014c01ed4ec9dbab2c16e5c",
+      "bytes": 4846208
+    },
+    "bench-worker.exe": {
+      "sha256": "a3871df51450c7608d7e143b7a0c5526ca10ace85058cec1f087e7f5e4d90f26",
+      "bytes": 10313216
+    },
+    "stage.exe": {
+      "sha256": "ae006d82e08e95fb0143a338bccf98412518aecb69a89c63639bb9d8122a0fc1",
+      "bytes": 8933888
+    },
+    "bench-worker-linux": {
+      "sha256": "3eb875fe4532cb637bd2a460cb5b22f4554835e6e9c6107172e90c9871effc93",
+      "bytes": 10166178
+    }
+  },
+  "worker": {
+    "config_digest": "sha256:c679f72790903f2dcf3c4c32cd7435f6ddbcbcd6f7c525e25a28aea806847ee2",
+    "ref": "127.0.0.1:42254/viii-bench-45760134a6ce@sha256:c679f72790903f2dcf3c4c32cd7435f6ddbcbcd6f7c525e25a28aea806847ee2",
+    "bytes": 5807784,
+    "base": "scratch"
+  },
+  "go": "go version go1.27.4 windows/amd64",
+  "cpu": {
+    "Name": "12th Gen Intel(R) Core(TM) i5-12450HX",
+    "NumberOfCores": 8,
+    "NumberOfLogicalProcessors": 12
+  },
+  "run": "viii-bench-45760134a6ce",
+  "matrix": "sweep",
+  "bacalhau_revision": "3a6a73aa6529755ac2c9d96a771f0566ff3ee5da",
+  "windows": {
+    "Caption": "Microsoft Windows 11 Home Single Language",
+    "Version": "10.0.26200",
+    "BuildNumber": "26200",
+    "TotalVisibleMemorySize": 16494456
+  },
+  "bacalhau_image": "ghcr.io/bacalhau-project/bacalhau@sha256:903c4052a4522720adf43d428bdbb267cb24dec5039a759e27dffbcbbd68d878",
+  "cold_pull": {
+    "local_manifest_before": false,
+    "at": "2026-11-16T03:25:28.7609026Z",
+    "source": "loopback registry",
+    "elapsed_ms": 326.9501
+  },
+  "linux": {
+    "architecture": "x86_64",
+    "bytes": 8182235136,
+    "cpus": 12,
+    "kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "os": "Docker Desktop",
+    "docker": {
+      "Platform": {
+        "Name": "Docker Desktop 4.42.1 (196648)"
+      },
+      "Components": [
+        {
+          "Name": "Engine",
+          "Version": "28.2.2",
+          "Details": {
+            "ApiVersion": "1.50",
+            "Arch": "amd64",
+            "BuildTime": "Fri May 30 12:07:26 2025",
+            "Experimental": "false",
+            "GitCommit": "45873be",
+            "GoVersion": "go1.24.3",
+            "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+            "MinAPIVersion": "1.24",
+            "Os": "linux"
+          }
+        },
+        {
+          "Name": "containerd",
+          "Version": "1.7.27",
+          "Details": {
+            "GitCommit": "05044ec0a9a75232cad458027ca83437aae3f4da"
+          }
+        },
+        {
+          "Name": "runc",
+          "Version": "1.2.5",
+          "Details": {
+            "GitCommit": "v1.2.5-0-g59923ef"
+          }
+        },
+        {
+          "Name": "docker-init",
+          "Version": "0.19.0",
+          "Details": {
+            "GitCommit": "de40ad0"
+          }
+        }
+      ],
+      "Version": "28.2.2",
+      "ApiVersion": "1.50",
+      "MinAPIVersion": "1.24",
+      "GitCommit": "45873be",
+      "GoVersion": "go1.24.3",
+      "Os": "linux",
+      "Arch": "amd64",
+      "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+      "BuildTime": "2025-05-30T12:07:26.000000000+00:00"
+    }
+  }
+}

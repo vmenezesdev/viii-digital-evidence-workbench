@@ -28,19 +28,43 @@ func InlineXML(b []byte) string {
 
 type Input struct{ Kind, URL, Target string }
 
+type Options struct {
+	TotalTimeout int
+	CPU          string
+}
+
 // Spec preserves the existing one-task WASI worker interface. In v1.9.5 the
 // built-in name label is the persisted NodeID.
 func Spec(name, node, module string, input Input, args []string, timeout int) map[string]any {
-	source := func(kind, url, target string) any {
-		return map[string]any{"Source": map[string]any{"Type": kind, "Params": map[string]string{"URL": url}}, "Target": target}
+	return WASISpec(name, node, module, input, args, Options{TotalTimeout: timeout})
+}
+
+func WASISpec(name, node, module string, input Input, args []string, options Options) map[string]any {
+	engine := map[string]any{"Type": "wasm", "Params": map[string]any{"EntryModule": "/worker.wasm", "Entrypoint": "_start", "Parameters": args}}
+	return jobSpec(name, node, engine, []Input{{"urldownload", module, "/worker.wasm"}, input}, options)
+}
+
+// DockerSpec runs the same benchmark worker via Bacalhau's Docker executor.
+func DockerSpec(name, node, image string, input Input, args []string, options Options) map[string]any {
+	engine := map[string]any{"Type": "docker", "Params": map[string]any{"Image": image, "Entrypoint": []string{"/bench-worker"}, "Parameters": args}}
+	return jobSpec(name, node, engine, []Input{input}, options)
+}
+
+func jobSpec(name, node string, engine map[string]any, inputs []Input, options Options) map[string]any {
+	sources := make([]any, 0, len(inputs))
+	for _, input := range inputs {
+		sources = append(sources, map[string]any{"Source": map[string]any{"Type": input.Kind, "Params": map[string]string{"URL": input.URL}}, "Target": input.Target})
 	}
 	task := map[string]any{
 		"Name":         "main",
-		"Engine":       map[string]any{"Type": "wasm", "Params": map[string]any{"EntryModule": "/worker.wasm", "Entrypoint": "_start", "Parameters": args}},
-		"InputSources": []any{source("urldownload", module, "/worker.wasm"), source(input.Kind, input.URL, input.Target)},
+		"Engine":       engine,
+		"InputSources": sources,
 	}
-	if timeout > 0 {
-		task["Timeouts"] = map[string]int{"TotalTimeout": timeout}
+	if options.TotalTimeout > 0 {
+		task["Timeouts"] = map[string]int{"TotalTimeout": options.TotalTimeout}
+	}
+	if options.CPU != "" {
+		task["Resources"] = map[string]string{"CPU": options.CPU, "Memory": "512mb"}
 	}
 	job := map[string]any{"Name": name, "Type": "batch", "Count": 1, "Tasks": []any{task}}
 	if node != "" {
@@ -92,6 +116,13 @@ type Trace struct {
 	WaitAndFetchNS     int64  `json:"wait_and_fetch_ns"`
 	FinalFetchNS       int64  `json:"final_fetch_ns"`
 	CancelError        string `json:"cancel_error,omitempty"`
+	Engine             string `json:"engine,omitempty"`
+	CPU                string `json:"job_cpu,omitempty"`
+	Memory             string `json:"job_memory,omitempty"`
+	ExitCode           *int   `json:"exit_code,omitempty"`
+	JobCreatedNS       int64  `json:"job_created_unix_ns,omitempty"`
+	ExecutionCreatedNS int64  `json:"execution_created_unix_ns,omitempty"`
+	ExecutionUpdatedNS int64  `json:"execution_updated_unix_ns,omitempty"`
 }
 
 func (c Client) Run(ctx context.Context, node string, spec map[string]any) (result []byte, trace Trace, err error) {
@@ -122,11 +153,19 @@ func (c Client) Run(ctx context.Context, node string, spec map[string]any) (resu
 	defer poll.Stop()
 	for {
 		var description struct {
-			Job        struct{ State struct{ StateType string } }
+			Job struct {
+				State struct{ StateType string }
+				Tasks []struct {
+					Engine    struct{ Type string }
+					Resources struct{ CPU, Memory string }
+				}
+				CreateTime int64
+			}
 			Executions struct {
 				Items []struct {
-					ID, NodeID string
-					RunOutput  *struct {
+					ID, NodeID             string
+					CreateTime, ModifyTime int64
+					RunOutput              *struct {
 						Stdout, Stderr, ErrorMsg string
 						ExitCode                 int
 						StdoutTruncated          bool
@@ -141,7 +180,20 @@ func (c Client) Run(ctx context.Context, node string, spec map[string]any) (resu
 			return nil, trace, err
 		}
 		trace.State = description.Job.State.StateType
+		trace.JobCreatedNS = description.Job.CreateTime
 		trace.ObservedExecutions = len(description.Executions.Items)
+		if len(description.Job.Tasks) == 1 {
+			task := description.Job.Tasks[0]
+			trace.Engine, trace.CPU, trace.Memory = task.Engine.Type, task.Resources.CPU, task.Resources.Memory
+		}
+		if trace.ObservedExecutions == 1 {
+			x := description.Executions.Items[0]
+			trace.ExecutionID, trace.NodeID = x.ID, x.NodeID
+			trace.ExecutionCreatedNS, trace.ExecutionUpdatedNS = x.CreateTime, x.ModifyTime
+			if x.RunOutput != nil {
+				trace.ExitCode = &x.RunOutput.ExitCode
+			}
+		}
 		switch trace.State {
 		case "Completed":
 			if trace.ObservedExecutions != 1 {

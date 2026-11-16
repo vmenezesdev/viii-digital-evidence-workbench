@@ -1,5 +1,7 @@
 # Distributed execution and latency scaling
 
+The [executor comparison](executor-comparison.md) follows this WASI baseline with native Linux and jobs submitted through Bacalhau's Docker engine.
+
 The runs took place on 2026-11-15 in America/Fortaleza. JSON timestamps use UTC.
 
 ## Reproduction

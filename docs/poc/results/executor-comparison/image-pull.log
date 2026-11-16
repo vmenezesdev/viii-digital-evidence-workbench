@@ -1,0 +1,7 @@
+127.0.0.1:42254/viii-bench-45760134a6ce@sha256:c679f72790903f2dcf3c4c32cd7435f6ddbcbcd6f7c525e25a28aea806847ee2: Pulling from viii-bench-45760134a6ce
+c3c1ba52b980: Pulling fs layer
+c3c1ba52b980: Already exists
+c3c1ba52b980: Pull complete
+Digest: sha256:c679f72790903f2dcf3c4c32cd7435f6ddbcbcd6f7c525e25a28aea806847ee2
+Status: Downloaded newer image for 127.0.0.1:42254/viii-bench-45760134a6ce@sha256:c679f72790903f2dcf3c4c32cd7435f6ddbcbcd6f7c525e25a28aea806847ee2
+127.0.0.1:42254/viii-bench-45760134a6ce@sha256:c679f72790903f2dcf3c4c32cd7435f6ddbcbcd6f7c525e25a28aea806847ee2

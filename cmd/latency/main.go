@@ -28,6 +28,7 @@ func worker(path, count string) error {
 		return err
 	}
 	result.ReadNS = readNS
+	recordWorkerResources(&result)
 	return json.NewEncoder(os.Stdout).Encode(result)
 }
 

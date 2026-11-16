@@ -1,0 +1,4 @@
+02:20:36 | INF Marking node as disconnected lastHeartbeat=2026-11-16T05:19:25.911699Z node=viii-b
+02:20:52 | INF instantiating wasm modules entrypoint=_start execution=e-328f6419-b67d-45fd-a526-991bf79199e9 job=j-0e88c63c-ef19-4bfc-b2f1-ec1954c258eb
+02:20:56 | INF running execution entrypoint=_start execution=e-328f6419-b67d-45fd-a526-991bf79199e9 job=j-0e88c63c-ef19-4bfc-b2f1-ec1954c258eb
+02:20:56 | WRN Running Execution failed error="execution e-328f6419-b67d-45fd-a526-991bf79199e9 is in state Cancelled but expected one of [Running]" NodeID=viii-a execution=e-328f6419-b67d-45fd-a526-991bf79199e9 job=j-0e88c63c-ef19-4bfc-b2f1-ec1954c258eb

@@ -47,26 +47,3 @@ func TestImportPersistenceAndRetry(t *testing.T) {
 		t.Fatalf("expected two historical attempts, got %d", len(entries))
 	}
 }
-
-func TestBacalhauIntegration(t *testing.T) {
-	if os.Getenv("VIII_TEST_BACALHAU") != "1" {
-		t.Skip("requires isolated local node on 2234 and staging on 28080")
-	}
-	b, e := os.ReadFile("../../docs/research/fixtures/ufdr/messages-minimal.xml")
-	if e != nil {
-		t.Fatal(e)
-	}
-	s := &workbench{root: t.TempDir()}
-	w := httptest.NewRecorder()
-	s.ServeHTTP(w, httptest.NewRequest("POST", "/api/process?mode=bacalhau", bytes.NewReader(b)))
-	var record map[string]any
-	if e = json.Unmarshal(w.Body.Bytes(), &record); e != nil {
-		t.Fatal(w.Body.String())
-	}
-	if record["error"] != nil {
-		t.Fatal(record["error"])
-	}
-	if record["job_id"] == nil || record["execution_id"] == nil || record["result"] == nil {
-		t.Fatal(record)
-	}
-}

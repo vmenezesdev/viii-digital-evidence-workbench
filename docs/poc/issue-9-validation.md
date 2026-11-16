@@ -2,6 +2,8 @@
 
 Date: 2026-11-15 (America/Fortaleza; job records cross into November 16 UTC).
 
+The [authorized execution and recovery follow-up](authorized-execution-recovery.md) documents the current placement configuration and test runner. The commands below describe the earlier development spike.
+
 **Recommendation: Revise ADR-0001. Keep its status Proposed.** Docker-free WASI normalization works on Windows, but the authorized two-node synthetic test now passes on one Windows/Docker Desktop host. Installation, lifecycle, cross-host behavior and updates still need validation. Do not merge it as completion of #9. No public redistribution artifact is supplied.
 
 ## Original run environment and identity

@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -28,6 +30,18 @@ func main() {
 			start := time.Now()
 			http.ServeFile(w, r, prefix+file)
 			log.Printf("%s %s %s serve_ns=%d", r.RemoteAddr, r.Method, r.URL.Path, time.Since(start).Nanoseconds())
+		})
+	}
+	if *spike {
+		mux.HandleFunc("GET /evidence/{file}", func(w http.ResponseWriter, r *http.Request) {
+			file := r.PathValue("file")
+			attempt := strings.TrimSuffix(file, ".xml")
+			if len(attempt) != 26 || attempt == file || strings.Trim(attempt, "abcdefghijklmnopqrstuvwxyz234567") != "" {
+				http.NotFound(w, r)
+				return
+			}
+			http.ServeFile(w, r, filepath.Join("staged", file))
+			log.Printf("%s %s staged evidence", r.RemoteAddr, r.Method)
 		})
 	}
 	if *spike && *traces {

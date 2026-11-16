@@ -75,6 +75,7 @@ func jobSpec(name, node string, engine map[string]any, inputs []Input, options O
 
 type Client struct {
 	Base string
+	HTTP *http.Client `json:"-"`
 }
 
 func (c Client) Request(ctx context.Context, method, path string, body, out any) error {
@@ -91,7 +92,11 @@ func (c Client) Request(ctx context.Context, method, path string, body, out any)
 		return err
 	}
 	req.Header.Set("Content-Type", "application/json")
-	resp, err := http.DefaultClient.Do(req)
+	client := c.HTTP
+	if client == nil {
+		client = http.DefaultClient
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -126,25 +131,19 @@ type Trace struct {
 }
 
 func (c Client) Run(ctx context.Context, node string, spec map[string]any) (result []byte, trace Trace, err error) {
-	var submission struct{ JobID string }
 	start := time.Now()
-	err = c.Request(ctx, http.MethodPut, "/jobs", map[string]any{"Job": spec}, &submission)
+	trace.JobID, err = c.Submit(ctx, spec)
 	trace.SubmitNS = time.Since(start).Nanoseconds()
 	if err != nil {
 		return nil, trace, err
 	}
-	trace.JobID = submission.JobID
-	if trace.JobID == "" {
-		return nil, trace, fmt.Errorf("missing job ID")
-	}
-	path := "/jobs/" + trace.JobID
 	start = time.Now()
 	defer func() {
 		trace.WaitAndFetchNS = time.Since(start).Nanoseconds()
 		if err != nil && trace.State != "Failed" && trace.State != "Completed" && trace.State != "Stopped" && trace.State != "Cancelled" && trace.State != "Canceled" {
 			stop, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 			defer cancel()
-			if stopErr := c.Request(stop, http.MethodDelete, path, nil, nil); stopErr != nil {
+			if stopErr := c.Stop(stop, trace.JobID); stopErr != nil {
 				trace.CancelError = stopErr.Error()
 			}
 		}
@@ -152,29 +151,9 @@ func (c Client) Run(ctx context.Context, node string, spec map[string]any) (resu
 	poll := time.NewTicker(100 * time.Millisecond)
 	defer poll.Stop()
 	for {
-		var description struct {
-			Job struct {
-				State struct{ StateType string }
-				Tasks []struct {
-					Engine    struct{ Type string }
-					Resources struct{ CPU, Memory string }
-				}
-				CreateTime int64
-			}
-			Executions struct {
-				Items []struct {
-					ID, NodeID             string
-					CreateTime, ModifyTime int64
-					RunOutput              *struct {
-						Stdout, Stderr, ErrorMsg string
-						ExitCode                 int
-						StdoutTruncated          bool
-					}
-				}
-			}
-		}
 		fetch := time.Now()
-		err = c.Request(ctx, http.MethodGet, path+"?include=executions", nil, &description)
+		description, fetchErr := c.Describe(ctx, trace.JobID)
+		err = fetchErr
 		trace.FinalFetchNS = time.Since(fetch).Nanoseconds()
 		if err != nil {
 			return nil, trace, err
@@ -196,21 +175,8 @@ func (c Client) Run(ctx context.Context, node string, spec map[string]any) (resu
 		}
 		switch trace.State {
 		case "Completed":
-			if trace.ObservedExecutions != 1 {
-				return nil, trace, fmt.Errorf("expected one execution, got %d", trace.ObservedExecutions)
-			}
-			x := description.Executions.Items[0]
-			trace.ExecutionID, trace.NodeID = x.ID, x.NodeID
-			if x.ID == "" || (node != "" && x.NodeID != node) {
-				return nil, trace, fmt.Errorf("invalid execution identity or placement: node %q, expected %q", x.NodeID, node)
-			}
-			if x.RunOutput == nil {
-				return nil, trace, fmt.Errorf("missing worker output")
-			}
-			if x.RunOutput.ExitCode != 0 || x.RunOutput.StdoutTruncated || x.RunOutput.ErrorMsg != "" {
-				return nil, trace, fmt.Errorf("worker exit %d: %s %s", x.RunOutput.ExitCode, x.RunOutput.ErrorMsg, x.RunOutput.Stderr)
-			}
-			return []byte(x.RunOutput.Stdout), trace, nil
+			result, err = description.Result(node)
+			return result, trace, err
 		case "Failed", "Stopped", "Cancelled", "Canceled":
 			return nil, trace, fmt.Errorf("job %s: %s", trace.JobID, trace.State)
 		}
@@ -220,41 +186,6 @@ func (c Client) Run(ctx context.Context, node string, spec map[string]any) (resu
 		case <-poll.C:
 		}
 	}
-}
-
-// Placement authorizes exactly one evidence digest and NodeID before encoding
-// the inline input or calling the submission adapter.
-type Placement struct {
-	Allow        map[string]map[string]bool
-	Modules      map[string]string
-	WorkerSHA256 string
-	Submit       func(context.Context, string, map[string]any) ([]byte, Trace, error)
-}
-
-func (p Placement) Run(ctx context.Context, attempt, node string, input []byte, record map[string]any) ([]byte, error) {
-	id := Digest(input)
-	record["requested_node_id"] = node
-	record["authorization"] = "deny"
-	if !p.Allow[id][node] || p.Modules[node] == "" {
-		return nil, fmt.Errorf("evidence placement denied")
-	}
-	record["authorization"] = "allow"
-	record["worker_sha256"] = p.WorkerSHA256
-	start := time.Now()
-	spec := Spec("viii-"+attempt, node, p.Modules[node], Input{Kind: "inline", URL: InlineXML(input), Target: "/input.xml"}, []string{"/input.xml"}, 35)
-	record["prepare_ns"] = time.Since(start).Nanoseconds()
-	result, trace, err := p.Submit(ctx, node, spec)
-	record["trace"] = trace
-	if trace.JobID != "" {
-		record["job_id"] = trace.JobID
-	}
-	if trace.ExecutionID != "" {
-		record["execution_id"] = trace.ExecutionID
-	}
-	if trace.NodeID != "" {
-		record["node_id"] = trace.NodeID
-	}
-	return result, err
 }
 
 func StageURL(base, file string) string {

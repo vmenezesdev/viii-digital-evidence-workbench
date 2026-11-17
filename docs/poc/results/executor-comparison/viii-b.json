@@ -1,0 +1,65 @@
+{
+  "Info": {
+    "NodeID": "viii-b",
+    "NodeType": "Compute",
+    "Labels": {
+      "name": "viii-b",
+      "os_arch": "amd64",
+      "os_type": "linux"
+    },
+    "SupportedProtocols": [
+      "bprotocol/v2",
+      "ncl/v1"
+    ],
+    "ComputeNodeInfo": {
+      "ExecutionEngines": [
+        "docker",
+        "wasm"
+      ],
+      "Publishers": [
+        "noop",
+        "s3managed"
+      ],
+      "StorageSources": [
+        "urldownload",
+        "inline"
+      ],
+      "MaxCapacity": {
+        "CPU": 9.600000000000001,
+        "Memory": 6545788108,
+        "Disk": 831446070067
+      },
+      "QueueCapacity": {},
+      "AvailableCapacity": {
+        "CPU": 9.600000000000001,
+        "Memory": 6545788108,
+        "Disk": 831446070067
+      },
+      "MaxJobRequirements": {
+        "CPU": 9.600000000000001,
+        "Memory": 6545788108,
+        "Disk": 831446070067
+      },
+      "RunningExecutions": 0,
+      "EnqueuedExecutions": 0,
+      "address": ""
+    },
+    "BacalhauVersion": {
+      "Major": "1",
+      "Minor": "9",
+      "GitVersion": "v1.9.5",
+      "GitCommit": "3a6a73aa6529755ac2c9d96a771f0566ff3ee5da",
+      "BuildDate": "2026-10-12T18:36:15Z",
+      "GOOS": "linux",
+      "GOARCH": "amd64"
+    }
+  },
+  "Membership": "APPROVED",
+  "Connection": "CONNECTED",
+  "ConnectionState": {
+    "Status": "CONNECTED",
+    "LastHeartbeat": "2026-11-16T03:25:32.6686894Z",
+    "ConnectedSince": "2026-11-16T03:25:32.6686894Z",
+    "DisconnectedSince": "0001-01-01T00:00:00Z"
+  }
+}

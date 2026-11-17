@@ -1,0 +1,40 @@
+{
+  "buildx.build.provenance": {
+    "buildType": "https://mobyproject.org/buildkit@v1",
+    "invocation": {
+      "configSource": {
+        "entryPoint": "Dockerfile"
+      },
+      "parameters": {
+        "frontend": "dockerfile.v0",
+        "args": {
+          "build-arg:SOURCE_DATE_EPOCH": "1794800578"
+        },
+        "locals": [
+          {
+            "name": "context"
+          },
+          {
+            "name": "dockerfile"
+          }
+        ]
+      },
+      "environment": {
+        "platform": "linux/amd64"
+      }
+    }
+  },
+  "buildx.build.ref": "viii-bench-5f456492cfe5-build/viii-bench-5f456492cfe5-build0/p341i49rulrlq780iwlma2ctq",
+  "containerimage.config.digest": "sha256:be4a450b26cbc65a99809d25173421d9dc3b32737aeda0e570030050888d108a",
+  "containerimage.descriptor": {
+    "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+    "digest": "sha256:327dbc708cdf5ce872d6248d22ff034d5d786cede36d63f62430f029d414ec7f",
+    "size": 502,
+    "platform": {
+      "architecture": "amd64",
+      "os": "linux"
+    }
+  },
+  "containerimage.digest": "sha256:327dbc708cdf5ce872d6248d22ff034d5d786cede36d63f62430f029d414ec7f",
+  "image.name": "127.0.0.1:42627/viii-bench-5f456492cfe5:worker"
+}

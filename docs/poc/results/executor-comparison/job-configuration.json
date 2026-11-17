@@ -1,0 +1,23 @@
+{
+  "job_id": "j-a76a8c72-6d9a-41e4-bd43-5714ef50b859",
+  "resources": {
+    "CPU": "500m",
+    "Memory": "512mb"
+  },
+  "engine": {
+    "Type": "docker",
+    "Params": {
+      "Entrypoint": [
+        "/bench-worker"
+      ],
+      "Image": "127.0.0.1:42254/viii-bench-45760134a6ce@sha256:c679f72790903f2dcf3c4c32cd7435f6ddbcbcd6f7c525e25a28aea806847ee2",
+      "Parameters": [
+        "/inputs/input-10240.bin",
+        "400000000"
+      ]
+    }
+  },
+  "network": {
+    "Type": "Default"
+  }
+}

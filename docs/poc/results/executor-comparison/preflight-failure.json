@@ -1,0 +1,5 @@
+{
+  "error": "Docker command failed: push",
+  "phase": "cold-image",
+  "at": "2026-11-16T03:21:17.698825Z"
+}

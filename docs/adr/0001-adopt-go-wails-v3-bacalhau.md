@@ -387,6 +387,8 @@ These decisions should follow specific product or technical requirements.
 
 ## References
 
+- [ADR-0001 follow-up: distributed runtime validation](0001-follow-up-distributed-runtime.md)
+
 - [VIII — Digital Evidence Workbench](https://github.com/vmenezesdev/viii-digital-evidence-workbench)
 - [Wails v3 documentation](https://v3.wails.io/)
 - [Wails server build](https://v3.wails.io/guides/server-build/)

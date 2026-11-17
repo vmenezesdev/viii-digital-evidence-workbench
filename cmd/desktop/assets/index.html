@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>VIII</title><style>body{font:16px system-ui;max-width:950px;margin:40px auto;background:#f5f6f8;color:#182332}button,input,select{font:inherit;padding:8px;margin:6px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;padding:16px}li{padding:12px;cursor:pointer}#error{color:#a21}</style><h1>VIII · synthetic evidence</h1><p>Development PoC. Select only the repository's synthetic UFDR XML. Original bytes and processing records are stored under your user configuration folder, VIII-PoC.</p><input id="file" type="file" accept=".xml"><select id="mode"><option value="native">Native local</option><option value="bacalhau">Authorized Bacalhau WASI</option></select><input id="node" placeholder="Authorized node ID" aria-label="Authorized node ID" hidden><button id="run">Import and process</button><p id="status"></p><pre id="error" hidden></pre><input id="search" placeholder="Search message bodies"><ul id="messages"></ul><h2>Selected message and original XML</h2><p>The XML below is the complete original input. Use the selected chat ID, message ID and source_index to verify the nested source record; source_index is not a byte offset.</p><pre id="selected"></pre><pre id="source"></pre><script>
+let record;const el=id=>document.getElementById(id);
+function render(){
+  el('messages').replaceChildren();
+  for(const m of record?.result?.messages||[]){
+    if(!(m.body||'').toLowerCase().includes(el('search').value.toLowerCase()))continue;
+    const li=document.createElement('li');
+    const button=document.createElement('button');
+    button.type='button';
+    button.textContent=m.body??'[missing body]';
+    button.onclick=()=>{el('selected').textContent=JSON.stringify(m,null,2);el('source').textContent=record.original_xml};
+    li.append(button);
+    el('messages').append(li);
+  }
+}
+el('search').oninput=render;
+el('mode').onchange=()=>{el('node').hidden=el('mode').value!=='bacalhau'};
+const pendingKey='viii-pending-attempt';
+function attemptURL(a){return '/api/attempt?'+new URLSearchParams({evidence:a.evidence_id,attempt:a.attempt})}
+async function read(r){
+  if(!r.ok){
+    const text=await r.text();
+    let error;
+    try{error=JSON.parse(text).error}catch{}
+    throw Error(error||text);
+  }
+  return r.json();
+}
+async function show(promise){
+  record=undefined;
+  render();
+  el('selected').textContent='';
+  el('source').textContent='';
+  el('run').disabled=true;
+  el('error').hidden=true;
+  el('status').textContent='Processing…';
+  try{
+    record=await promise;
+    while(!record.finished){
+      localStorage.setItem(pendingKey,JSON.stringify({evidence_id:record.evidence_id,attempt:record.attempt}));
+      el('status').textContent=record.diagnostic||[record.status,record.job_id].filter(Boolean).join(' · ');
+      await new Promise(resolve=>setTimeout(resolve,1000));
+      record=await read(await fetch(attemptURL(record)));
+    }
+    localStorage.removeItem(pendingKey);
+    render();
+    if(record.error)throw Error(record.error);
+    el('status').textContent=['Evidence '+record.evidence_id,record.job_id||'native'].join(' · ');
+  }catch(e){
+    el('error').hidden=false;
+    el('error').textContent=e.message;
+    el('status').textContent='Processing needs attention.';
+  }finally{el('run').disabled=false}
+}
+el('run').onclick=async()=>{
+  const f=el('file').files[0];
+  if(!f){el('status').textContent='Select synthetic XML first.';return}
+  const q=new URLSearchParams({mode:el('mode').value,node:el('node').value.trim()});
+  await show(f.arrayBuffer().then(body=>fetch('/api/process?'+q,{method:'POST',body})).then(read));
+};
+const pending=localStorage.getItem(pendingKey);
+if(pending)show(fetch(attemptURL(JSON.parse(pending))).then(read));
+</script></html>

@@ -1,0 +1,1725 @@
+{
+  "environment": {
+    "go": "go version go1.27.4 windows/amd64",
+    "cold_pull": {
+      "at": "2026-11-16T03:43:16.1013117Z",
+      "elapsed_ms": 727.2752,
+      "source": "Linux VM loopback registry",
+      "layer_downloaded": true,
+      "local_manifest_before": false
+    },
+    "worker": {
+      "ref": "127.0.0.1:42627/viii-bench-5f456492cfe5@sha256:327dbc708cdf5ce872d6248d22ff034d5d786cede36d63f62430f029d414ec7f",
+      "source_date_epoch": 1794800578,
+      "buildkit": "docker.io/moby/buildkit@sha256:e39f6119f134b4811af19fd5c20f495a6a264a85c1b6920daf569b23009dd42c",
+      "daemon_image_id": "sha256:327dbc708cdf5ce872d6248d22ff034d5d786cede36d63f62430f029d414ec7f",
+      "bytes": 5810088,
+      "base": "scratch"
+    },
+    "linux": {
+      "docker": {
+        "Platform": {
+          "Name": "Docker Desktop 4.42.1 (196648)"
+        },
+        "Components": [
+          {
+            "Name": "Engine",
+            "Version": "28.2.2",
+            "Details": {
+              "ApiVersion": "1.50",
+              "Arch": "amd64",
+              "BuildTime": "Fri May 30 12:07:26 2025",
+              "Experimental": "false",
+              "GitCommit": "45873be",
+              "GoVersion": "go1.24.3",
+              "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+              "MinAPIVersion": "1.24",
+              "Os": "linux"
+            }
+          },
+          {
+            "Name": "containerd",
+            "Version": "1.7.27",
+            "Details": {
+              "GitCommit": "05044ec0a9a75232cad458027ca83437aae3f4da"
+            }
+          },
+          {
+            "Name": "runc",
+            "Version": "1.2.5",
+            "Details": {
+              "GitCommit": "v1.2.5-0-g59923ef"
+            }
+          },
+          {
+            "Name": "docker-init",
+            "Version": "0.19.0",
+            "Details": {
+              "GitCommit": "de40ad0"
+            }
+          }
+        ],
+        "Version": "28.2.2",
+        "ApiVersion": "1.50",
+        "MinAPIVersion": "1.24",
+        "GitCommit": "45873be",
+        "GoVersion": "go1.24.3",
+        "Os": "linux",
+        "Arch": "amd64",
+        "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+        "BuildTime": "2025-05-30T12:07:26.000000000+00:00"
+      },
+      "os": "Docker Desktop",
+      "cpus": 12,
+      "bytes": 8182235136,
+      "architecture": "x86_64",
+      "kernel": "6.6.87.2-microsoft-standard-WSL2"
+    },
+    "binaries": {
+      "bench-worker-linux": {
+        "bytes": 10171012,
+        "sha256": "ba1380903369c57df1e1894652e651bec92c9252f1c25f4f12091613b593e8b9"
+      },
+      "stage.exe": {
+        "bytes": 8933888,
+        "sha256": "ae006d82e08e95fb0143a338bccf98412518aecb69a89c63639bb9d8122a0fc1"
+      },
+      "bench-worker.wasm": {
+        "bytes": 4846476,
+        "sha256": "a7d2fb9d3ff37efacdf1b19f83e3253fa156c989bb26762d77182fbc83b6d389"
+      },
+      "bench-worker.exe": {
+        "bytes": 10317312,
+        "sha256": "a7f804d19ce45d6ae62a4ca64b2964467c264d33a90f685eb119550b5f6f6a10"
+      }
+    },
+    "matrix": "control",
+    "bacalhau_image": "ghcr.io/bacalhau-project/bacalhau@sha256:903c4052a4522720adf43d428bdbb267cb24dec5039a759e27dffbcbbd68d878",
+    "windows": {
+      "Caption": "Microsoft Windows 11 Home Single Language",
+      "Version": "10.0.26200",
+      "BuildNumber": "26200",
+      "TotalVisibleMemorySize": 16494456
+    },
+    "bacalhau_windows_sha256": "6ee846f8352246be157bb6e502185277438c22781201f3635a50354dd0228964",
+    "cpu": {
+      "Name": "12th Gen Intel(R) Core(TM) i5-12450HX",
+      "NumberOfCores": 8,
+      "NumberOfLogicalProcessors": 12
+    },
+    "registry_image": "docker.io/library/registry@sha256:6c5666b861f3505b116bb9aa9b25175e71210414bd010d92035ff64018f9457e",
+    "bacalhau_revision": "3a6a73aa6529755ac2c9d96a771f0566ff3ee5da",
+    "job_cpu": "1",
+    "run": "viii-bench-5f456492cfe5",
+    "job_memory": "512mb"
+  },
+  "cells": [
+    {
+      "path": "linux-in-process",
+      "target_ms": 10,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 10,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 1429.6747289837099,
+      "timings": {
+        "elapsed": {
+          "n": 10,
+          "median_ms": 0.5816115,
+          "p95_ms": 0.618358,
+          "mad_ms": 0.004622999999999933
+        },
+        "read": {
+          "n": 10,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "mad_ms": 0.0
+        },
+        "decode": {
+          "n": 10,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "mad_ms": 0.0
+        },
+        "compute": {
+          "n": 10,
+          "median_ms": 0.5798995,
+          "p95_ms": 0.618079,
+          "mad_ms": 0.0026189999999999825
+        },
+        "residual": {
+          "n": 10,
+          "median_ms": 0.0003505,
+          "p95_ms": 0.012644,
+          "mad_ms": 8.650000000000002e-05
+        }
+      },
+      "span_times": {},
+      "worker_peak_mib": null,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [],
+      "resources": {}
+    },
+    {
+      "path": "linux-subprocess",
+      "target_ms": 10,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 10,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 161.1273215043214,
+      "timings": {
+        "elapsed": {
+          "n": 10,
+          "median_ms": 6.0959885,
+          "p95_ms": 8.561414,
+          "mad_ms": 0.4043009999999998
+        },
+        "read": {
+          "n": 10,
+          "median_ms": 1.9315045,
+          "p95_ms": 2.281585,
+          "mad_ms": 0.15940399999999988
+        },
+        "decode": {
+          "n": 10,
+          "median_ms": 0.011349,
+          "p95_ms": 0.022026,
+          "mad_ms": 0.0011784999999999999
+        },
+        "compute": {
+          "n": 10,
+          "median_ms": 0.586263,
+          "p95_ms": 0.620102,
+          "mad_ms": 0.005637999999999976
+        },
+        "residual": {
+          "n": 10,
+          "median_ms": 5.500934,
+          "p95_ms": 7.976617,
+          "mad_ms": 0.42415100000000017
+        },
+        "worker_cpu": {
+          "n": 10,
+          "median_ms": 2.6745,
+          "p95_ms": 5.547,
+          "mad_ms": 0.15749999999999997
+        }
+      },
+      "span_times": {},
+      "worker_peak_mib": 22.0,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [
+        "max 100000"
+      ],
+      "resources": {}
+    },
+    {
+      "path": "docker",
+      "target_ms": 10,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 10,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 1.268950640036071,
+      "timings": {
+        "elapsed": {
+          "n": 10,
+          "median_ms": 809.089893,
+          "p95_ms": 924.305963,
+          "mad_ms": 47.5388385
+        },
+        "read": {
+          "n": 10,
+          "median_ms": 0.0596435,
+          "p95_ms": 0.094013,
+          "mad_ms": 0.011858500000000004
+        },
+        "decode": {
+          "n": 10,
+          "median_ms": 0.0042335,
+          "p95_ms": 0.028287,
+          "mad_ms": 0.0004670000000000002
+        },
+        "compute": {
+          "n": 10,
+          "median_ms": 0.6037005,
+          "p95_ms": 0.843151,
+          "mad_ms": 0.014939000000000036
+        },
+        "residual": {
+          "n": 10,
+          "median_ms": 808.4911790000001,
+          "p95_ms": 923.462812,
+          "mad_ms": 47.54329200000001
+        },
+        "worker_cpu": {
+          "n": 10,
+          "median_ms": 42.1135,
+          "p95_ms": 57.489,
+          "mad_ms": 1.949499999999997
+        },
+        "submit_ns": {
+          "n": 10,
+          "median_ms": 16.804062,
+          "p95_ms": 23.372068,
+          "mad_ms": 4.206701500000001
+        },
+        "wait_and_fetch_ns": {
+          "n": 10,
+          "median_ms": 802.8217385,
+          "p95_ms": 902.841436,
+          "mad_ms": 50.623763
+        },
+        "final_fetch_ns": {
+          "n": 10,
+          "median_ms": 2.2475870000000002,
+          "p95_ms": 3.766764,
+          "mad_ms": 0.2058644999999999
+        },
+        "to_execution_created": {
+          "n": 10,
+          "median_ms": 16.89525,
+          "p95_ms": 23.9328,
+          "mad_ms": 4.032299999999999
+        },
+        "container_create_to_start": {
+          "n": 10,
+          "median_ms": 256.761482,
+          "p95_ms": 345.382989,
+          "mad_ms": 17.80250749999999
+        },
+        "container_start_to_die": {
+          "n": 10,
+          "median_ms": 198.79998949999998,
+          "p95_ms": 225.834353,
+          "mad_ms": 7.747651000000019
+        }
+      },
+      "span_times": {
+        "GET /input-10240.bin": {
+          "n": 10,
+          "median_ms": 1.7542309999999999,
+          "p95_ms": 5.777317,
+          "mad_ms": 0.182728
+        },
+        "GET /v1.50/containers/json": {
+          "n": 10,
+          "median_ms": 21.7557625,
+          "p95_ms": 26.142177,
+          "mad_ms": 3.4045615
+        },
+        "POST /v1.50/containers/create": {
+          "n": 10,
+          "median_ms": 97.554865,
+          "p95_ms": 121.704177,
+          "mad_ms": 10.889650000000003
+        },
+        "POST /v1.50/containers/{id}/start": {
+          "n": 10,
+          "median_ms": 463.593065,
+          "p95_ms": 562.085775,
+          "mad_ms": 15.949724000000003
+        },
+        "POST /v1.50/containers/{id}/wait": {
+          "n": 10,
+          "median_ms": 3.2108689999999998,
+          "p95_ms": 4.152652,
+          "mad_ms": 0.35582449999999977
+        },
+        "GET /v1.50/containers/{id}/json": {
+          "n": 10,
+          "median_ms": 12.576148499999999,
+          "p95_ms": 15.129955,
+          "mad_ms": 1.540624499999999
+        },
+        "GET /v1.50/containers/{id}/logs": {
+          "n": 10,
+          "median_ms": 6.6858345,
+          "p95_ms": 8.883883,
+          "mad_ms": 1.1359819999999998
+        },
+        "pkg/storage/url/urldownload.StorageProvider.PrepareStorage": {
+          "n": 10,
+          "median_ms": 5.667619,
+          "p95_ms": 10.682998,
+          "mad_ms": 0.7366554999999999
+        },
+        "docker.container.list": {
+          "n": 10,
+          "median_ms": 21.835577,
+          "p95_ms": 26.559911,
+          "mad_ms": 3.4103910000000006
+        },
+        "docker.container.create": {
+          "n": 10,
+          "median_ms": 97.6335485,
+          "p95_ms": 121.819251,
+          "mad_ms": 10.927449000000003
+        },
+        "docker.container.start": {
+          "n": 10,
+          "median_ms": 463.651967,
+          "p95_ms": 562.139233,
+          "mad_ms": 15.948007000000018
+        },
+        "docker.container.wait": {
+          "n": 10,
+          "median_ms": 3.2342895,
+          "p95_ms": 4.192714,
+          "mad_ms": 0.3558565
+        },
+        "docker.container.inspect": {
+          "n": 10,
+          "median_ms": 12.807842,
+          "p95_ms": 15.568282,
+          "mad_ms": 1.4832750000000008
+        },
+        "docker.container.logs": {
+          "n": 10,
+          "median_ms": 7.161795,
+          "p95_ms": 9.134636,
+          "mad_ms": 1.1321444999999994
+        },
+        "pkg/storage/url/urldownload.StorageProvider.CleanupStorage": {
+          "n": 10,
+          "median_ms": 0.17639349999999998,
+          "p95_ms": 0.305597,
+          "mad_ms": 0.01733499999999999
+        },
+        "pkg/compute.ExecutorBuffer.Run": {
+          "n": 10,
+          "median_ms": 667.7034795,
+          "p95_ms": 757.858085,
+          "mad_ms": 16.440909500000032
+        }
+      },
+      "worker_peak_mib": 11.6484375,
+      "worker_cpu_pct_of_lifetime": 22.814257742964706,
+      "worker_cgroup_cpu_max": [
+        "100000 100000"
+      ],
+      "resources": {
+        "windows_compute": {
+          "snapshots": 4,
+          "cpu_pct_one_core": 0.6332172986767359,
+          "median_mib": 43.298828125,
+          "peak_observed_mib": 43.32421875
+        },
+        "orchestrator": {
+          "snapshots": 4,
+          "cpu_pct_one_core": 6.754317852551851,
+          "median_mib": 63.369140625,
+          "peak_observed_mib": 65.04296875
+        },
+        "stage": {
+          "snapshots": 4,
+          "cpu_pct_one_core": 0.21107243289224534,
+          "median_mib": 49.427734375,
+          "peak_observed_mib": 50.875
+        },
+        "com.docker.backend": {
+          "snapshots": 4,
+          "cpu_pct_one_core": 78.51894503591527,
+          "median_mib": 195.552734375,
+          "peak_observed_mib": 204.7890625
+        },
+        "vmmemWSL": {
+          "snapshots": 4,
+          "cpu_pct_one_core": null,
+          "median_mib": 1203.6484375,
+          "peak_observed_mib": 1208.9765625
+        },
+        "linux_compute_and_driver": {
+          "snapshots": 3,
+          "cpu_pct_one_core": 4.77,
+          "median_mib": 40.69,
+          "peak_observed_mib": 41.43
+        },
+        "dockerd_189": {
+          "snapshots": 5,
+          "cpu_pct_one_core": 36.97150737500316,
+          "median_mib": 147.4140625,
+          "peak_observed_mib": 147.4296875
+        }
+      }
+    },
+    {
+      "path": "wasi-linux",
+      "target_ms": 10,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 10,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 0.5729713002232152,
+      "timings": {
+        "elapsed": {
+          "n": 10,
+          "median_ms": 1713.4465915,
+          "p95_ms": 2028.167121,
+          "mad_ms": 104.72650600000009
+        },
+        "read": {
+          "n": 10,
+          "median_ms": 0.1503875,
+          "p95_ms": 0.273742,
+          "mad_ms": 0.02215600000000001
+        },
+        "decode": {
+          "n": 10,
+          "median_ms": 0.003349,
+          "p95_ms": 0.004696,
+          "mad_ms": 0.0004484999999999999
+        },
+        "compute": {
+          "n": 10,
+          "median_ms": 10.2880865,
+          "p95_ms": 10.635016,
+          "mad_ms": 0.1341789999999996
+        },
+        "residual": {
+          "n": 10,
+          "median_ms": 1703.0907225,
+          "p95_ms": 2017.992251,
+          "mad_ms": 104.25962000000015
+        },
+        "submit_ns": {
+          "n": 10,
+          "median_ms": 9.178521,
+          "p95_ms": 25.094645,
+          "mad_ms": 4.478889499999999
+        },
+        "wait_and_fetch_ns": {
+          "n": 10,
+          "median_ms": 1702.4972320000002,
+          "p95_ms": 2003.048795,
+          "mad_ms": 99.6910455000002
+        },
+        "final_fetch_ns": {
+          "n": 10,
+          "median_ms": 2.443124,
+          "p95_ms": 3.037648,
+          "mad_ms": 0.27696450000000006
+        },
+        "to_execution_created": {
+          "n": 10,
+          "median_ms": 9.507850000000001,
+          "p95_ms": 25.8575,
+          "mad_ms": 4.221450000000001
+        }
+      },
+      "span_times": {
+        "pkg/storage/url/urldownload.StorageProvider.PrepareStorage": {
+          "n": 10,
+          "median_ms": 139.898277,
+          "p95_ms": 270.819407,
+          "mad_ms": 21.075724500000007
+        },
+        "GET /input-10240.bin": {
+          "n": 10,
+          "median_ms": 2.129485,
+          "p95_ms": 5.069243,
+          "mad_ms": 0.2648054999999999
+        },
+        "GET /bench-worker.wasm": {
+          "n": 10,
+          "median_ms": 114.723278,
+          "p95_ms": 141.331779,
+          "mad_ms": 2.9722309999999936
+        },
+        "pkg/executor/wasm.tracedRuntime.CompileModule": {
+          "n": 10,
+          "median_ms": 1364.908657,
+          "p95_ms": 1436.865602,
+          "mad_ms": 16.936127000000056
+        },
+        "pkg/executor/wasm.tracedRuntime.InstantiateModule": {
+          "n": 10,
+          "median_ms": 4.059616500000001,
+          "p95_ms": 6.058135,
+          "mad_ms": 0.6556194999999994
+        },
+        "pkg/executor/wasm.tracedFunction.Call": {
+          "n": 10,
+          "median_ms": 14.447071000000001,
+          "p95_ms": 15.76997,
+          "mad_ms": 0.8779839999999997
+        },
+        "pkg/storage/url/urldownload.StorageProvider.CleanupStorage": {
+          "n": 10,
+          "median_ms": 0.7487695000000001,
+          "p95_ms": 1.490196,
+          "mad_ms": 0.03290449999999989
+        },
+        "pkg/compute.ExecutorBuffer.Run": {
+          "n": 10,
+          "median_ms": 1617.3721070000001,
+          "p95_ms": 1800.427306,
+          "mad_ms": 65.21343800000022
+        }
+      },
+      "worker_peak_mib": null,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [],
+      "resources": {
+        "windows_compute": {
+          "snapshots": 8,
+          "cpu_pct_one_core": 0.29332963766953624,
+          "median_mib": 43.345703125,
+          "peak_observed_mib": 43.3671875
+        },
+        "orchestrator": {
+          "snapshots": 8,
+          "cpu_pct_one_core": 3.0310729225852078,
+          "median_mib": 66.10546875,
+          "peak_observed_mib": 67.3828125
+        },
+        "stage": {
+          "snapshots": 8,
+          "cpu_pct_one_core": 0.39110618355938165,
+          "median_mib": 51.435546875,
+          "peak_observed_mib": 52.05859375
+        },
+        "com.docker.backend": {
+          "snapshots": 8,
+          "cpu_pct_one_core": 19.45753263207924,
+          "median_mib": 200.669921875,
+          "peak_observed_mib": 203.06640625
+        },
+        "vmmemWSL": {
+          "snapshots": 8,
+          "cpu_pct_one_core": null,
+          "median_mib": 1291.59375,
+          "peak_observed_mib": 1314.71875
+        },
+        "linux_compute_and_driver": {
+          "snapshots": 7,
+          "cpu_pct_one_core": 97.98,
+          "median_mib": 98.2,
+          "peak_observed_mib": 126.3
+        },
+        "dockerd_189": {
+          "snapshots": 11,
+          "cpu_pct_one_core": 1.3019700636879268,
+          "median_mib": 147.4140625,
+          "peak_observed_mib": 147.4140625
+        }
+      }
+    },
+    {
+      "path": "wasi-windows",
+      "target_ms": 10,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 10,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 0.3810127260962946,
+      "timings": {
+        "elapsed": {
+          "n": 10,
+          "median_ms": 2514.2097695,
+          "p95_ms": 3712.436496,
+          "mad_ms": 198.18623299999967
+        },
+        "read": {
+          "n": 10,
+          "median_ms": 0.46145,
+          "p95_ms": 0.7038,
+          "mad_ms": 0.10314999999999996
+        },
+        "decode": {
+          "n": 10,
+          "median_ms": 0.0030480000000000004,
+          "p95_ms": 0.048154,
+          "mad_ms": 0.0003920000000000004
+        },
+        "compute": {
+          "n": 10,
+          "median_ms": 15.4625,
+          "p95_ms": 20.1608,
+          "mad_ms": 1.5648499999999999
+        },
+        "residual": {
+          "n": 10,
+          "median_ms": 2496.3965694999997,
+          "p95_ms": 3696.805496,
+          "mad_ms": 200.1963505000001
+        },
+        "submit_ns": {
+          "n": 10,
+          "median_ms": 8.873796,
+          "p95_ms": 19.833922,
+          "mad_ms": 2.8648195
+        },
+        "wait_and_fetch_ns": {
+          "n": 10,
+          "median_ms": 2502.9252665,
+          "p95_ms": 3705.765925,
+          "mad_ms": 200.061735
+        },
+        "final_fetch_ns": {
+          "n": 10,
+          "median_ms": 2.6545245,
+          "p95_ms": 4.801764,
+          "mad_ms": 0.17873699999999992
+        },
+        "to_execution_created": {
+          "n": 10,
+          "median_ms": 10.27795,
+          "p95_ms": 20.5198,
+          "mad_ms": 4.3687000000000005
+        }
+      },
+      "span_times": {
+        "pkg/storage/url/urldownload.StorageProvider.PrepareStorage": {
+          "n": 10,
+          "median_ms": 33.982350000000004,
+          "p95_ms": 52.6747,
+          "mad_ms": 10.1948
+        },
+        "GET /input-10240.bin": {
+          "n": 10,
+          "median_ms": 1.1489500000000001,
+          "p95_ms": 6.2364,
+          "mad_ms": 0.1111000000000002
+        },
+        "GET /bench-worker.wasm": {
+          "n": 10,
+          "median_ms": 26.5494,
+          "p95_ms": 46.361,
+          "mad_ms": 8.392149999999999
+        },
+        "pkg/executor/wasm.tracedRuntime.CompileModule": {
+          "n": 10,
+          "median_ms": 2214.5627000000004,
+          "p95_ms": 2949.1342,
+          "mad_ms": 134.36840000000007
+        },
+        "pkg/executor/wasm.tracedRuntime.InstantiateModule": {
+          "n": 10,
+          "median_ms": 5.0329,
+          "p95_ms": 6.2408,
+          "mad_ms": 0.4282499999999998
+        },
+        "pkg/executor/wasm.tracedFunction.Call": {
+          "n": 10,
+          "median_ms": 20.60765,
+          "p95_ms": 26.2043,
+          "mad_ms": 2.3002499999999984
+        },
+        "pkg/storage/url/urldownload.StorageProvider.CleanupStorage": {
+          "n": 10,
+          "median_ms": 3.1209,
+          "p95_ms": 6.8231,
+          "mad_ms": 0.37324999999999986
+        },
+        "pkg/compute.ExecutorBuffer.Run": {
+          "n": 10,
+          "median_ms": 2324.48635,
+          "p95_ms": 3631.3052,
+          "mad_ms": 167.9212
+        }
+      },
+      "worker_peak_mib": null,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [],
+      "resources": {
+        "linux_compute_and_driver": {
+          "snapshots": 11,
+          "cpu_pct_one_core": 2.75,
+          "median_mib": 116.0,
+          "peak_observed_mib": 132.8
+        },
+        "windows_compute": {
+          "snapshots": 11,
+          "cpu_pct_one_core": 88.7920683111389,
+          "median_mib": 108.84375,
+          "peak_observed_mib": 132.78515625
+        },
+        "orchestrator": {
+          "snapshots": 11,
+          "cpu_pct_one_core": 4.1010999293267965,
+          "median_mib": 67.6796875,
+          "peak_observed_mib": 68.15234375
+        },
+        "stage": {
+          "snapshots": 11,
+          "cpu_pct_one_core": 0.5207745942002282,
+          "median_mib": 52.5078125,
+          "peak_observed_mib": 52.8359375
+        },
+        "com.docker.backend": {
+          "snapshots": 11,
+          "cpu_pct_one_core": 4.947358644902168,
+          "median_mib": 198.23828125,
+          "peak_observed_mib": 208.25390625
+        },
+        "vmmemWSL": {
+          "snapshots": 11,
+          "cpu_pct_one_core": null,
+          "median_mib": 1302.09375,
+          "peak_observed_mib": 1318.84765625
+        },
+        "dockerd_189": {
+          "snapshots": 16,
+          "cpu_pct_one_core": 2.945682584036159,
+          "median_mib": 159.2890625,
+          "peak_observed_mib": 159.4140625
+        }
+      }
+    },
+    {
+      "path": "linux-in-process",
+      "target_ms": 10000,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 2,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 1.6114282841983858,
+      "timings": {
+        "elapsed": {
+          "n": 2,
+          "median_ms": 620.3340845,
+          "p95_ms": 631.009405,
+          "mad_ms": 10.675320499999998
+        },
+        "read": {
+          "n": 2,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "mad_ms": 0.0
+        },
+        "decode": {
+          "n": 2,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "mad_ms": 0.0
+        },
+        "compute": {
+          "n": 2,
+          "median_ms": 620.328278,
+          "p95_ms": 631.0033,
+          "mad_ms": 10.675021999999956
+        },
+        "residual": {
+          "n": 2,
+          "median_ms": 0.0058065,
+          "p95_ms": 0.006105,
+          "mad_ms": 0.00029850000000000015
+        }
+      },
+      "span_times": {},
+      "worker_peak_mib": null,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [],
+      "resources": {
+        "linux_compute_and_driver": {
+          "snapshots": 1,
+          "cpu_pct_one_core": 102.55,
+          "median_mib": 115.8,
+          "peak_observed_mib": 115.8
+        },
+        "dockerd_189": {
+          "snapshots": 1,
+          "cpu_pct_one_core": null,
+          "median_mib": 159.4140625,
+          "peak_observed_mib": 159.4140625
+        }
+      }
+    },
+    {
+      "path": "linux-subprocess",
+      "target_ms": 10000,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 2,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 1.6657638309990843,
+      "timings": {
+        "elapsed": {
+          "n": 2,
+          "median_ms": 600.1761275,
+          "p95_ms": 601.792292,
+          "mad_ms": 1.616164499999968
+        },
+        "read": {
+          "n": 2,
+          "median_ms": 2.3553800000000003,
+          "p95_ms": 2.440589,
+          "mad_ms": 0.08520900000000009
+        },
+        "decode": {
+          "n": 2,
+          "median_ms": 0.0130675,
+          "p95_ms": 0.014665,
+          "mad_ms": 0.0015975
+        },
+        "compute": {
+          "n": 2,
+          "median_ms": 593.683931,
+          "p95_ms": 595.367874,
+          "mad_ms": 1.6839429999999993
+        },
+        "residual": {
+          "n": 2,
+          "median_ms": 6.4921965,
+          "p95_ms": 6.559975,
+          "mad_ms": 0.06777849999999974
+        },
+        "worker_cpu": {
+          "n": 2,
+          "median_ms": 599.1205,
+          "p95_ms": 601.339,
+          "mad_ms": 2.218500000000006
+        }
+      },
+      "span_times": {},
+      "worker_peak_mib": 28.0,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [
+        "max 100000"
+      ],
+      "resources": {
+        "dockerd_189": {
+          "snapshots": 1,
+          "cpu_pct_one_core": null,
+          "median_mib": 159.4140625,
+          "peak_observed_mib": 159.4140625
+        }
+      }
+    },
+    {
+      "path": "docker",
+      "target_ms": 10000,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 2,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 0.70618713724471,
+      "timings": {
+        "elapsed": {
+          "n": 2,
+          "median_ms": 1415.844783,
+          "p95_ms": 1510.737557,
+          "mad_ms": 94.89277399999992
+        },
+        "read": {
+          "n": 2,
+          "median_ms": 0.0552875,
+          "p95_ms": 0.064558,
+          "mad_ms": 0.009270500000000001
+        },
+        "decode": {
+          "n": 2,
+          "median_ms": 0.00417,
+          "p95_ms": 0.004534,
+          "mad_ms": 0.00036399999999999996
+        },
+        "compute": {
+          "n": 2,
+          "median_ms": 593.07116,
+          "p95_ms": 600.204985,
+          "mad_ms": 7.133825000000002
+        },
+        "residual": {
+          "n": 2,
+          "median_ms": 822.773623,
+          "p95_ms": 924.800222,
+          "mad_ms": 102.02659899999998
+        },
+        "worker_cpu": {
+          "n": 2,
+          "median_ms": 628.657,
+          "p95_ms": 634.349,
+          "mad_ms": 5.692000000000007
+        },
+        "submit_ns": {
+          "n": 2,
+          "median_ms": 12.7063665,
+          "p95_ms": 17.672431,
+          "mad_ms": 4.9660645
+        },
+        "wait_and_fetch_ns": {
+          "n": 2,
+          "median_ms": 1403.1198505000002,
+          "p95_ms": 1502.979966,
+          "mad_ms": 99.8601155
+        },
+        "final_fetch_ns": {
+          "n": 2,
+          "median_ms": 2.1846050000000004,
+          "p95_ms": 2.213487,
+          "mad_ms": 0.028882000000000074
+        },
+        "to_execution_created": {
+          "n": 2,
+          "median_ms": 13.046299999999999,
+          "p95_ms": 17.8893,
+          "mad_ms": 4.842999999999999
+        },
+        "container_create_to_start": {
+          "n": 2,
+          "median_ms": 253.0092805,
+          "p95_ms": 255.197316,
+          "mad_ms": 2.188035499999998
+        },
+        "container_start_to_die": {
+          "n": 2,
+          "median_ms": 863.91942,
+          "p95_ms": 945.577661,
+          "mad_ms": 81.65824100000003
+        }
+      },
+      "span_times": {
+        "GET /input-10240.bin": {
+          "n": 2,
+          "median_ms": 2.0213455,
+          "p95_ms": 2.091372,
+          "mad_ms": 0.07002649999999988
+        },
+        "GET /v1.50/containers/json": {
+          "n": 2,
+          "median_ms": 26.201161,
+          "p95_ms": 30.658909,
+          "mad_ms": 4.4577480000000005
+        },
+        "POST /v1.50/containers/create": {
+          "n": 2,
+          "median_ms": 90.2522675,
+          "p95_ms": 92.673784,
+          "mad_ms": 2.4215164999999956
+        },
+        "POST /v1.50/containers/{id}/start": {
+          "n": 2,
+          "median_ms": 261.3249815,
+          "p95_ms": 261.499895,
+          "mad_ms": 0.1749135000000024
+        },
+        "GET /v1.50/containers/{id}/json": {
+          "n": 2,
+          "median_ms": 17.4003855,
+          "p95_ms": 18.098157,
+          "mad_ms": 0.6977715
+        },
+        "pkg/storage/url/urldownload.StorageProvider.PrepareStorage": {
+          "n": 2,
+          "median_ms": 5.4764040000000005,
+          "p95_ms": 5.709484,
+          "mad_ms": 0.23307999999999973
+        },
+        "docker.container.list": {
+          "n": 2,
+          "median_ms": 26.336140999999998,
+          "p95_ms": 30.791663,
+          "mad_ms": 4.455522
+        },
+        "docker.container.create": {
+          "n": 2,
+          "median_ms": 90.3292205,
+          "p95_ms": 92.748653,
+          "mad_ms": 2.419432499999999
+        },
+        "docker.container.start": {
+          "n": 2,
+          "median_ms": 261.39161349999995,
+          "p95_ms": 261.556115,
+          "mad_ms": 0.16450150000000008
+        },
+        "docker.container.inspect": {
+          "n": 2,
+          "median_ms": 17.8668595,
+          "p95_ms": 18.576314,
+          "mad_ms": 0.7094544999999997
+        },
+        "GET /v1.50/containers/{id}/logs": {
+          "n": 2,
+          "median_ms": 676.1554524999999,
+          "p95_ms": 750.815714,
+          "mad_ms": 74.66026149999999
+        },
+        "POST /v1.50/containers/{id}/wait": {
+          "n": 2,
+          "median_ms": 847.4461125,
+          "p95_ms": 930.899446,
+          "mad_ms": 83.45333349999999
+        },
+        "docker.container.logs": {
+          "n": 2,
+          "median_ms": 676.25347,
+          "p95_ms": 750.920164,
+          "mad_ms": 74.666694
+        },
+        "docker.container.wait": {
+          "n": 2,
+          "median_ms": 847.494083,
+          "p95_ms": 930.975625,
+          "mad_ms": 83.48154199999999
+        },
+        "pkg/storage/url/urldownload.StorageProvider.CleanupStorage": {
+          "n": 2,
+          "median_ms": 0.198162,
+          "p95_ms": 0.22683,
+          "mad_ms": 0.028668
+        },
+        "pkg/compute.ExecutorBuffer.Run": {
+          "n": 2,
+          "median_ms": 1303.8110029999998,
+          "p95_ms": 1387.688884,
+          "mad_ms": 83.877881
+        }
+      },
+      "worker_peak_mib": 11.24609375,
+      "worker_cpu_pct_of_lifetime": 73.48683203051272,
+      "worker_cgroup_cpu_max": [
+        "100000 100000"
+      ],
+      "resources": {
+        "windows_compute": {
+          "snapshots": 1,
+          "cpu_pct_one_core": null,
+          "median_mib": 134.80078125,
+          "peak_observed_mib": 134.80078125
+        },
+        "orchestrator": {
+          "snapshots": 1,
+          "cpu_pct_one_core": null,
+          "median_mib": 68.5703125,
+          "peak_observed_mib": 68.5703125
+        },
+        "stage": {
+          "snapshots": 1,
+          "cpu_pct_one_core": null,
+          "median_mib": 52.5546875,
+          "peak_observed_mib": 52.5546875
+        },
+        "com.docker.backend": {
+          "snapshots": 1,
+          "cpu_pct_one_core": null,
+          "median_mib": 193.9140625,
+          "peak_observed_mib": 193.9140625
+        },
+        "vmmemWSL": {
+          "snapshots": 1,
+          "cpu_pct_one_core": null,
+          "median_mib": 1302.5703125,
+          "peak_observed_mib": 1302.5703125
+        },
+        "dockerd_189": {
+          "snapshots": 1,
+          "cpu_pct_one_core": null,
+          "median_mib": 147.37109375,
+          "peak_observed_mib": 147.37109375
+        }
+      }
+    },
+    {
+      "path": "wasi-linux",
+      "target_ms": 10000,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 2,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 0.08795020367470789,
+      "timings": {
+        "elapsed": {
+          "n": 2,
+          "median_ms": 11369.819354,
+          "p95_ms": 11425.599961,
+          "mad_ms": 55.78060699999969
+        },
+        "read": {
+          "n": 2,
+          "median_ms": 0.169851,
+          "p95_ms": 0.189102,
+          "mad_ms": 0.01925099999999999
+        },
+        "decode": {
+          "n": 2,
+          "median_ms": 0.003583,
+          "p95_ms": 0.0042,
+          "mad_ms": 0.0006169999999999999
+        },
+        "compute": {
+          "n": 2,
+          "median_ms": 9679.231582,
+          "p95_ms": 9717.609007,
+          "mad_ms": 38.377424999999675
+        },
+        "residual": {
+          "n": 2,
+          "median_ms": 1690.587772,
+          "p95_ms": 1707.990954,
+          "mad_ms": 17.403182000000015
+        },
+        "submit_ns": {
+          "n": 2,
+          "median_ms": 16.7972995,
+          "p95_ms": 22.420101,
+          "mad_ms": 5.6228015
+        },
+        "wait_and_fetch_ns": {
+          "n": 2,
+          "median_ms": 11352.990694,
+          "p95_ms": 11403.137429,
+          "mad_ms": 50.14673500000026
+        },
+        "final_fetch_ns": {
+          "n": 2,
+          "median_ms": 2.2957134999999997,
+          "p95_ms": 2.647691,
+          "mad_ms": 0.35197750000000005
+        },
+        "to_execution_created": {
+          "n": 2,
+          "median_ms": 16.7589,
+          "p95_ms": 22.1965,
+          "mad_ms": 5.4376
+        }
+      },
+      "span_times": {
+        "pkg/storage/url/urldownload.StorageProvider.PrepareStorage": {
+          "n": 2,
+          "median_ms": 133.509186,
+          "p95_ms": 134.412689,
+          "mad_ms": 0.9035030000000006
+        },
+        "GET /input-10240.bin": {
+          "n": 2,
+          "median_ms": 2.2799585,
+          "p95_ms": 2.561322,
+          "mad_ms": 0.2813635000000001
+        },
+        "GET /bench-worker.wasm": {
+          "n": 2,
+          "median_ms": 123.2092605,
+          "p95_ms": 124.930528,
+          "mad_ms": 1.7212674999999962
+        },
+        "pkg/executor/wasm.tracedRuntime.CompileModule": {
+          "n": 2,
+          "median_ms": 1394.878279,
+          "p95_ms": 1438.826643,
+          "mad_ms": 43.94836400000008
+        },
+        "pkg/executor/wasm.tracedRuntime.InstantiateModule": {
+          "n": 2,
+          "median_ms": 4.645690999999999,
+          "p95_ms": 5.652607,
+          "mad_ms": 1.006916
+        },
+        "pkg/executor/wasm.tracedFunction.Call": {
+          "n": 2,
+          "median_ms": 9683.3172595,
+          "p95_ms": 9722.060755,
+          "mad_ms": 38.74349549999988
+        },
+        "pkg/storage/url/urldownload.StorageProvider.CleanupStorage": {
+          "n": 2,
+          "median_ms": 0.897402,
+          "p95_ms": 0.931015,
+          "mad_ms": 0.033613000000000004
+        },
+        "pkg/compute.ExecutorBuffer.Run": {
+          "n": 2,
+          "median_ms": 11274.340811499998,
+          "p95_ms": 11335.554111,
+          "mad_ms": 61.213299500000176
+        }
+      },
+      "worker_peak_mib": null,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [],
+      "resources": {
+        "linux_compute_and_driver": {
+          "snapshots": 10,
+          "cpu_pct_one_core": 101.97999999999999,
+          "median_mib": 116.85,
+          "peak_observed_mib": 121.9
+        },
+        "windows_compute": {
+          "snapshots": 9,
+          "cpu_pct_one_core": 0.6052711012946426,
+          "median_mib": 134.80859375,
+          "peak_observed_mib": 134.80859375
+        },
+        "orchestrator": {
+          "snapshots": 9,
+          "cpu_pct_one_core": 2.2481498048086723,
+          "median_mib": 68.75,
+          "peak_observed_mib": 68.9609375
+        },
+        "stage": {
+          "snapshots": 9,
+          "cpu_pct_one_core": 0.0,
+          "median_mib": 52.66015625,
+          "peak_observed_mib": 52.67578125
+        },
+        "com.docker.backend": {
+          "snapshots": 9,
+          "cpu_pct_one_core": 4.496299609617345,
+          "median_mib": 199.27734375,
+          "peak_observed_mib": 200.20703125
+        },
+        "vmmemWSL": {
+          "snapshots": 9,
+          "cpu_pct_one_core": null,
+          "median_mib": 1300.1796875,
+          "peak_observed_mib": 1301.15625
+        },
+        "dockerd_189": {
+          "snapshots": 15,
+          "cpu_pct_one_core": 0.9758930906165357,
+          "median_mib": 142.3046875,
+          "peak_observed_mib": 142.6796875
+        }
+      }
+    },
+    {
+      "path": "wasi-windows",
+      "target_ms": 10000,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 2,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 0.0619092335245323,
+      "timings": {
+        "elapsed": {
+          "n": 2,
+          "median_ms": 16152.402194,
+          "p95_ms": 16281.300345,
+          "mad_ms": 128.89815099999942
+        },
+        "read": {
+          "n": 2,
+          "median_ms": 0.43125,
+          "p95_ms": 0.4336,
+          "mad_ms": 0.002349999999999991
+        },
+        "decode": {
+          "n": 2,
+          "median_ms": 0.003035,
+          "p95_ms": 0.003243,
+          "mad_ms": 0.00020799999999999985
+        },
+        "compute": {
+          "n": 2,
+          "median_ms": 13484.726149999999,
+          "p95_ms": 13534.0886,
+          "mad_ms": 49.362449999999626
+        },
+        "residual": {
+          "n": 2,
+          "median_ms": 2667.676044,
+          "p95_ms": 2747.211745,
+          "mad_ms": 79.53570100000002
+        },
+        "submit_ns": {
+          "n": 2,
+          "median_ms": 49.346241500000005,
+          "p95_ms": 77.590226,
+          "mad_ms": 28.2439845
+        },
+        "wait_and_fetch_ns": {
+          "n": 2,
+          "median_ms": 16103.0371615,
+          "p95_ms": 16203.689109,
+          "mad_ms": 100.65194750000046
+        },
+        "final_fetch_ns": {
+          "n": 2,
+          "median_ms": 2.5846215,
+          "p95_ms": 2.877789,
+          "mad_ms": 0.2931675
+        },
+        "to_execution_created": {
+          "n": 2,
+          "median_ms": 50.2213,
+          "p95_ms": 78.1256,
+          "mad_ms": 27.904300000000003
+        }
+      },
+      "span_times": {
+        "pkg/storage/url/urldownload.StorageProvider.PrepareStorage": {
+          "n": 2,
+          "median_ms": 35.72955,
+          "p95_ms": 45.5191,
+          "mad_ms": 9.78955
+        },
+        "GET /input-10240.bin": {
+          "n": 2,
+          "median_ms": 1.07485,
+          "p95_ms": 1.1086,
+          "mad_ms": 0.03375000000000006
+        },
+        "GET /bench-worker.wasm": {
+          "n": 2,
+          "median_ms": 19.6139,
+          "p95_ms": 26.6427,
+          "mad_ms": 7.0288
+        },
+        "pkg/executor/wasm.tracedRuntime.CompileModule": {
+          "n": 2,
+          "median_ms": 2404.2604,
+          "p95_ms": 2466.1453,
+          "mad_ms": 61.884900000000016
+        },
+        "pkg/executor/wasm.tracedRuntime.InstantiateModule": {
+          "n": 2,
+          "median_ms": 4.41245,
+          "p95_ms": 5.5499,
+          "mad_ms": 1.13745
+        },
+        "pkg/executor/wasm.tracedFunction.Call": {
+          "n": 2,
+          "median_ms": 13489.5153,
+          "p95_ms": 13540.2582,
+          "mad_ms": 50.74290000000019
+        },
+        "pkg/storage/url/urldownload.StorageProvider.CleanupStorage": {
+          "n": 2,
+          "median_ms": 2.1787,
+          "p95_ms": 2.7152,
+          "mad_ms": 0.5364999999999999
+        },
+        "pkg/compute.ExecutorBuffer.Run": {
+          "n": 2,
+          "median_ms": 15990.739099999999,
+          "p95_ms": 16094.5499,
+          "mad_ms": 103.8108000000002
+        }
+      },
+      "worker_peak_mib": null,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [],
+      "resources": {
+        "linux_compute_and_driver": {
+          "snapshots": 14,
+          "cpu_pct_one_core": 2.47,
+          "median_mib": 121.1,
+          "peak_observed_mib": 121.4
+        },
+        "windows_compute": {
+          "snapshots": 14,
+          "cpu_pct_one_core": 96.71219914442719,
+          "median_mib": 136.5703125,
+          "peak_observed_mib": 137.1015625
+        },
+        "orchestrator": {
+          "snapshots": 14,
+          "cpu_pct_one_core": 1.770359293961795,
+          "median_mib": 68.90234375,
+          "peak_observed_mib": 69.70703125
+        },
+        "stage": {
+          "snapshots": 14,
+          "cpu_pct_one_core": 0.05058169411319414,
+          "median_mib": 53.28515625,
+          "peak_observed_mib": 53.3515625
+        },
+        "com.docker.backend": {
+          "snapshots": 14,
+          "cpu_pct_one_core": 21.75012846867348,
+          "median_mib": 194.71484375,
+          "peak_observed_mib": 207.828125
+        },
+        "vmmemWSL": {
+          "snapshots": 14,
+          "cpu_pct_one_core": null,
+          "median_mib": 1296.5703125,
+          "peak_observed_mib": 1303.4609375
+        },
+        "dockerd_189": {
+          "snapshots": 20,
+          "cpu_pct_one_core": 1.195463984475901,
+          "median_mib": 146.0546875,
+          "peak_observed_mib": 146.6796875
+        }
+      }
+    },
+    {
+      "path": "windows-in-process",
+      "target_ms": 10,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 10,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 1405.2641193912395,
+      "timings": {
+        "elapsed": {
+          "n": 10,
+          "median_ms": 0.5387,
+          "p95_ms": 1.1121,
+          "mad_ms": 0.014599999999999946
+        },
+        "read": {
+          "n": 10,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "mad_ms": 0.0
+        },
+        "decode": {
+          "n": 10,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "mad_ms": 0.0
+        },
+        "compute": {
+          "n": 10,
+          "median_ms": 0.5387,
+          "p95_ms": 1.1121,
+          "mad_ms": 0.014599999999999946
+        },
+        "residual": {
+          "n": 10,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "mad_ms": 0.0
+        }
+      },
+      "span_times": {},
+      "worker_peak_mib": null,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [],
+      "resources": {}
+    },
+    {
+      "path": "windows-subprocess",
+      "target_ms": 10,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 10,
+      "failed": 0,
+      "timing_excluded": 2,
+      "jobs_per_second": 19.751681855710014,
+      "timings": {
+        "elapsed": {
+          "n": 8,
+          "median_ms": 49.161550000000005,
+          "p95_ms": 94.4129,
+          "mad_ms": 18.293899999999997
+        },
+        "read": {
+          "n": 8,
+          "median_ms": 0.5174000000000001,
+          "p95_ms": 1.5188,
+          "mad_ms": 0.50045
+        },
+        "decode": {
+          "n": 8,
+          "median_ms": 0.0,
+          "p95_ms": 0.5247,
+          "mad_ms": 0.0
+        },
+        "compute": {
+          "n": 8,
+          "median_ms": 1.00675,
+          "p95_ms": 2.1402,
+          "mad_ms": 0.05149999999999999
+        },
+        "residual": {
+          "n": 8,
+          "median_ms": 47.83605,
+          "p95_ms": 93.4008,
+          "mad_ms": 18.0189
+        },
+        "worker_cpu": {
+          "n": 7,
+          "median_ms": 15.625,
+          "p95_ms": 31.25,
+          "mad_ms": 0.0
+        }
+      },
+      "span_times": {},
+      "worker_peak_mib": null,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [],
+      "resources": {
+        "linux_compute_and_driver": {
+          "snapshots": 1,
+          "cpu_pct_one_core": 2.69,
+          "median_mib": 108.3,
+          "peak_observed_mib": 108.3
+        }
+      }
+    },
+    {
+      "path": "windows-in-process",
+      "target_ms": 10000,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 2,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 1.3918733940825756,
+      "timings": {
+        "elapsed": {
+          "n": 2,
+          "median_ms": 718.45615,
+          "p95_ms": 730.0701,
+          "mad_ms": 11.613949999999988
+        },
+        "read": {
+          "n": 2,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "mad_ms": 0.0
+        },
+        "decode": {
+          "n": 2,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "mad_ms": 0.0
+        },
+        "compute": {
+          "n": 2,
+          "median_ms": 718.45615,
+          "p95_ms": 730.0701,
+          "mad_ms": 11.613949999999988
+        },
+        "residual": {
+          "n": 2,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "mad_ms": 0.0
+        }
+      },
+      "span_times": {},
+      "worker_peak_mib": null,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [],
+      "resources": {
+        "linux_compute_and_driver": {
+          "snapshots": 1,
+          "cpu_pct_one_core": 2.59,
+          "median_mib": 108.4,
+          "peak_observed_mib": 108.4
+        }
+      }
+    },
+    {
+      "path": "windows-subprocess",
+      "target_ms": 10000,
+      "input_bytes": 10240,
+      "concurrency": 1,
+      "success": 2,
+      "failed": 0,
+      "timing_excluded": 0,
+      "jobs_per_second": 1.6458066164059268,
+      "timings": {
+        "elapsed": {
+          "n": 2,
+          "median_ms": 607.6048000000001,
+          "p95_ms": 609.6602,
+          "mad_ms": 2.05540000000002
+        },
+        "read": {
+          "n": 2,
+          "median_ms": 0.257,
+          "p95_ms": 0.514,
+          "mad_ms": 0.257
+        },
+        "decode": {
+          "n": 2,
+          "median_ms": 0.18,
+          "p95_ms": 0.36,
+          "mad_ms": 0.18
+        },
+        "compute": {
+          "n": 2,
+          "median_ms": 596.4157,
+          "p95_ms": 598.9912,
+          "mad_ms": 2.5755000000000337
+        },
+        "residual": {
+          "n": 2,
+          "median_ms": 11.1891,
+          "p95_ms": 11.7092,
+          "mad_ms": 0.5200999999999993
+        },
+        "worker_cpu": {
+          "n": 2,
+          "median_ms": 585.9375,
+          "p95_ms": 593.75,
+          "mad_ms": 7.8125
+        }
+      },
+      "span_times": {},
+      "worker_peak_mib": null,
+      "worker_cpu_pct_of_lifetime": null,
+      "worker_cgroup_cpu_max": [],
+      "resources": {}
+    }
+  ],
+  "first_use_ms": {
+    "linux-in-process": 0.591104,
+    "linux-subprocess": 8.865069,
+    "docker": 917.018805,
+    "wasi-linux": 1809.235379,
+    "wasi-windows": 2309.743634,
+    "windows-in-process": 0.5095,
+    "windows-subprocess": 38.4841
+  },
+  "idle": {
+    "windows_compute": {
+      "snapshots": 4,
+      "cpu_pct_one_core": 0.0,
+      "median_mib": 43.26953125,
+      "peak_observed_mib": 43.26953125
+    },
+    "orchestrator": {
+      "snapshots": 4,
+      "cpu_pct_one_core": 0.2337415750350188,
+      "median_mib": 57.23046875,
+      "peak_observed_mib": 57.578125
+    },
+    "stage": {
+      "snapshots": 4,
+      "cpu_pct_one_core": 0.0,
+      "median_mib": 47.04296875,
+      "peak_observed_mib": 47.04296875
+    },
+    "com.docker.backend": {
+      "snapshots": 4,
+      "cpu_pct_one_core": 3.272382050490263,
+      "median_mib": 194.09375,
+      "peak_observed_mib": 197.09375
+    },
+    "vmmemWSL": {
+      "snapshots": 4,
+      "cpu_pct_one_core": null,
+      "median_mib": 1190.294921875,
+      "peak_observed_mib": 1199.95703125
+    },
+    "linux_compute_and_driver": {
+      "snapshots": 4,
+      "cpu_pct_one_core": 2.185,
+      "median_mib": 32.655,
+      "peak_observed_mib": 32.77
+    },
+    "dockerd_189": {
+      "snapshots": 6,
+      "cpu_pct_one_core": 1.3273240317677881,
+      "median_mib": 151.6640625,
+      "peak_observed_mib": 152.2265625
+    }
+  },
+  "failures": [],
+  "windows_native_driver_idle": {
+    "snapshots": 4,
+    "cpu_pct_one_core": null,
+    "median_mib": 59.16015625,
+    "peak_observed_mib": 59.16015625
+  },
+  "docker_layer_downloaded": true
+}

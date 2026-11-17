@@ -1,5 +1,7 @@
 # Issue #9 validation — authorized UFDR execution and recovery
 
+> Architecture revision: the native-first recommendation and desktop behavior below describe the historical PoC. The [revised ADR and technical trade-off case](../adr/0001-native-execution-tradeoff.md) select Bacalhau for local/remote jobs, WASI for portability and optional Docker for performance. Measurements and reproduction remain unchanged; implementation alignment is pending.
+
 Date 2026-11-16 (America/Fortaleza). Raw records use UTC.
 
 **Recommendation — Revise ADR-0001. Keep its status Proposed.** Keep native Go for workstation processing. Retain Bacalhau as a candidate for authorized distributed execution, with the application owning evidence access, the original bytes, and attempt lineage.

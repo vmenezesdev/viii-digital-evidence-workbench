@@ -1,5 +1,7 @@
 # Native Go, Bacalhau WASI and Bacalhau Docker
 
+> Architecture revision: this report preserves its original measurements and native-first recommendation as experiment history. The [revised ADR and technical trade-off case](../adr/0001-native-execution-tradeoff.md) supersede that recommendation with Bacalhau local/remote jobs, portable WASI and optional performance-oriented Docker. Direct native jobs remain a benchmark baseline; product implementation alignment is pending.
+
 The runs took place on 2026-11-16 in America/Fortaleza. Raw timestamps use UTC. The [prior latency spike](distributed-latency.md) ran WASI on Windows and in a Linux compute container. This experiment submits native Linux workers through Bacalhau's Docker engine and compares both engines on the same Linux compute node. [Issue #9](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/9) · [PR #10](https://github.com/vmenezesdev/viii-digital-evidence-workbench/pull/10)
 
 ## Environment and reproduction

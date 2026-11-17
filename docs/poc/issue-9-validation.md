@@ -1,5 +1,7 @@
 # Issue #9 validation — development spike
 
+> Architecture revision: this is a historical validation snapshot. The [revised ADR and technical trade-off case](../adr/0001-native-execution-tradeoff.md) supersede its native-first recommendation: product jobs use Bacalhau with portable WASI or optional performance-oriented Docker. The application stack is decided separately in [ADR-0002](../adr/0002-adopt-go-wails-v3.md). This revision does not complete the remaining acceptance gates or change the PoC implementation. See [issue #9](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/9) for post-merge validation status.
+
 Date: 2026-11-15 (America/Fortaleza; job records cross into November 16 UTC).
 
 The [authorized execution and recovery follow-up](authorized-execution-recovery.md) documents the current placement configuration and test runner. The commands below describe the earlier development spike.

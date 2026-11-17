@@ -1,9 +1,13 @@
-# ADR-0001: Adopt Go, Wails v3, and Bacalhau for the MVP
+# ADR-0001: Adopt the Bacalhau runtime as the job orchestrator
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-11-15
-- **Decision scope:** MVP technology stack and execution architecture
+- **Accepted:** 2026-11-16 — project maintainer decision.
+- **Revised:** 2026-11-16 — restrict this decision to the job runtime and orchestration boundary.
+- **Decision scope:** Bacalhau runtime for local and remote job orchestration
 - **Project:** VIII — Digital Evidence Workbench
+
+The application stack is a separate decision in [ADR-0002: Go + Wails v3](0002-adopt-go-wails-v3.md). The existing filename is retained for incoming links.
 
 ## Context
 
@@ -25,6 +29,8 @@ A solution optimized exclusively for local execution may require substantial red
 
 An additional concern is avoiding multiple overlapping orchestration systems. Combining a general-purpose job framework with Bacalhau could introduce redundant scheduling, retry handling, monitoring, and lifecycle management.
 
+The synthetic PoC demonstrated a substantial performance advantage for direct native Go execution. The revision deliberately accepts additional local runtime cost to preserve one job lifecycle and a portable worker path across the roadmap. The [native execution trade-off case](0001-native-execution-tradeoff.md) records the measurements, graphs, alternatives, rationale and unresolved costs. This is an architectural direction, not evidence that the operational acceptance gates have passed.
+
 ## Decision drivers
 
 The MVP architecture should prioritize:
@@ -42,27 +48,15 @@ The MVP architecture should prioritize:
 
 ## Decision
 
-We propose adopting **Go as the application backend, Wails v3 as the desktop application framework, and Bacalhau as the sole orchestrator for evidence-processing jobs**.
+Use **the Bacalhau runtime as the sole orchestrator for local and remote evidence-processing jobs**. Its common job lifecycle, placement and execution capabilities are advantageous for the local-to-LAN/BYOC roadmap: VIII can reuse a job runtime instead of building and maintaining its own orchestration infrastructure.
 
-Docker will remain an optional execution dependency for workflows that require containerized tools.
+This decision applies independently of VIII's application language, desktop framework and worker implementation languages. The measured local runtime costs are accepted for that architectural benefit; lower total operating and engineering cost remains to be demonstrated.
 
-### 1. Application layer: Go + Wails v3
+Use **WASI as the portable, Docker-free option for compatible workers** and **Docker as the performance-oriented option for native workers and specialized dependencies**. Docker remains an optional compute-node capability; basic workstation use must not require it.
 
-The VIII application will use:
+**Direct in-process Go jobs and direct native subprocess jobs are excluded from the product execution architecture, including as automatic fallbacks.** Go code may still compile to a native executable inside a Docker worker. Native benchmark paths remain useful comparison tools.
 
-- Go for application services, domain logic, evidence management, and integrations.
-- Wails v3 for native desktop packaging and interaction with a web-based frontend.
-- A lightweight HTML/CSS/TypeScript frontend, with the specific UI framework selected independently.
-
-Wails provides desktop capabilities without requiring a separate application backend runtime.
-
-Its server build mode also provides a potential path to headless and browser-accessible deployments.
-
-However, server-mode compilation does not automatically provide production-grade authentication, multiuser isolation, authorization, or distributed persistence. Those capabilities must be introduced and validated when needed.
-
-The initial target platform will be Windows, with macOS and Linux support evaluated subsequently.
-
-### 2. Processing orchestration: Bacalhau
+### 1. Processing orchestration: Bacalhau
 
 Bacalhau will be responsible for:
 
@@ -78,21 +72,24 @@ The application will communicate with Bacalhau through a dedicated integration b
 
 **VIII must not implement a competing durable processing queue or scheduler in the MVP.**
 
-Ordinary application operations do not need to become Bacalhau jobs. Long-running evidence-processing workloads should have a single lifecycle owner.
+Ordinary application operations, including input validation, hashing, persistence, search and presentation, do not need to become Bacalhau jobs. Evidence-processing jobs use Bacalhau regardless of duration or execution location; a short job does not gain a separate native lifecycle. An unavailable runtime must produce a recoverable diagnostic rather than silently bypassing this boundary.
 
-### 3. Execution environments
+### 2. Execution environments
 
 The initial architecture will recognize two Bacalhau execution mechanisms:
 
-**WebAssembly**
+**WebAssembly / WASI — portability**
 
-- Suitable for lightweight, portable, compatible workloads.
+- Preferred for compatible workers when portability and Docker-free operation are required.
+- The same compatible module can execute on heterogeneous authorized nodes without per-OS native worker packaging.
 - Does not require Docker.
 - Limited by the capabilities of Bacalhau's supported WASI runtime.
-- Requires actual workload compatibility testing.
+- Requires actual workload compatibility and latency testing. The PoC measured significant compilation and arithmetic execution costs; portability does not imply native performance.
 
-**Docker**
+**Docker — performance and native dependencies**
 
+- Preferred when CPU cost, GPU or native dependencies justify a container runtime; performance must be verified for the workload.
+- Workers may reuse domain logic across WASI modules and native executables inside architecture-specific images where their toolchains support both targets.
 - Suitable for existing forensic tools and specialized processing environments.
 - Enables reuse of containerized OCR, media-processing, parsing, and indexing tools.
 - Requires a functioning Docker-compatible environment on the compute node.
@@ -102,7 +99,7 @@ Docker is a capability dependency, not a commercial feature gate.
 
 Users remain free to configure supported execution environments independently.
 
-### 4. Local-first topology
+### 3. Local-first topology
 
 The initial Bacalhau installation will use a local hybrid node, combining orchestration and computation.
 
@@ -115,9 +112,11 @@ The proposed deployment consists of:
 
 Adding remote compute nodes should not require rewriting the application's job contracts.
 
+Local-first means execution can remain entirely on the workstation; it does not mean processing jobs bypass Bacalhau. Local and remote placement must be explicitly authorized before evidence is staged or submitted. A shared job contract does not make remote evidence transfer automatic.
+
 The installation experience must hide orchestration details from nontechnical users.
 
-### 5. Evidence and execution boundaries
+### 4. Evidence and execution boundaries
 
 VIII will own the domain model:
 
@@ -136,36 +135,11 @@ VIII must independently retain the relationship between inputs, processing confi
 
 Remote execution must not imply automatic authorization to transfer evidence outside the customer's environment.
 
-## Proposed architecture
+## Integration boundary
 
-**Presentation**
+VIII's application layer authorizes evidence placement, submits jobs through a Bacalhau adapter, reconciles attempts and verifies returned artifacts. Bacalhau supplies the local or remote orchestrator and authorized compute nodes using WASI or Docker workers. The application implementation and persistence technology are separate decisions.
 
-- Wails v3 desktop application.
-- Shared web frontend where technically appropriate.
-
-**Application**
-
-- Go domain and application services.
-- Evidence and provenance model.
-- Processing API and execution policies.
-- Bacalhau integration adapter.
-
-**Execution**
-
-- Bacalhau local or remote orchestrator.
-- Authorized compute nodes.
-- WASM workers.
-- Optional Docker workers.
-
-**Storage**
-
-- Local-first evidence storage.
-- Application metadata persistence.
-- Explicitly managed derived artifacts.
-
-The exact local database and future distributed storage strategy are outside the scope of this ADR.
-
-The architecture must not assume that adding a compute node automatically makes evidence accessible to that node.
+Adding a compute node must not automatically make evidence accessible to it.
 
 ## Update and maintenance strategy
 
@@ -177,67 +151,18 @@ The intended update workflow is:
 2. Confirm that no active or pending jobs would be disrupted.
 3. Preserve application state and required rollback information.
 4. Download and verify versioned updates.
-5. Update the application, Bacalhau runtime, and workers as applicable.
+5. Update the Bacalhau runtime and workers, coordinating with application compatibility as needed.
 6. Restart affected processes.
 7. Run automated health checks and synthetic processing tests.
 8. Resume normal operation only after successful validation.
 
-Wails v3 provides application self-update capabilities, but this does not automatically cover Bacalhau, Docker, worker images, or application data migrations.
-
-Component update coordination remains an VIII responsibility.
+The application layer's update mechanism does not automatically cover Bacalhau, Docker or workers. Runtime/worker compatibility and component update coordination remain VIII responsibilities; selecting the application's updater is outside this ADR.
 
 Hot code swapping is not a requirement. Controlled restart during an idle maintenance window is acceptable.
 
 ## Alternatives considered
 
-### Elixir + Phoenix LiveView + Oban
-
-**Advantages**
-
-- Mature concurrency and supervision model.
-- Durable job execution through Oban.
-- Strong support for web applications and distributed services.
-- Existing engineering familiarity.
-
-**Trade-offs**
-
-- A custom execution and deployment architecture may still be required for distributed, data-local workloads.
-- Combining Oban and Bacalhau risks overlapping orchestration responsibilities.
-- Desktop distribution requires additional packaging decisions.
-
-**Assessment:** viable, but not preferred for the proposed MVP architecture. The decision does not imply that Elixir is inherently unsuitable for low-ops systems.
-
-### Flutter + Go
-
-**Advantages**
-
-- Rich desktop and mobile UI capabilities.
-- Cross-platform interface development.
-
-**Trade-offs**
-
-- Introduces Dart alongside Go.
-- Requires integration between frontend and backend execution environments.
-- Adds tooling and packaging complexity without a demonstrated advantage for the initial evidence-review workflow.
-
-**Assessment:** not selected for the MVP. Reconsider if native UI requirements or mobile deployment become central.
-
-### Go + browser-based interface without Wails
-
-**Advantages**
-
-- Potentially smaller initial technology surface.
-- Natural deployment as a web service.
-- No desktop framework dependency.
-
-**Trade-offs**
-
-- Desktop installation, local application lifecycle, OS integration, and updates require additional design.
-- A browser-only experience may be less suitable for the intended workstation product.
-
-**Assessment:** retained as a fallback if Wails packaging or runtime behavior creates unacceptable overhead.
-
-### Go + custom job scheduler
+### Application-managed job orchestration
 
 **Advantages**
 
@@ -259,14 +184,21 @@ However, it would introduce additional engineering and security responsibilities
 
 **Assessment:** explicitly excluded from the initial MVP.
 
+### Direct native Go locally, Bacalhau remotely
+
+**Advantages:** the measured native paths have much lower latency, avoid local scheduler/staging processes and their installation/update burden, and can reuse the same Go normalization logic. Native execution can preserve source references and provenance; it is not inherently incompatible with distributed processing or evidence integrity.
+
+**Trade-off:** this introduces two execution paths whose lifecycle behavior, artifact packaging, cancellation, recovery and provenance must remain consistent. A synchronous native call is small today; making it support durable long-running product jobs still needs lifecycle decisions. Shared Go code and a common interface can reduce duplication, but do not erase the different runtime and failure behavior. Bacalhau also leaves application-level reconciliation and evidence policy to VIII.
+
+**Assessment:** rejected for product jobs. The project prioritizes a common local-to-LAN/BYOC job model and portable worker distribution over the fastest isolated local execution. Native code remains available inside Docker workers and in benchmark baselines. The expected lifecycle/engineering benefit of this choice is not yet measured. See the [technical case and evidence](0001-native-execution-tradeoff.md).
+
 ## Consequences
 
 ### Positive
 
-- Go becomes the primary backend language.
-- Wails provides an integrated desktop application model.
 - Bacalhau offers a potential evolution from local to distributed execution.
 - A single orchestration system reduces duplicated responsibilities.
+- Local and remote jobs share an execution boundary, independently of the application stack.
 - Existing containerized forensic tools can be reused.
 - The application can expose the same processing concepts across deployment modes.
 - Managed installation and maintenance become well-defined optional service opportunities.
@@ -274,24 +206,27 @@ However, it would introduce additional engineering and security responsibilities
 ### Negative
 
 - Bacalhau remains a separately managed process.
+- Every workstation pays for runtime management and worker distribution, even when all jobs stay local.
+- Direct native execution's measured latency advantage and simpler local runtime footprint are deliberately forgone; WASI startup and compute costs can affect interactive workflows.
 - A single application executable does not mean a single-component deployment.
 - The Docker dependency may complicate Windows installations.
 - WASM compatibility limitations may restrict Docker-free workflows.
-- Wails v3 is relatively new and requires platform-specific validation.
 - Multiple application and worker versions introduce compatibility-management responsibilities.
 - Distributed execution introduces data-placement, security, and networking complexity.
 
 ## Validation requirements
 
-This decision remains **Proposed** until a proof of concept demonstrates acceptable operational characteristics.
+The architecture decision is **Accepted**. The following requirements remain implementation and operational validation work; acceptance does not assert that they have passed or that the product is production-ready. Outstanding work remains tracked in [issue #9](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/9).
 
 The proof of concept must validate:
 
-### A. Desktop installation
+These requirements assess runtime integration and its operational cost. Desktop shell, frontend usability and application-stack packaging validation belong to ADR-0002; a failure there does not by itself invalidate this runtime choice.
 
-- Build and package VIII for Windows.
-- Start the application without development tools installed.
-- Start or connect to the local Bacalhau process.
+### A. Runtime installation and application integration
+
+- Package the Bacalhau runtime and compatible workers for the initial Windows workstation target.
+- Run the runtime and basic Docker-free worker without development tools installed.
+- Have the application start or connect to the local Bacalhau process.
 - Present meaningful diagnostics when required dependencies are missing.
 - Complete installation and first use without requiring command-line interaction from the end user.
 
@@ -300,7 +235,7 @@ The proof of concept must validate:
 - Import a small, synthetic UFDR XML fixture.
 - Execute a compatible processing worker through Bacalhau.
 - Normalize supported messages.
-- Present searchable results with references to source records.
+- Return results with source-record references through the application boundary.
 - Preserve execution metadata and original evidence integrity.
 
 The Docker-free path must be tested rather than assumed. If a suitable WASM implementation is unavailable or disproportionately expensive to maintain, this must trigger reassessment.
@@ -323,7 +258,7 @@ The Docker-free path must be tested rather than assumed. If a suitable WASM impl
 
 ### E. Updates
 
-- Update the application during an idle period.
+- Update the runtime during an idle period without losing application/job state.
 - Update at least one worker independently.
 - Validate integrity, compatibility, and restart behavior.
 - Test a failed update and rollback.
@@ -341,16 +276,16 @@ Measure:
 - Number of separately managed components.
 - Additional configuration required to introduce a second node.
 
-Compare against a minimal Go application using local native execution, without implementing a full competing scheduler.
+Retain the minimal native Go baseline for measurement, without implementing a competing scheduler or exposing it as a product execution mode. Measure lifecycle and incremental LAN/BYOC engineering cost as well as CPU time; the choice of a common runtime does not establish that its total cost is lower.
 
-## Acceptance criteria
+## Operational readiness criteria
 
-The decision may be accepted if:
+The accepted architecture must demonstrate the following before operational readiness can be claimed:
 
 1. A nontechnical user can install and execute the basic workflow without manually configuring orchestration infrastructure.
 2. The same processing contract supports local and authorized remote execution.
 3. Bacalhau provides reliable job lifecycle management without substantial custom scheduling code.
-4. The application can be safely updated during idle periods.
+4. The runtime and workers can be safely updated during idle periods, preserving application compatibility and job history.
 5. Operational complexity remains acceptable for a single workstation.
 6. Source-linked results remain verifiable independently of the execution location.
 7. Docker is not required for any workflow explicitly advertised as Docker-free.
@@ -363,9 +298,8 @@ Revisit this ADR if:
 
 - Bacalhau requires a substantial custom executor for priority workflows.
 - Docker-free processing introduces disproportionate engineering cost.
-- Local execution requires more operational components than an equivalent native solution.
-- Wails cannot provide acceptable Windows installation and update behavior.
-- Server-mode deployment requires major duplication of application logic.
+- Measured first-use latency, footprint or lifecycle cost is unacceptable for the validated workflow. The already-known extra components relative to native execution are an accepted trade-off, not a new finding by themselves.
+- The runtime cannot be installed, managed or updated acceptably on the target workstation.
 - Bacalhau's distribution model cannot satisfy the project's data-locality and authorization requirements.
 - Another architecture demonstrates materially lower lifecycle cost while preserving the roadmap.
 
@@ -373,6 +307,8 @@ Revisit this ADR if:
 
 This ADR does not decide:
 
+- The application language or desktop framework; see [ADR-0002](0002-adopt-go-wails-v3.md).
+- Worker implementation languages, beyond compatibility with the selected execution engines.
 - The complete frontend component framework.
 - The final database or search engine.
 - The cloud infrastructure provider.
@@ -381,26 +317,26 @@ This ADR does not decide:
 - AI model providers.
 - Commercial pricing or support contracts.
 - The final packaging strategy for Docker Desktop.
-- Whether a future native execution adapter will be justified.
 
 These decisions should follow specific product or technical requirements.
 
+Adding direct native job execution would require revising this decision; it is not a deferred adapter within the selected architecture.
+
 ## References
 
+- [Technical case: direct native execution trade-off, graphs and artifacts](0001-native-execution-tradeoff.md)
 - [ADR-0001 follow-up: distributed runtime validation](0001-follow-up-distributed-runtime.md)
+- [ADR-0002: Go + Wails v3 for the VIII application layer](0002-adopt-go-wails-v3.md)
 
 - [VIII — Digital Evidence Workbench](https://github.com/vmenezesdev/viii-digital-evidence-workbench)
-- [Wails v3 documentation](https://v3.wails.io/)
-- [Wails server build](https://v3.wails.io/guides/server-build/)
-- [Wails updater](https://wails.io/guides/updater/)
 - [Bacalhau architecture](https://bacalhau.org/docs/overview/architecture/)
 - [Bacalhau execution engines](https://bacalhau.org/docs/references/faq/)
 - [Docker Desktop licensing](https://docs.docker.com/subscription-billing/desktop-license/)
 
 ## Decision summary
 
-Adopt **Go + Wails v3 + Bacalhau** as the proposed MVP architecture, subject to proof-of-concept validation.
+Adopt **the Bacalhau runtime as VIII's job orchestrator** for its common lifecycle and execution capabilities across the local-to-distributed roadmap. This architecture decision is accepted; operational validation remains pending.
 
-Prefer a single processing orchestrator, local-first installation, optional Docker execution, and stable job contracts across deployment environments.
+Use Bacalhau for local and remote jobs, WASI for portable Docker-free workers, and optional Docker workers where performance or dependencies justify them. Direct native job execution outside this runtime is excluded. The application stack is decided separately.
 
-The decision optimizes for **minimum lifecycle complexity across the local-to-distributed roadmap**, rather than minimum implementation effort for the first isolated feature.
+The decision prioritizes **one execution model across the local-to-distributed roadmap**, accepting measured local performance costs. Lower total lifecycle complexity remains a hypothesis to validate. ADR-0001 is **Accepted**; implementation alignment and operational readiness remain subject to the requirements above and the reconsideration triggers.

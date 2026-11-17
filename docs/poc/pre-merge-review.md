@@ -42,17 +42,18 @@ remain in [the recovery report](authorized-execution-recovery.md) and
    gzip decode where configured; exact expected normalization). Terminal job state
    alone is insufficient. Failed/Stopped/Cancelled/Canceled become local terminal
    records; unknown states remain pending. GET can persist a new observation.
-7. DELETE on a nonterminal attempt persists cancellation intent and sends Stop;
-   the next observation determines termination. The UI currently has no cancel
+7. DELETE on a nonterminal attempt persists cancellation intent before lookup.
+   Reconciliation retries Stop until a terminal state is observed and keeps a
+   cancellation diagnostic while pending. The UI currently has no cancel
    or retry controls. Explicit API retry requires a failed/stopped attempt of the
    same evidence/mode, creates a new attempt, retains request ID and `retry_of`;
    repeated retry requests return the existing attempt.
 
 ## Review conclusions and boundaries
 
-No broad refactor or implementation fix was justified by this review. Keeping
-the serialized HTTP lifecycle and file persistence together in `process.go` makes
-the ordering constraints inspectable and testable. `wasijob` owns the small wire
+The review fixes keep the serialized HTTP lifecycle and file persistence
+together in `process.go`, keeping ordering constraints inspectable and testable.
+`wasijob` owns the small wire
 contract; it is not a competing scheduler. Benchmark-only Docker helpers have a
 demonstrated caller and do not enable Docker in the desktop.
 
@@ -71,8 +72,8 @@ Nonblocking follow-up proposals:
   Coverage here is descriptive; no mutation framework or arbitrary threshold.
 - **Desktop lifecycle:** completed history is not automatically reloaded; pending
   pointers alone are in localStorage. Add discoverable history/cancel/retry only
-  after deciding product scope. Failed requests can leave the previous selection
-  visible; reviewers must use the displayed evidence ID to avoid misattribution.
+  after deciding product scope. New imports clear prior messages, selection and
+  source XML. Message selection uses native buttons for keyboard access.
 - **Persistence ownership:** mutex covers one service instance, not concurrent
   desktops; no directory fsync or power-loss durability proof. Use one instance.
   Temp-write interruption is tested, not OS crash/power-loss injection.
@@ -103,6 +104,7 @@ go build -trimpath -o bin/viii.exe ./cmd/desktop # Windows
 GOOS=wasip1 GOARCH=wasm CGO_ENABLED=0 go build -trimpath -o bin/worker.wasm ./cmd/worker
 go build -trimpath -o bin/worker-native ./cmd/worker # .exe on Windows
 node scripts/verify-worker.cjs
+node scripts/verify-desktop.cjs
 ```
 
 In PowerShell use `$env:GOOS='wasip1'; $env:GOARCH='wasm'`, build, then restore
@@ -123,6 +125,9 @@ Dedicated infrastructure reproduction remains `scripts/spike-distributed.ps1
 | Native/WASI normalization and source references | `TestFixture`; `scripts/verify-worker.cjs` against expected fixture JSON |
 | Completed/nonzero, missing/truncated/malformed/mismatched outputs rejected | `TestCompletedWorkerValidation` |
 | Reconciliation never resubmits; explicit retry lineage/idempotency | `TestReconcileLostSubmissionResponse`, `TestExplicitRetryLineage` |
+| Cancellation intent survives failed lookup/Stop and resumes after reconstruction | `TestCancellationRecovery` |
+| Malformed report suffixes and additional roots are rejected | `TestReportSuffix` |
+| Fixture manifest integrity; import state and native message controls | `scripts/verify-worker.cjs`, `scripts/verify-desktop.cjs` |
 | Failed persistence/interrupted temp files preserve valid history | `TestSnapshotFailurePreservesHistory` |
 
 ## Windows manual verification (human sign-off pending)
@@ -145,8 +150,8 @@ Windows/WebView2 versions and observations/screenshots alongside the review.
   pending attempt, restart should reconcile its stored pointer without resubmit.
 - [ ] Select Authorized Bacalhau WASI without placement configuration and process.
   Expect `evidence placement denied` and ability to select Native and recover.
-  No staged evidence or job should be created. Do not mistake old selection for
-  a new successful result. Optionally repeat WASI only with configured environment.
+  No staged evidence or job should be created. The prior message list, selection
+  and source XML should be empty. Optionally repeat WASI with configured environment.
 
 Automated launch on 2026-11-16 logged Wails v3.1.0/Go 1.27.4 and successful
 WebView2 157.0.4341.46 initialization on Windows 11 build 26200, but exposed no

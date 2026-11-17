@@ -13,6 +13,13 @@ if (process.argv[2] === '--wasi') {
   const module = new WebAssembly.Module(fs.readFileSync('bin/worker.wasm'));
   process.exitCode = runtime.start(new WebAssembly.Instance(module, { wasi_snapshot_preview1: runtime.wasiImport }));
 } else {
+  const directory = path.dirname(fixture);
+  for (const line of fs.readFileSync(path.join(directory, 'SHA256SUMS'), 'utf8').trim().split(/\r?\n/)) {
+    const entry = /^([a-f0-9]{64})  (.+)$/i.exec(line);
+    assert.ok(entry, 'invalid fixture checksum entry');
+    const actual = createHash('sha256').update(fs.readFileSync(path.join(directory, entry[2]))).digest('hex');
+    assert.equal(actual, entry[1].toLowerCase(), `fixture checksum mismatch: ${entry[2]}`);
+  }
   const before = fs.readFileSync(fixture);
   const hash = createHash('sha256').update(before).digest('hex');
   const native = path.resolve('bin/worker-native' + (process.platform === 'win32' ? '.exe' : ''));

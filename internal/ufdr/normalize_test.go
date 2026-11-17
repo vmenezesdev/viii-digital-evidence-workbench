@@ -40,3 +40,34 @@ func TestInvalid(t *testing.T) {
 		}
 	}
 }
+
+func TestReportSuffix(t *testing.T) {
+	input, err := os.ReadFile("../../docs/research/fixtures/ufdr/messages-minimal.xml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, tc := range []struct {
+		suffix string
+		valid  bool
+	}{
+		{" \n\t<!-- end --><?review done?>\r\n", true},
+		{"<broken", false},
+		{"<second/>", false},
+		{"text", false},
+		{"<!-- unfinished", false},
+		{"<!DOCTYPE project>", false},
+		{`<?xml version="1.0"?>`, false},
+		{`<?XML version="1.0"?>`, false},
+	} {
+		t.Run(tc.suffix, func(t *testing.T) {
+			result, err := Normalize([]byte(string(input) + tc.suffix))
+			if tc.valid {
+				if err != nil || len(result.Messages) != 1 {
+					t.Fatalf("valid suffix changed the report: %v, %v", result, err)
+				}
+			} else if err == nil {
+				t.Fatal("accepted invalid report suffix")
+			}
+		})
+	}
+}

@@ -250,6 +250,14 @@ func (s *workbench) inspect(w http.ResponseWriter, r *http.Request) {
 		s.reply(w, a, input)
 		return
 	}
+	if r.Method == http.MethodDelete && a.CancelRequested == nil {
+		now := time.Now().UTC()
+		a.CancelRequested = &now
+		if err = s.save(a); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
 	if s.placement == nil || s.placement.Client.Base != a.Orchestrator {
 		a.Diagnostic = "Original orchestrator configuration unavailable"
 		s.saveAndReply(w, a, input)
@@ -307,15 +315,11 @@ func (s *workbench) inspect(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 		}
-		if r.Method == http.MethodDelete {
-			now := time.Now().UTC()
-			a.CancelRequested = &now
-			if err = s.save(a); err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
+		if a.CancelRequested != nil {
 			if err = client.Stop(ctx, a.JobID); err != nil {
 				a.Diagnostic = "Cancellation request failed: " + err.Error()
+			} else {
+				a.Diagnostic = "Cancellation requested; waiting for terminal state"
 			}
 		}
 	}

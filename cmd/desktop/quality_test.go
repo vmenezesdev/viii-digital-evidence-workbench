@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/vmenezesdev/viii-digital-evidence-workbench/internal/ufdr"
 	"github.com/vmenezesdev/viii-digital-evidence-workbench/internal/wasijob"
@@ -74,6 +75,86 @@ func TestCompletedWorkerValidation(t *testing.T) {
 				}
 			} else if a["status"] != "failed" || a["result"] != nil || a["error"] == nil {
 				t.Fatalf("invalid result accepted: %v", a)
+			}
+		})
+	}
+}
+
+func TestCancellationRecovery(t *testing.T) {
+	for _, failure := range []string{"stop", "lookup", "before stop"} {
+		t.Run(failure, func(t *testing.T) {
+			input := readSpikeFile(t, "../../docs/research/fixtures/ufdr/messages-minimal.xml")
+			var name string
+			stops, submissions := 0, 0
+			failStop, failLookup, stopped := failure == "stop", failure == "lookup", false
+			client := testOrchestrator(func(w http.ResponseWriter, r *http.Request) {
+				switch r.Method {
+				case http.MethodPut:
+					var request struct{ Job struct{ Name string } }
+					if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+						t.Fatal(err)
+					}
+					name = request.Job.Name
+					submissions++
+					w.Write([]byte(`{"JobID":"job"}`))
+				case http.MethodDelete:
+					stops++
+					if failStop {
+						http.Error(w, "temporarily unavailable", http.StatusServiceUnavailable)
+						return
+					}
+					stopped = true
+					w.WriteHeader(http.StatusNoContent)
+				default:
+					if failLookup {
+						http.Error(w, "temporarily unavailable", http.StatusServiceUnavailable)
+						return
+					}
+					state := "Running"
+					if stopped {
+						state = "Stopped"
+					}
+					json.NewEncoder(w).Encode(map[string]any{"Job": map[string]any{"ID": "job", "Name": name, "State": map[string]string{"StateType": state}}})
+				}
+			})
+			p := &wasijob.Placement{Allow: map[string]map[string]bool{digest(input): {"allowed": true}}, Modules: map[string]string{"allowed": "http://stage/worker.wasm"}, WorkerSHA256: "worker", Client: client}
+			s := &workbench{root: t.TempDir(), placement: p}
+			a := callAttempt(t, s, "POST", "/api/process?mode=bacalhau&node=allowed", input, 202)
+			if failure == "before stop" {
+				r, err := s.load(a["evidence_id"].(string), a["attempt"].(string))
+				if err != nil {
+					t.Fatal(err)
+				}
+				now := time.Now().UTC()
+				r.CancelRequested = &now
+				if err = s.save(r); err != nil {
+					t.Fatal(err)
+				}
+			} else {
+				a = callAttempt(t, s, "DELETE", attemptPath(a), nil, 202)
+				if a["cancel_requested"] == nil || a["diagnostic"] == nil {
+					t.Fatalf("lost cancellation intent or failure: %v", a)
+				}
+			}
+			s = &workbench{root: s.root, placement: p}
+			failLookup = false
+			a = callAttempt(t, s, "GET", attemptPath(a), nil, 202)
+			intent := a["cancel_requested"]
+			if failStop {
+				if stops != 2 || a["diagnostic"] == nil {
+					t.Fatalf("did not retry or report cancellation failure: %v, stops %d", a, stops)
+				}
+				failStop = false
+				a = callAttempt(t, s, "GET", attemptPath(a), nil, 202)
+			}
+			if !stopped || intent == nil || a["diagnostic"] == nil {
+				t.Fatalf("did not resume cancellation: %v", a)
+			}
+			before := stops
+			a = callAttempt(t, s, "GET", attemptPath(a), nil, 200)
+			a = callAttempt(t, s, "DELETE", attemptPath(a), nil, 200)
+			if a["status"] != "stopped" || a["finished"] == nil || a["cancel_requested"] != intent || stops != before || submissions != 1 {
+				t.Fatalf("terminal cancellation changed or resubmitted: %v, stops %d", a, stops)
 			}
 		})
 	}

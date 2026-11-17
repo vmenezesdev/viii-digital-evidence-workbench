@@ -90,6 +90,8 @@ jobs:
       - run: go build -trimpath -o bin/worker-native ./cmd/worker
       - name: Native and preview1 WASI normalization contract
         run: node scripts/verify-worker.cjs
+      - name: Desktop evidence state and message controls
+        run: node scripts/verify-desktop.cjs
       - uses: actions/upload-artifact@v4.6.2
         with:
           name: wasi-worker

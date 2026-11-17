@@ -2,8 +2,11 @@
 package ufdr
 
 import (
+	"bytes"
 	"encoding/xml"
 	"fmt"
+	"io"
+	"strings"
 )
 
 type Party struct {
@@ -60,8 +63,31 @@ func Normalize(data []byte) (Result, error) {
 		Models  []model `xml:"decodedData>model"`
 	}
 	r := Result{Messages: []Message{}, Participants: []Party{}, Notes: []string{"All identifiers and message content are fictional.", "source_index is preserved as a report reference; it is not asserted to be a byte offset.", "The source XML contains no To field, so the expected recipient is null."}}
-	if err := xml.Unmarshal(data, &doc); err != nil {
+	decoder := xml.NewDecoder(bytes.NewReader(data))
+	if err := decoder.Decode(&doc); err != nil {
 		return r, err
+	}
+	for {
+		token, err := decoder.Token()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return r, err
+		}
+		switch token := token.(type) {
+		case xml.Comment:
+			continue
+		case xml.ProcInst:
+			if !strings.EqualFold(token.Target, "xml") {
+				continue
+			}
+		case xml.CharData:
+			if len(bytes.Trim(token, " \t\r\n")) == 0 {
+				continue
+			}
+		}
+		return r, fmt.Errorf("unexpected content after report root")
 	}
 	if doc.XMLName.Local != "project" || doc.XMLName.Space != "http://pa.cellebrite.com/report/2.0" {
 		return r, fmt.Errorf("unsupported report root")

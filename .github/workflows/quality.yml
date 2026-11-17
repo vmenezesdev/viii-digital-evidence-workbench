@@ -23,6 +23,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 2
       - uses: actions/setup-go@v5.5.0
         with:
           go-version: '1.27.4'
@@ -37,7 +39,7 @@ jobs:
             exit 1
           fi
           git diff --check
-          git show --format= --check HEAD
+          git diff --check HEAD^ HEAD
       - run: go mod verify
       - run: go vet ./...
       - name: Deterministic tests and package coverage (no infrastructure)

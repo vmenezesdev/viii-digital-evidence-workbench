@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "caller_return_ms": 1447.3893,
+  "simulated_status": {
+    "at": "2026-11-18T15:12:48.4801286Z",
+    "state": "failed",
+    "error": "SIMULATED old runner status for startup regression; not an OCR failure",
+    "pid": 0
+  },
+  "prior_status": {
+    "state": "paused",
+    "at": "2026-11-18T15:09:16.3916141Z"
+  },
+  "active_ocr_failure_simulated": false,
+  "purpose": "Ignore a stale failed runner-status record while a new runner initializes",
+  "new_runner_pid": 200
+}

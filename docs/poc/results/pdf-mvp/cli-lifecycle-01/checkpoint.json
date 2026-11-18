@@ -1,0 +1,51 @@
+{
+    "results":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\cli lifecycle-20261118-150038",
+    "summary":  null,
+    "commands":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\cli lifecycle-20261118-150038/commands.jsonl",
+    "app_running":  false,
+    "progress":  {
+                     "at":  "2026-11-18T15:01:09.8806394Z",
+                     "status":  {
+                                    "document":  {
+                                                     "evidence_id":  "04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869",
+                                                     "sha256":  "04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869",
+                                                     "phase":  "ocr",
+                                                     "attempt":  "iiw746hmxq4suea7pwzy3yqkqv",
+                                                     "first":  4,
+                                                     "last":  12,
+                                                     "paused":  false,
+                                                     "complete":  false,
+                                                     "diagnostic":  null
+                                                 },
+                                    "failed":  0,
+                                    "failures":  [
+
+                                                 ],
+                                    "ocr_processed":  0,
+                                    "pending":  4,
+                                    "searchable":  8
+                                }
+                 },
+    "events":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\cli lifecycle-20261118-150038/events.jsonl",
+    "collector_running":  false,
+    "control":  {
+                    "state":  "paused",
+                    "at":  "2026-11-18T15:01:10.1620163Z"
+                },
+    "pause":  {
+                  "id":  "5202f820d81c45f5b773610e8cf2effe",
+                  "requested_at":  "2026-11-18T15:01:09.6334094Z",
+                  "completed":  true,
+                  "stopped_at":  "2026-11-18T15:01:10.1620163Z",
+                  "accounted_at":  null
+              },
+    "metrics":  {
+                    "started":  "2026-11-18T15:00:41.7275488Z",
+                    "peak_windows_private_bytes":  290869248,
+                    "peak_windows_working_set":  249872384,
+                    "user_pause_ms":  null,
+                    "first_search_ms":  18942.7127,
+                    "peak_temporary_bytes":  0
+                },
+    "live":  false
+}

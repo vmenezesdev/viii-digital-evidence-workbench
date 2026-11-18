@@ -4,14 +4,22 @@ param(
     [string]$Package='bin/pdf-mvp',
     [string]$Results='.poc-runtime/pdf/benchmark-wasi-30000',
     [int]$Port=49181,
-    [switch]$Resume
+    [switch]$Resume,
+    [switch]$ContinuePaused
 )
 $ErrorActionPreference='Stop'
 Import-Module (Join-Path $PSHOME 'Modules/Microsoft.PowerShell.Utility/Microsoft.PowerShell.Utility.psd1') -Force
 Set-Location (Split-Path $PSScriptRoot)
 $PDF=(Resolve-Path $PDF).Path; $Package=(Resolve-Path $Package).Path
 $exe=Join-Path $Package 'VIII.exe'
-function Write-JSON($Path,$Value) { [IO.File]::WriteAllText($Path,($Value|ConvertTo-Json -Depth 20)) }
+function Write-JSON($Path,$Value) {
+    $temp="$Path.$PID.tmp"
+    [IO.File]::WriteAllText($temp,($Value|ConvertTo-Json -Depth 20),[Text.UTF8Encoding]::new($false))
+    for($n=0;;$n++){
+        try{if([IO.File]::Exists($Path)){[IO.File]::Replace($temp,$Path,[NullString]::Value)}else{[IO.File]::Move($temp,$Path)};return}
+        catch{if($n -ge 5){throw};Start-Sleep -Milliseconds (10*[Math]::Pow(2,$n))}
+    }
+}
 function Event($Kind,$Value) { [IO.File]::AppendAllText("$Results/events.jsonl",((@{at=[DateTime]::UtcNow.ToString('o');kind=$Kind;value=$Value}|ConvertTo-Json -Depth 20 -Compress)+[Environment]::NewLine)) }
 function Tree-Bytes($Path) {
     [long]$bytes=0
@@ -35,8 +43,8 @@ if ($Resume) {
     }
     if (Test-Path "$Results/summary.json") {throw 'Benchmark already finished'}
 } else {
-    if(Test-Path $Results){throw 'Choose a fresh results directory or use -Resume'}
-    $Results=(New-Item -ItemType Directory $Results).FullName
+    if((Test-Path "$Results/state.json") -or (Test-Path "$Results/data")){throw 'Choose a fresh results directory or use -Resume'}
+    $Results=(New-Item -ItemType Directory $Results -Force).FullName
     $manifest=Get-Content -Raw ([IO.Path]::ChangeExtension($PDF,'.json')) | ConvertFrom-Json
     $hash=(Get-FileHash $PDF).Hash.ToLowerInvariant()
     if($hash -ne $manifest.sha256 -or (Get-Item $PDF).Length -ne $manifest.bytes){throw 'Fixture identity mismatch'}
@@ -46,6 +54,7 @@ if ($Resume) {
     Write-JSON "$Results/machine.json" @{os=Get-CimInstance Win32_OperatingSystem|Select-Object Caption,Version,TotalVisibleMemorySize;cpu=Get-CimInstance Win32_Processor|Select-Object Name,NumberOfCores,NumberOfLogicalProcessors;disk=Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'"|Select-Object Size,FreeSpace;package_sha256=(Get-FileHash $exe).Hash}
 }
 $data=Join-Path $Results 'data';$base="http://127.0.0.1:$Port"
+$interrupted=if(Test-Path "$data/pdf-document.json"){(Get-Content -Raw "$data/pdf-document.json"|ConvertFrom-Json).attempt}else{$null}
 $app=$null
 if(Test-Path "$Results/app-owned.json") {$app=Owned-Process (Get-Content -Raw "$Results/app-owned.json"|ConvertFrom-Json) $exe}
 if(!$app){
@@ -68,6 +77,23 @@ if(!$status -or !$status.document){
     $status=Invoke-RestMethod "$base/api/pdf/status" -TimeoutSec 10
 }
 if($status.document.sha256 -ne $state.sha256){throw 'Imported wrong evidence'}
+if($ContinuePaused){
+    $deadline=[DateTime]::UtcNow.AddSeconds(60)
+    do{
+        if($status.document.paused -and !$status.document.attempt){Invoke-RestMethod "$base/api/pdf/resume" -Method Post -TimeoutSec 10|Out-Null;break}
+        if($status.document.complete -or (!$status.document.paused -and (!$status.document.attempt -or $status.document.attempt -ne $interrupted))){break}
+        if(!$status.document.paused -and $status.document.attempt -eq $interrupted){
+            try{
+                $ports=Get-Content -Raw "$data/runtime/ports.json"|ConvertFrom-Json
+                $job=Invoke-RestMethod "http://127.0.0.1:$($ports.API)/api/v1/orchestrator/jobs/viii-${interrupted}?include=executions" -TimeoutSec 5
+                if($job.Job.State.StateType -notin 'Stopped','Completed','Failed','Cancelled','Canceled'){break}
+            }catch{}
+        }
+        Start-Sleep -Milliseconds 250
+        $status=Invoke-RestMethod "$base/api/pdf/status" -TimeoutSec 10
+    }until([DateTime]::UtcNow -gt $deadline)
+    if([DateTime]::UtcNow -gt $deadline){throw 'Stopped attempt not reconciled; inspect existing runtime before retrying'}
+}
 if($Engine -eq 'docker' -and $status.document.desired_engine -ne 'docker'){
     Invoke-RestMethod "$base/api/pdf/engine?engine=docker" -Method Post -TimeoutSec 65|Out-Null
     Event 'docker-requested' @{}
@@ -112,6 +138,7 @@ while($true){
             $lastDisk=[DateTime]::UtcNow
         }
         Write-JSON "$Results/state.json" $state
+        Write-JSON "$Results/progress.json" @{at=[DateTime]::UtcNow.ToString('o');elapsed_ms=$elapsed;status=$status}
         if($status.document.paused){Event 'paused' $status;throw "Product paused: $($status.document.diagnostic)"}
         if($status.document.complete){break}
         $consecutiveErrors=0

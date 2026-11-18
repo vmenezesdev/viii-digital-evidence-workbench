@@ -32,6 +32,10 @@ The current Windows benchmark [package hashes](results/pdf-mvp/package-identity-
 identify the rebuilt desktop and unchanged bounded-I/O SIMD worker, OCR model
 and pinned Bacalhau runtime. The earlier machine record remains historical.
 The worker's full small product gate passed.
+The [standalone experiment CLI](pdf-experiment.md) now provides detached
+start/resume, confirmed cancellation/pause, offline inspection and local result
+exports. Live lifecycle checks passed; this does not complete the large benchmark
+or concurrency acceptance gates.
 Final delivery still requires the large-file/native-UI and packaging audit.
 The large runs and concurrency comparison must finish before marking the goal
 complete. No reduction of the 30,000-page workload is used to satisfy that gate.

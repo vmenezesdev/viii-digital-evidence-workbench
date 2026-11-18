@@ -1,5 +1,8 @@
 # PDF product validation on Windows
 
+For detached operation, pause/resume, inspection and persisted reports without an
+AI session, see [the experiment CLI](pdf-experiment.md).
+
 The small product workflow passed with Bacalhau Windows v1.9.5, revision
 `3a6a73aa6529755ac2c9d96a771f0566ff3ee5da`. The packaged app imports an immutable
 SHA-256 original, authorizes local placement, runs range jobs, persists each page

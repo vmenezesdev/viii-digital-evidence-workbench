@@ -1,0 +1,33 @@
+05:14:10 | INF Config loaded from: [/viii.yaml], and with data-dir /var/lib/docker/volumes/viii-pdf-033b3dae748d-data/_data/node
+05:14:10 | INF Initializing repo at /var/lib/docker/volumes/viii-pdf-033b3dae748d-data/_data/node
+05:14:10 | INF persisted node name viii-pdf-033b3dae748d-docker
+05:14:10 | INF Starting bacalhau...
+05:14:11 | INF Starting connection manager node_id=viii-pdf-033b3dae748d-docker start_time=2026-11-17T05:14:11.962244398Z
+05:14:11 | INF Attempting to establish connection node_id=viii-pdf-033b3dae748d-docker
+05:14:11 | INF bacalhau node running name=viii-pdf-033b3dae748d-docker orchestrators=["nats://host.docker.internal:63385"]
+05:14:14 | INF starting execution NodeID=viii-pdf-033b3dae748d-docker execution=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f executionID=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f job=j-4a119ea0-b83f-4ca6-bd94-40767d2baeb8 jobID=j-4a119ea0-b83f-4ca6-bd94-40767d2baeb8
+05:14:14 | INF waiting on execution executionID=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f
+05:14:14 | INF starting container execution container=873a6f6058de00426f67925639c146380de256add1d98ac713f3fa41117e7c63 execution=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f job=j-4a119ea0-b83f-4ca6-bd94-40767d2baeb8
+05:14:27 | INF received status from container container=873a6f6058de00426f67925639c146380de256add1d98ac713f3fa41117e7c63 execution=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f job=j-4a119ea0-b83f-4ca6-bd94-40767d2baeb8 status=0
+05:14:27 | INF captured stdout/stderr for container container=873a6f6058de00426f67925639c146380de256add1d98ac713f3fa41117e7c63 execution=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f job=j-4a119ea0-b83f-4ca6-bd94-40767d2baeb8
+05:14:27 | INF container execution ended container=873a6f6058de00426f67925639c146380de256add1d98ac713f3fa41117e7c63 execution=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f job=j-4a119ea0-b83f-4ca6-bd94-40767d2baeb8 status=0
+05:14:27 | INF destroying the container container=873a6f6058de00426f67925639c146380de256add1d98ac713f3fa41117e7c63 execution=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f job=j-4a119ea0-b83f-4ca6-bd94-40767d2baeb8
+05:14:27 | INF killing the container container=873a6f6058de00426f67925639c146380de256add1d98ac713f3fa41117e7c63 execution=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f job=j-4a119ea0-b83f-4ca6-bd94-40767d2baeb8
+05:14:27 | INF removing container container=873a6f6058de00426f67925639c146380de256add1d98ac713f3fa41117e7c63 execution=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f job=j-4a119ea0-b83f-4ca6-bd94-40767d2baeb8
+05:14:27 | INF received results from execution executionID=e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f
+05:14:27 | ERR Error handling message error="execution e-26a79a8f-1452-4c0c-a0ef-206b62f8bc9f is in terminal state Completed and cannot transition to Cancelled" Bacalhau-EventTime=1794892467769159800 Bacalhau-MessageID=seq-28 Bacalhau-PayloadEncoding=json Bacalhau-SeqNum=28 Bacalhau-Source=orchestrator-viii-pdf-033b3dae748d-docker Bacalhau-Subject=bacalhau.global.compute.viii-pdf-033b3dae748d-docker.in.msgs Bacalhau-Type=CancelExecution PayloadEncoding=json Type=CancelExecution
+05:14:51 | ERR Failed to send heartbeat error="heartbeat request failed: failed to request message: context deadline exceeded"
+05:15:06 | ERR Failed to send heartbeat error="heartbeat request failed: failed to request message: context deadline exceeded"
+05:15:21 | ERR Failed to send heartbeat error="heartbeat request failed: failed to request message: context deadline exceeded"
+05:15:36 | ERR Failed to send heartbeat error="heartbeat request failed: failed to request message: context deadline exceeded"
+05:15:51 | ERR Failed to send heartbeat error="heartbeat request failed: failed to request message: context deadline exceeded"
+05:15:51 | WRN Connection unhealthy, initiating reconnect deadline=2026-11-17T05:14:36.995888803Z heartbeatMissFactor=5 lastHeartbeat=2026-11-17T05:14:27.002652883Z reason="no heartbeat for 5 intervals"
+05:16:01 | INF Attempting to establish connection node_id=viii-pdf-033b3dae748d-docker
+05:16:06 | ERR Failed to send heartbeat error="heartbeat request failed: failed to request message: context deadline exceeded"
+05:16:07 | ERR Connection attempt failed error="failed to setup transport: failed to connect to NATS: no orchestrator available for connection at nats://host.docker.internal:63385" backoffDuration=20s consecutiveFailures=2
+05:16:27 | INF Attempting to establish connection node_id=viii-pdf-033b3dae748d-docker
+05:16:27 | ERR Connection attempt failed error="failed to setup transport: failed to connect to NATS: no orchestrator available for connection at nats://host.docker.internal:63385" backoffDuration=40s consecutiveFailures=3
+05:17:07 | INF Attempting to establish connection node_id=viii-pdf-033b3dae748d-docker
+05:17:07 | ERR Connection attempt failed error="failed to setup transport: failed to connect to NATS: no orchestrator available for connection at nats://host.docker.internal:63385" backoffDuration=1m20s consecutiveFailures=4
+05:18:27 | INF Attempting to establish connection node_id=viii-pdf-033b3dae748d-docker
+05:18:27 | ERR Connection attempt failed error="failed to setup transport: failed to connect to NATS: no orchestrator available for connection at nats://host.docker.internal:63385" backoffDuration=2m0s consecutiveFailures=5

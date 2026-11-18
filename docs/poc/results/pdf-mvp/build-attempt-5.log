@@ -1,0 +1,305 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from pdf-worker.Dockerfile
+#1 transferring dockerfile: 2.56kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#2 DONE 0.8s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [build  1/13] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#4 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 1.26kB done
+#5 DONE 0.0s
+
+#6 [build  6/13] RUN cmake -S leptonica-1.85.0 -B lept -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/lept     -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DBUILD_SHARED_LIBS=OFF -DBUILD_PROG=OFF -DENABLE_ZLIB=OFF -DENABLE_PNG=OFF -DENABLE_JPEG=OFF     -DENABLE_TIFF=OFF -DENABLE_WEBP=OFF -DENABLE_OPENJPEG=OFF -DENABLE_GIF=OFF     -DCMAKE_C_FLAGS='-D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -Wno-implicit-function-declaration'     && cmake --build lept -j4 && cmake --install lept
+#6 CACHED
+
+#7 [build  5/13] RUN curl -fL https://github.com/DanBloomberg/leptonica/releases/download/1.85.0/leptonica-1.85.0.tar.gz | tar xz
+#7 CACHED
+
+#8 [build  2/13] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl cmake ninja-build make python3 xz-utils && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [build  3/13] WORKDIR /build
+#9 CACHED
+
+#10 [build  7/13] RUN curl -fL https://github.com/tesseract-ocr/tesseract/archive/refs/tags/5.5.0.tar.gz | tar xz
+#10 CACHED
+
+#11 [build  4/13] RUN curl -fL https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sdk-25.0-x86_64-linux.tar.gz | tar xz && mv wasi-sdk-25.0-x86_64-linux /opt/wasi-sdk
+#11 CACHED
+
+#12 [build  8/13] COPY scripts/pdf-wasi-threads.h tesseract-5.5.0/src/pdf-wasi-threads.h
+#12 CACHED
+
+#13 [build  9/13] COPY scripts/patch-pdf-tesseract.py /build/patch-pdf-tesseract.py
+#13 DONE 0.1s
+
+#14 [build 10/13] RUN python3 patch-pdf-tesseract.py tesseract-5.5.0
+#14 0.312 Single threaded WASI adaptation:
+#14 0.312 tesseract-5.5.0/src/viewer/scrollview.cpp
+#14 0.312 tesseract-5.5.0/src/viewer/svutil.h
+#14 0.312 tesseract-5.5.0/src/viewer/svutil.cpp
+#14 0.312 tesseract-5.5.0/src/viewer/scrollview.h
+#14 0.312 tesseract-5.5.0/src/ccutil/object_cache.h
+#14 0.312 tesseract-5.5.0/src/lstm/networkscratch.h
+#14 0.312 tesseract-5.5.0/src/ccstruct/imagedata.cpp
+#14 0.312 tesseract-5.5.0/src/ccstruct/imagedata.h
+#14 0.312 tesseract-5.5.0/src/classify/intfx.cpp
+#14 0.312 tesseract-5.5.0/src/training/unicharset/lstmtester.cpp
+#14 0.312 tesseract-5.5.0/src/training/unicharset/lstmtester.h
+#14 DONE 0.3s
+
+#15 [build 11/13] RUN cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess --target libtesseract -j4
+#15 0.324 -- The C compiler identification is Clang 19.1.5
+#15 0.351 -- The CXX compiler identification is Clang 19.1.5
+#15 0.358 -- Detecting C compiler ABI info
+#15 0.411 -- Detecting C compiler ABI info - done
+#15 0.413 -- Check for working C compiler: /opt/wasi-sdk/share/cmake/../..//bin/clang - skipped
+#15 0.413 -- Detecting C compile features
+#15 0.414 -- Detecting C compile features - done
+#15 0.417 -- Detecting CXX compiler ABI info
+#15 0.472 -- Detecting CXX compiler ABI info - done
+#15 0.475 -- Check for working CXX compiler: /opt/wasi-sdk/share/cmake/../..//bin/clang++ - skipped
+#15 0.475 -- Detecting CXX compile features
+#15 0.476 -- Detecting CXX compile features - done
+#15 0.477 -- Configuring tesseract version 5.5.0...
+#15 1.970 -- IPO / LTO supported
+#15 1.970 -- CMAKE_SYSTEM_PROCESSOR=<wasm32>
+#15 1.971 -- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) 
+#15 1.975 -- Found leptonica version: 1.85.0
+#15 2.138 -- TIFF support disabled.
+#15 2.138 -- LibArchive support disabled.
+#15 2.138 -- CURL support disabled.
+#15 2.138 Leptonica was build without TIFF support! Disabling TIFF support...
+#15 2.140 ScrollView debugging disabled.
+#15 2.143 -- Looking for feenableexcept
+#15 2.185 -- Looking for feenableexcept - found
+#15 2.187 -- 
+#15 2.187 -- General configuration for Tesseract 5.5.0
+#15 2.187 -- --------------------------------------------------------
+#15 2.187 -- Build type: Release 32 bits
+#15 2.187 -- Compiler: Clang
+#15 2.187 -- Used standard: C++20
+#15 2.187 -- CXX compiler options: -fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -O3 -DNDEBUG -Wno-unused-command-line-argument
+#15 2.187 -- Compile definitions = CMAKE_BUILD;HAVE_CONFIG_H
+#15 2.187 -- Linker options:  
+#15 2.187 -- Install directory: /opt/tess
+#15 2.187 -- HAVE_AVX: FALSE
+#15 2.187 -- HAVE_AVX2: FALSE
+#15 2.187 -- HAVE_AVX512F: FALSE
+#15 2.187 -- HAVE_FMA: FALSE
+#15 2.187 -- HAVE_SSE4_1: FALSE
+#15 2.187 -- MARCH_NATIVE_OPT: OFF
+#15 2.187 -- HAVE_NEON: FALSE
+#15 2.187 -- Link-time optimization: FALSE
+#15 2.187 -- --------------------------------------------------------
+#15 2.187 -- Build with sw [SW_BUILD]: OFF
+#15 2.187 -- Build with openmp support [OPENMP_BUILD]: OFF
+#15 2.187 -- Build with libarchive support [HAVE_LIBARCHIVE]: OFF
+#15 2.187 -- Build with libcurl support [HAVE_LIBCURL]: OFF
+#15 2.187 -- Enable float for LSTM [FAST_FLOAT]: ON
+#15 2.187 -- Enable optimization for host CPU (could break HW compatibility) [ENABLE_NATIVE]: OFF
+#15 2.187 -- Disable disable graphics (ScrollView) [GRAPHICS_DISABLED]: ON
+#15 2.187 -- Disable the legacy OCR engine [DISABLED_LEGACY_ENGINE]: ON
+#15 2.187 -- Build training tools [BUILD_TRAINING_TOOLS]: OFF
+#15 2.187 -- Build tests [BUILD_TESTS]: OFF
+#15 2.187 -- Use system ICU Library [USE_SYSTEM_ICU]: OFF
+#15 2.187 -- Install tesseract configs [INSTALL_CONFIGS]: ON
+#15 2.187 -- --------------------------------------------------------
+#15 2.187 -- 
+#15 2.204 -- Configuring done
+#15 2.218 -- Generating done
+#15 2.221 CMake Warning:
+#15 2.221   Manually-specified variables were not used by the project:
+#15 2.221 
+#15 2.221     BUILD_TESSERACT_BINARY
+#15 2.221     LEPT_TIFF_RESULT__TRYRUN_OUTPUT
+#15 2.221 
+#15 2.221 
+#15 2.221 -- Build files have been written to: /build/tess
+#15 5.112 [1/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/ltrresultiterator.cpp.obj
+#15 5.182 [2/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/applybox.cpp.obj
+#15 5.341 [3/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/linerec.cpp.obj
+#15 6.167 [4/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/control.cpp.obj
+#15 6.722 [5/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/mutableiterator.cpp.obj
+#15 7.860 [6/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/output.cpp.obj
+#15 8.013 [7/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/pageiterator.cpp.obj
+#15 8.027 [8/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/paramsd.cpp.obj
+#15 8.862 [9/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/pagesegmain.cpp.obj
+#15 9.284 [10/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/pagewalk.cpp.obj
+#15 10.75 [11/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/pgedit.cpp.obj
+#15 11.29 [12/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/reject.cpp.obj
+#15 12.22 [13/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/resultiterator.cpp.obj
+#15 12.25 [14/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/tessvars.cpp.obj
+#15 12.75 [15/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/paragraphs.cpp.obj
+#15 13.68 [16/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/tessedit.cpp.obj
+#15 14.17 [17/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/thresholder.cpp.obj
+#15 14.92 [18/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/werdit.cpp.obj
+#15 15.26 [19/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/tesseractclass.cpp.obj
+#15 16.31 [20/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/blamer.cpp.obj
+#15 16.62 [21/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/blobbox.cpp.obj
+#15 17.17 [22/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/blread.cpp.obj
+#15 17.53 [23/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/blobs.cpp.obj
+#15 19.03 [24/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/boxread.cpp.obj
+#15 19.09 [25/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/boxword.cpp.obj
+#15 19.12 [26/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/ccstruct.cpp.obj
+#15 19.22 [27/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/image.cpp.obj
+#15 20.01 [28/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/coutln.cpp.obj
+#15 20.75 [29/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/dppoint.cpp.obj
+#15 21.54 [30/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/detlinefit.cpp.obj
+#15 21.69 [31/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/linlsq.cpp.obj
+#15 22.43 [32/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/imagedata.cpp.obj
+#15 22.96 [33/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/matrix.cpp.obj
+#15 23.14 [34/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/mod128.cpp.obj
+#15 24.04 [35/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/normalis.cpp.obj
+#15 24.49 [36/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/ocrblock.cpp.obj
+#15 24.58 [37/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/ocrpara.cpp.obj
+#15 25.09 [38/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/ocrrow.cpp.obj
+#15 25.93 [39/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/otsuthr.cpp.obj
+#15 26.53 [40/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/pdblock.cpp.obj
+#15 26.85 [41/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/points.cpp.obj
+#15 28.03 [42/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/polyaprx.cpp.obj
+#15 28.30 [43/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/pageres.cpp.obj
+#15 28.50 [44/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/polyblk.cpp.obj
+#15 28.79 [45/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/quadlsq.cpp.obj
+#15 29.78 [46/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/quspline.cpp.obj
+#15 30.41 [47/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/rect.cpp.obj
+#15 30.60 [48/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/rejctmap.cpp.obj
+#15 30.97 [49/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/ratngs.cpp.obj
+#15 31.72 [50/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/seam.cpp.obj
+#15 32.35 [51/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/split.cpp.obj
+#15 32.88 [52/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/statistc.cpp.obj
+#15 32.99 [53/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/stepblob.cpp.obj
+#15 34.07 [54/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/werd.cpp.obj
+#15 34.59 [55/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/clst.cpp.obj
+#15 34.75 [56/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/elst.cpp.obj
+#15 34.85 [57/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/ccutil.cpp.obj
+#15 35.13 [58/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/scanutils.cpp.obj
+#15 35.80 [59/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/elst2.cpp.obj
+#15 36.41 [60/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/errcode.cpp.obj
+#15 37.00 [61/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/serialis.cpp.obj
+#15 37.36 [62/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/params.cpp.obj
+#15 37.94 [63/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/tessdatamanager.cpp.obj
+#15 38.31 [64/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/tprintf.cpp.obj
+#15 38.66 [65/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/unichar.cpp.obj
+#15 39.31 [66/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/unicharmap.cpp.obj
+#15 39.37 [67/148] Building CXX object CMakeFiles/libtesseract.dir/src/cutil/oldlist.cpp.obj
+#15 40.84 [68/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/unicharcompress.cpp.obj
+#15 41.19 [69/148] Building CXX object CMakeFiles/libtesseract.dir/src/classify/classify.cpp.obj
+#15 41.84 [70/148] Building CXX object CMakeFiles/libtesseract.dir/src/ccutil/unicharset.cpp.obj
+#15 41.85 [71/148] Building CXX object CMakeFiles/libtesseract.dir/src/dict/context.cpp.obj
+#15 43.75 [72/148] Building CXX object CMakeFiles/libtesseract.dir/src/dict/dawg.cpp.obj
+#15 43.78 [73/148] Building CXX object CMakeFiles/libtesseract.dir/src/dict/dawg_cache.cpp.obj
+#15 44.68 [74/148] Building CXX object CMakeFiles/libtesseract.dir/src/dict/stopper.cpp.obj
+#15 45.71 [75/148] Building CXX object CMakeFiles/libtesseract.dir/src/dict/dict.cpp.obj
+#15 46.18 [76/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/convolve.cpp.obj
+#15 47.42 [77/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/fullyconnected.cpp.obj
+#15 47.48 [78/148] Building CXX object CMakeFiles/libtesseract.dir/src/dict/trie.cpp.obj
+#15 47.55 [79/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/functions.cpp.obj
+#15 48.59 [80/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/input.cpp.obj
+#15 49.54 [81/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/maxpool.cpp.obj
+#15 50.56 [82/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/lstm.cpp.obj
+#15 50.75 [83/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/lstmrecognizer.cpp.obj
+#15 50.87 [84/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/network.cpp.obj
+#15 52.08 [85/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/networkio.cpp.obj
+#15 52.96 [86/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/plumbing.cpp.obj
+#15 52.96 [87/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/parallel.cpp.obj
+#15 54.20 [88/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/reconfig.cpp.obj
+#15 55.54 [89/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/reversed.cpp.obj
+#15 55.63 [90/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/recodebeam.cpp.obj
+#15 55.80 [91/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/series.cpp.obj
+#15 56.02 [92/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/stridemap.cpp.obj
+#15 58.04 [93/148] Building CXX object CMakeFiles/libtesseract.dir/src/lstm/weightmatrix.cpp.obj
+#15 58.12 [94/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/alignedblob.cpp.obj
+#15 58.38 [95/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/bbgrid.cpp.obj
+#15 59.08 [96/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/baselinedetect.cpp.obj
+#15 60.35 [97/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/blobgrid.cpp.obj
+#15 60.56 [98/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/blkocc.cpp.obj
+#15 61.26 [99/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/ccnontextdetect.cpp.obj
+#15 63.17 [100/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/cjkpitch.cpp.obj
+#15 65.42 [101/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/colfind.cpp.obj
+#15 65.69 [102/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/colpartition.cpp.obj
+#15 65.96 [103/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/colpartitiongrid.cpp.obj
+#15 66.20 [104/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/colpartitionset.cpp.obj
+#15 68.63 [105/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/drawtord.cpp.obj
+#15 68.73 [106/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/devanagari_processing.cpp.obj
+#15 69.17 [107/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/edgloop.cpp.obj
+#15 69.57 [108/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/edgblob.cpp.obj
+#15 72.68 [109/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/equationdetectbase.cpp.obj
+#15 72.97 [110/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/fpchop.cpp.obj
+#15 73.15 [111/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/gap_map.cpp.obj
+#15 75.27 [112/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/imagefind.cpp.obj
+#15 75.33 [113/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/linefind.cpp.obj
+#15 76.42 [114/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/oldbasel.cpp.obj
+#15 77.16 [115/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/makerow.cpp.obj
+#15 77.61 [116/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/pithsync.cpp.obj
+#15 77.69 [117/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/pitsync1.cpp.obj
+#15 78.66 [118/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/scanedg.cpp.obj
+#15 78.98 [119/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/sortflts.cpp.obj
+#15 81.20 [120/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/tabfind.cpp.obj
+#15 81.46 [121/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/strokewidth.cpp.obj
+#15 82.03 [122/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/tablerecog.cpp.obj
+#15 82.51 [123/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/tablefind.cpp.obj
+#15 83.88 [124/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/textlineprojection.cpp.obj
+#15 84.26 [125/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/tabvector.cpp.obj
+#15 84.76 [126/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/textord.cpp.obj
+#15 85.31 [127/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/topitch.cpp.obj
+#15 86.50 [128/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/tovars.cpp.obj
+#15 86.94 [129/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/tospace.cpp.obj
+#15 87.07 [130/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/tordmain.cpp.obj
+#15 87.35 [131/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/underlin.cpp.obj
+#15 88.98 [132/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/wordseg.cpp.obj
+#15 89.00 [133/148] Building CXX object CMakeFiles/libtesseract.dir/src/textord/workingpartset.cpp.obj
+#15 89.35 [134/148] Building CXX object CMakeFiles/libtesseract.dir/src/wordrec/tface.cpp.obj
+#15 89.65 [135/148] Building CXX object CMakeFiles/libtesseract.dir/src/wordrec/wordrec.cpp.obj
+#15 91.03 [136/148] Building CXX object CMakeFiles/libtesseract.dir/src/api/renderer.cpp.obj
+#15 91.19 [137/148] Building CXX object CMakeFiles/libtesseract.dir/src/api/capi.cpp.obj
+#15 91.91 [138/148] Building CXX object CMakeFiles/libtesseract.dir/src/api/altorenderer.cpp.obj
+#15 93.41 [139/148] Building CXX object CMakeFiles/libtesseract.dir/src/api/baseapi.cpp.obj
+#15 94.61 [140/148] Building CXX object CMakeFiles/libtesseract.dir/src/api/lstmboxrenderer.cpp.obj
+#15 94.83 [141/148] Building CXX object CMakeFiles/libtesseract.dir/src/api/hocrrenderer.cpp.obj
+#15 94.85 [142/148] Building CXX object CMakeFiles/libtesseract.dir/src/arch/dotproduct.cpp.obj
+#15 95.71 [143/148] Building CXX object CMakeFiles/libtesseract.dir/src/api/pagerenderer.cpp.obj
+#15 96.66 [144/148] Building CXX object CMakeFiles/libtesseract.dir/src/api/pdfrenderer.cpp.obj
+#15 96.76 [145/148] Building CXX object CMakeFiles/libtesseract.dir/src/arch/simddetect.cpp.obj
+#15 97.34 [146/148] Building CXX object CMakeFiles/libtesseract.dir/src/api/wordstrboxrenderer.cpp.obj
+#15 97.65 [147/148] Building CXX object CMakeFiles/libtesseract.dir/src/arch/intsimdmatrix.cpp.obj
+#15 97.68 [148/148] Linking CXX static library libtesseract.a
+#15 DONE 97.8s
+
+#16 [build 12/13] COPY scripts/pdf-ocr-proof.cpp /build/ocr-proof.cpp
+#16 DONE 0.1s
+
+#17 [build 13/13] RUN mkdir /out && /opt/wasi-sdk/bin/clang++ -O2 -fno-exceptions     -Itesseract-5.5.0/include -Itess/include -I/opt/lept/include ocr-proof.cpp     /build/tess/libtesseract.a /opt/lept/lib/libleptonica.a     -lwasi-emulated-process-clocks -lwasi-emulated-signal     -Wl,-z,stack-size=16777216 -Wl,--max-memory=1073741824 -o /out/ocr-proof.wasm
+#17 1.457 wasm-ld: error: /opt/lept/lib/libleptonica.a(utils2.c.obj): undefined symbol: system
+#17 1.457 wasm-ld: error: /opt/lept/lib/libleptonica.a(utils2.c.obj): undefined symbol: mkstemp
+#17 1.461 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+#17 ERROR: process "/bin/sh -c mkdir /out && /opt/wasi-sdk/bin/clang++ -O2 -fno-exceptions     -Itesseract-5.5.0/include -Itess/include -I/opt/lept/include ocr-proof.cpp     /build/tess/libtesseract.a /opt/lept/lib/libleptonica.a     -lwasi-emulated-process-clocks -lwasi-emulated-signal     -Wl,-z,stack-size=16777216 -Wl,--max-memory=1073741824 -o /out/ocr-proof.wasm" did not complete successfully: exit code: 1
+------
+ > [build 13/13] RUN mkdir /out && /opt/wasi-sdk/bin/clang++ -O2 -fno-exceptions     -Itesseract-5.5.0/include -Itess/include -I/opt/lept/include ocr-proof.cpp     /build/tess/libtesseract.a /opt/lept/lib/libleptonica.a     -lwasi-emulated-process-clocks -lwasi-emulated-signal     -Wl,-z,stack-size=16777216 -Wl,--max-memory=1073741824 -o /out/ocr-proof.wasm:
+1.457 wasm-ld: error: /opt/lept/lib/libleptonica.a(utils2.c.obj): undefined symbol: system
+1.457 wasm-ld: error: /opt/lept/lib/libleptonica.a(utils2.c.obj): undefined symbol: mkstemp
+1.461 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+------
+pdf-worker.Dockerfile:26
+--------------------
+  25 |     COPY scripts/pdf-ocr-proof.cpp /build/ocr-proof.cpp
+  26 | >>> RUN mkdir /out && /opt/wasi-sdk/bin/clang++ -O2 -fno-exceptions \
+  27 | >>>     -Itesseract-5.5.0/include -Itess/include -I/opt/lept/include ocr-proof.cpp \
+  28 | >>>     /build/tess/libtesseract.a /opt/lept/lib/libleptonica.a \
+  29 | >>>     -lwasi-emulated-process-clocks -lwasi-emulated-signal \
+  30 | >>>     -Wl,-z,stack-size=16777216 -Wl,--max-memory=1073741824 -o /out/ocr-proof.wasm
+  31 |     FROM scratch AS artifacts
+--------------------
+ERROR: failed to solve: process "/bin/sh -c mkdir /out && /opt/wasi-sdk/bin/clang++ -O2 -fno-exceptions     -Itesseract-5.5.0/include -Itess/include -I/opt/lept/include ocr-proof.cpp     /build/tess/libtesseract.a /opt/lept/lib/libleptonica.a     -lwasi-emulated-process-clocks -lwasi-emulated-signal     -Wl,-z,stack-size=16777216 -Wl,--max-memory=1073741824 -o /out/ocr-proof.wasm" did not complete successfully: exit code: 1
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/lcp52ppdmis32ldsk4ku8gj0y

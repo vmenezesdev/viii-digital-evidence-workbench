@@ -1,0 +1,9 @@
+Get-FileHash : O termo 'Get-FileHash' n∆o Ç reconhecido como nome de cmdlet, funá∆o, arquivo de script ou programa 
+oper†vel. Verifique a grafia do nome ou, se um caminho tiver sido inclu°do, veja se o caminho est† correto e tente 
+novamente.
+No C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\benchmark-pdf.ps1:36 caractere:12
++     $hash=(Get-FileHash $PDF).Hash.ToLowerInvariant()
++            ~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 

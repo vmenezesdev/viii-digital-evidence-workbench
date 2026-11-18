@@ -1,0 +1,98 @@
+{
+    "Job":  {
+                "Count":  1,
+                "Tasks":  [
+                              {
+                                  "Timeouts":  {
+                                                   "TotalTimeout":  600
+                                               },
+                                  "InputSources":  [
+                                                       {
+                                                           "Target":  "/worker",
+                                                           "Source":  {
+                                                                          "Params":  {
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/viii/viii-pdf-mvp/.poc-runtime/pdf/rust-target-simd/wasm32-wasip1/release/viii-pdf-worker.wasm",
+                                                                                         "ReadWrite":  false
+                                                                                     },
+                                                                          "Type":  "local"
+                                                                      }
+                                                       },
+                                                       {
+                                                           "Target":  "/original.pdf",
+                                                           "Source":  {
+                                                                          "Params":  {
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/viii/viii-pdf-mvp/.poc-runtime/pdf/fixtures/stream-small.pdf",
+                                                                                         "ReadWrite":  false
+                                                                                     },
+                                                                          "Type":  "local"
+                                                                      }
+                                                       },
+                                                       {
+                                                           "Target":  "/control",
+                                                           "Source":  {
+                                                                          "Params":  {
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/viii/viii-pdf-mvp/.poc-runtime/pdf/simd-calibration-01/control",
+                                                                                         "ReadWrite":  false
+                                                                                     },
+                                                                          "Type":  "local"
+                                                                      }
+                                                       },
+                                                       {
+                                                           "Target":  "/model",
+                                                           "Source":  {
+                                                                          "Params":  {
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/viii/viii-pdf-mvp/.poc-runtime/pdf/models",
+                                                                                         "ReadWrite":  false
+                                                                                     },
+                                                                          "Type":  "local"
+                                                                      }
+                                                       }
+                                                   ],
+                                  "Resources":  {
+                                                    "CPU":  "1",
+                                                    "Memory":  "2gb"
+                                                },
+                                  "Name":  "main",
+                                  "ResultPaths":  [
+                                                      {
+                                                          "Name":  "out",
+                                                          "Path":  "C:/out"
+                                                      }
+                                                  ],
+                                  "Engine":  {
+                                                 "Params":  {
+                                                                "EntryModule":  "/worker",
+                                                                "Entrypoint":  "_start",
+                                                                "Parameters":  [
+                                                                                   "/original.pdf",
+                                                                                   "11",
+                                                                                   "11",
+                                                                                   "/out",
+                                                                                   "/control/accepted",
+                                                                                   "ocr",
+                                                                                   "/model"
+                                                                               ]
+                                                            },
+                                                 "Type":  "wasm"
+                                             },
+                                  "Publisher":  {
+                                                    "Type":  "noop"
+                                                },
+                                  "Network":  {
+                                                  "Type":  "none"
+                                              }
+                              }
+                          ],
+                "Name":  "viii-pdf-pages-d3ae5f4ede2a4b678d6d534b6b0c7be2",
+                "Constraints":  [
+                                    {
+                                        "Operator":  "in",
+                                        "Key":  "name",
+                                        "Values":  [
+                                                       "viii-pdf-wasi"
+                                                   ]
+                                    }
+                                ],
+                "Type":  "batch"
+            }
+}

@@ -1,0 +1,9 @@
+AssertionError [ERR_ASSERTION]: first useful UI search must occur while processing continues
+    at C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\verify-pdf-ui.cjs:29:7 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

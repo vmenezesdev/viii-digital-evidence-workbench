@@ -1,0 +1,9 @@
+Exceção ao chamar "Start" com "0" argumento(s): "Foi feita uma tentativa de acesso a um soquete de uma maneira que é 
+proibida pelas permissões de acesso"
+No C:\Users\vinic\Documents\Code\vmenezesdev\viii\viii-pdf-mvp\.poc-runtime\pdf\resume-user-pause-relocated.ps1:14 
+caractere:206
++ ... rt);$listener.ExclusiveAddressUse=$true;try{$listener.Start()}finally ...
++                                                 ~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : SocketException
+ 

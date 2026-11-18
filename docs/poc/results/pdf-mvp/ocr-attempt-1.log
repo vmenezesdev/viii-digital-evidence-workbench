@@ -1,0 +1,7 @@
+New-PSDrive : Não é possível processar o comando porque um ou mais parâmetros obrigatórios estão ausentes:  Root.
+No C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\prove-pdf-ocr.ps1:52 caractere:29
++             InputSources=@((Mount $Worker '/worker'),(Mount $Model '/ ...
++                             ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [New-PSDrive], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingMandatoryParameter,Microsoft.PowerShell.Commands.NewPSDriveCommand
+ 

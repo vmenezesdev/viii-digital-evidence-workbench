@@ -1,0 +1,254 @@
+{
+    "Job":  {
+                "ID":  "j-eabda74b-b257-4616-86a8-c5519cd9796c",
+                "Name":  "viii-pdf-ocr-315808704efa4f0baa01348589757181",
+                "Namespace":  "default",
+                "Type":  "batch",
+                "Priority":  0,
+                "Count":  1,
+                "Constraints":  [
+                                    {
+                                        "Key":  "name",
+                                        "Operator":  "in",
+                                        "Values":  [
+                                                       "viii-pdf-wasi"
+                                                   ]
+                                    }
+                                ],
+                "Meta":  {
+                             "bacalhau.org/orchestrator.id":  "viii-pdf-wasi",
+                             "bacalhau.org/requester.id":  "viii-pdf-wasi",
+                             "bacalhau.org/server.instance.id":  "bf58b5297d764f8d3dc97c79bb79d7e32760d80b0773cca19f80bb5aaad01f02"
+                         },
+                "Labels":  {
+
+                           },
+                "Tasks":  [
+                              {
+                                  "Name":  "main",
+                                  "Engine":  {
+                                                 "Type":  "wasm",
+                                                 "Params":  {
+                                                                "EntryModule":  "/worker",
+                                                                "Entrypoint":  "_start",
+                                                                "Parameters":  [
+                                                                                   "/evidence/scan.bmp",
+                                                                                   "/model",
+                                                                                   "/out/page-1.json",
+                                                                                   "/evidence/accepted"
+                                                                               ]
+                                                            }
+                                             },
+                                  "Publisher":  {
+                                                    "Type":  "noop"
+                                                },
+                                  "InputSources":  [
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  false,
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/viii/viii-pdf-mvp/.poc-runtime/pdf/artifacts/ocr-proof.wasm"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/worker"
+                                                       },
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  false,
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/viii/viii-pdf-mvp/.poc-runtime/pdf/models"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/model"
+                                                       },
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  false,
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/viii/viii-pdf-mvp/.poc-runtime/pdf/ocr-proof-08/input"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/evidence"
+                                                       }
+                                                   ],
+                                  "ResultPaths":  [
+                                                      {
+                                                          "Name":  "out",
+                                                          "Path":  "C:/out"
+                                                      }
+                                                  ],
+                                  "Resources":  {
+                                                    "CPU":  "1",
+                                                    "Memory":  "1gb"
+                                                },
+                                  "Network":  {
+                                                  "Type":  "Default"
+                                              },
+                                  "Timeouts":  {
+                                                   "TotalTimeout":  300
+                                               }
+                              }
+                          ],
+                "State":  {
+                              "StateType":  "Completed"
+                          },
+                "Version":  1,
+                "Revision":  3,
+                "CreateTime":  1794888810887978300,
+                "ModifyTime":  1794888814252541900
+            },
+    "Executions":  {
+                       "NextToken":  "",
+                       "Items":  [
+                                     {
+                                         "ID":  "e-bfc7d7b2-eafc-4231-8456-cef1dabb6159",
+                                         "Namespace":  "default",
+                                         "EvalID":  "8af0666a-27f1-4e1f-a4d1-5279c767e961",
+                                         "Name":  "",
+                                         "NodeID":  "viii-pdf-wasi",
+                                         "JobID":  "j-eabda74b-b257-4616-86a8-c5519cd9796c",
+                                         "Job":  {
+                                                     "ID":  "j-eabda74b-b257-4616-86a8-c5519cd9796c",
+                                                     "Name":  "viii-pdf-ocr-315808704efa4f0baa01348589757181",
+                                                     "Namespace":  "default",
+                                                     "Type":  "batch",
+                                                     "Priority":  0,
+                                                     "Count":  1,
+                                                     "Constraints":  [
+                                                                         {
+                                                                             "Key":  "name",
+                                                                             "Operator":  "in",
+                                                                             "Values":  [
+                                                                                            "viii-pdf-wasi"
+                                                                                        ]
+                                                                         }
+                                                                     ],
+                                                     "Meta":  {
+                                                                  "bacalhau.org/orchestrator.id":  "viii-pdf-wasi",
+                                                                  "bacalhau.org/requester.id":  "viii-pdf-wasi",
+                                                                  "bacalhau.org/server.instance.id":  "bf58b5297d764f8d3dc97c79bb79d7e32760d80b0773cca19f80bb5aaad01f02"
+                                                              },
+                                                     "Labels":  {
+
+                                                                },
+                                                     "Tasks":  [
+                                                                   {
+                                                                       "Name":  "main",
+                                                                       "Engine":  {
+                                                                                      "Type":  "wasm",
+                                                                                      "Params":  {
+                                                                                                     "EntryModule":  "/worker",
+                                                                                                     "Entrypoint":  "_start",
+                                                                                                     "Parameters":  [
+                                                                                                                        "/evidence/scan.bmp",
+                                                                                                                        "/model",
+                                                                                                                        "/out/page-1.json",
+                                                                                                                        "/evidence/accepted"
+                                                                                                                    ]
+                                                                                                 }
+                                                                                  },
+                                                                       "Publisher":  {
+                                                                                         "Type":  "noop"
+                                                                                     },
+                                                                       "InputSources":  [
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  false,
+                                                                                                                              "SourcePath":  "C:/Users/vinic/Documents/Code/viii/viii-pdf-mvp/.poc-runtime/pdf/artifacts/ocr-proof.wasm"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/worker"
+                                                                                            },
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  false,
+                                                                                                                              "SourcePath":  "C:/Users/vinic/Documents/Code/viii/viii-pdf-mvp/.poc-runtime/pdf/models"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/model"
+                                                                                            },
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  false,
+                                                                                                                              "SourcePath":  "C:/Users/vinic/Documents/Code/viii/viii-pdf-mvp/.poc-runtime/pdf/ocr-proof-08/input"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/evidence"
+                                                                                            }
+                                                                                        ],
+                                                                       "ResultPaths":  [
+                                                                                           {
+                                                                                               "Name":  "out",
+                                                                                               "Path":  "C:/out"
+                                                                                           }
+                                                                                       ],
+                                                                       "Resources":  {
+                                                                                         "CPU":  "1",
+                                                                                         "Memory":  "1gb"
+                                                                                     },
+                                                                       "Network":  {
+                                                                                       "Type":  "Default"
+                                                                                   },
+                                                                       "Timeouts":  {
+                                                                                        "TotalTimeout":  300
+                                                                                    }
+                                                                   }
+                                                               ],
+                                                     "State":  {
+                                                                   "StateType":  "Pending"
+                                                               },
+                                                     "Version":  1,
+                                                     "Revision":  1,
+                                                     "CreateTime":  1794888810887978300,
+                                                     "ModifyTime":  1794888810887978300
+                                                 },
+                                         "JobVersion":  1,
+                                         "AllocatedResources":  {
+                                                                    "Tasks":  {
+
+                                                                              }
+                                                                },
+                                         "DesiredState":  {
+                                                              "StateType":  2,
+                                                              "Message":  "execution completed"
+                                                          },
+                                         "ComputeState":  {
+                                                              "StateType":  9,
+                                                              "Message":  "Running"
+                                                          },
+                                         "PublishedResult":  {
+                                                                 "Type":  ""
+                                                             },
+                                         "RunOutput":  {
+                                                           "Stdout":  "OCR artifact accepted",
+                                                           "StdoutTruncated":  false,
+                                                           "stderr":  "",
+                                                           "StderrTruncated":  false,
+                                                           "ExitCode":  0,
+                                                           "ErrorMsg":  ""
+                                                       },
+                                         "PreviousExecution":  "",
+                                         "NextExecution":  "",
+                                         "FollowupEvalID":  "",
+                                         "Revision":  4,
+                                         "CreateTime":  1794888810921307300,
+                                         "ModifyTime":  1794888814247036800
+                                     }
+                                 ]
+                   }
+}

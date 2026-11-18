@@ -1,5 +1,10 @@
 # VIII: Digital Evidence Workbench
 
+O MVP local de PDF está disponível para avaliação com documentos sintéticos ou
+públicos. Consulte [execução, pré-requisitos e validações](docs/poc/pdf-product.md)
+para usar o pacote Windows, pesquisar durante o OCR e habilitar a aceleração com
+Docker. A validação de 30 mil páginas ainda está em andamento.
+
 **Idioma:** [English](README.md) · Português (Brasil) · [Français](README.fr.md)
 
 **Uma plataforma de código aberto em desenvolvimento para explorar evidências digitais, compreender o que elas mostram e rastrear os achados até suas fontes.**

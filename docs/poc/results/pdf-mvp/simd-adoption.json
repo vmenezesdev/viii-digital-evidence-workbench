@@ -1,0 +1,36 @@
+{
+    "scope":  "Same dense synthetic scanned physical page 11, same pinned Bacalhau Windows v1.9.5, same Portuguese model. Existing scalar full run remained active; these are paired calibration probes, not isolated machine-wide throughput numbers.",
+    "small_product_gate":  {
+                               "mode":  "wasi",
+                               "searchable":  11,
+                               "first_useful_search_ms":  8042.7914,
+                               "passed":  true,
+                               "switched":  false,
+                               "sha256":  "504a6a9fa2b76f3c826a50c767c9c0abf7bc498a7537d2760f909b8f73f55dfe",
+                               "elapsed_ms":  87220.217700000008,
+                               "restarted":  false,
+                               "failed":  1,
+                               "physical_page":  11
+                           },
+    "adopted":  true,
+    "pairs":  [
+                  {
+                      "scalar_worker_sha256":  "183841E9D25FEB501F180B8C9E2B47168203B2BD7FCBB5F43A4E3ED9DA969329",
+                      "ocr_text_identical":  true,
+                      "scalar_ms":  52870.4999,
+                      "simd_worker_sha256":  "00BB04701DFFDA010FE5A03C88F00E79D3351939E81A42F9B460535820FF67CE",
+                      "speedup":  2.3366152029124724905052978724,
+                      "simd_ms":  22626.9605,
+                      "order":  "scalar,simd"
+                  },
+                  {
+                      "scalar_worker_sha256":  "183841E9D25FEB501F180B8C9E2B47168203B2BD7FCBB5F43A4E3ED9DA969329",
+                      "ocr_text_identical":  true,
+                      "scalar_ms":  67296.209100000007,
+                      "simd_worker_sha256":  "00BB04701DFFDA010FE5A03C88F00E79D3351939E81A42F9B460535820FF67CE",
+                      "speedup":  2.9909890999906381220048556852,
+                      "simd_ms":  22499.650400000002,
+                      "order":  "simd,scalar"
+                  }
+              ]
+}

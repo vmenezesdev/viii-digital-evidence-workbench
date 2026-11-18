@@ -1,0 +1,16 @@
+{
+    "input_sha256":  "504A6A9FA2B76F3C826A50C767C9C0ABF7BC498A7537D2760F909B8F73F55DFE",
+    "passed":  true,
+    "execution":  "e-ed152a7b-4e05-4e09-a476-839ea596605f",
+    "elapsed_ms":  160601.6851,
+    "worker_sha256":  "928CBE8EE3D5FEB84FE310B8D0BC51845262B4C6A4A6B2AB4ADA4334BB81110A",
+    "first_artifact_ms":  2428.911,
+    "job":  "j-83e40d85-293f-4c12-9097-99fb41016ac9",
+    "output_disk_bytes":  32509,
+    "last":  12,
+    "mode":  "ocr",
+    "first":  1,
+    "bytes":  1598418,
+    "docker_disabled":  true,
+    "node_peak_working_set_bytes":  376074240
+}

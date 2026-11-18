@@ -1,0 +1,276 @@
+{
+    "Job":  {
+                "ID":  "j-10392bc6-1d88-4417-83e2-b8256fe3d41b",
+                "Name":  "viii-pdf-docker-60c757e63dfc44589df40a58fe016b02",
+                "Namespace":  "default",
+                "Type":  "batch",
+                "Priority":  0,
+                "Count":  1,
+                "Constraints":  [
+                                    {
+                                        "Key":  "name",
+                                        "Operator":  "in",
+                                        "Values":  [
+                                                       "viii-pdf-docker"
+                                                   ]
+                                    }
+                                ],
+                "Meta":  {
+                             "bacalhau.org/orchestrator.id":  "viii-pdf-orchestrator",
+                             "bacalhau.org/requester.id":  "viii-pdf-orchestrator",
+                             "bacalhau.org/server.instance.id":  "bf58b5297d764f8d3dc97c79bb79d7e32760d80b0773cca19f80bb5aaad01f02"
+                         },
+                "Labels":  {
+
+                           },
+                "Tasks":  [
+                              {
+                                  "Name":  "main",
+                                  "Engine":  {
+                                                 "Type":  "docker",
+                                                 "Params":  {
+                                                                "Entrypoint":  [
+                                                                                   "/pdf-worker"
+                                                                               ],
+                                                                "Image":  "viii-pdf-worker:local",
+                                                                "Parameters":  [
+                                                                                   "/original.pdf",
+                                                                                   "1",
+                                                                                   "12",
+                                                                                   "/out",
+                                                                                   "/control/accepted",
+                                                                                   "ocr",
+                                                                                   "/model"
+                                                                               ],
+                                                                "SkipImagePull":  true
+                                                            }
+                                             },
+                                  "Publisher":  {
+                                                    "Type":  ""
+                                                },
+                                  "InputSources":  [
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  false,
+                                                                                         "SourcePath":  "/var/lib/docker/volumes/viii-pdf-63804ab7158b498b9f12616a1c62d82d-data/_data/original.pdf"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/original.pdf"
+                                                       },
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  false,
+                                                                                         "SourcePath":  "/var/lib/docker/volumes/viii-pdf-63804ab7158b498b9f12616a1c62d82d-data/_data/models"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/model"
+                                                       },
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  false,
+                                                                                         "SourcePath":  "/var/lib/docker/volumes/viii-pdf-63804ab7158b498b9f12616a1c62d82d-data/_data/control"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/control"
+                                                       },
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  true,
+                                                                                         "SourcePath":  "/var/lib/docker/volumes/viii-pdf-63804ab7158b498b9f12616a1c62d82d-data/_data/out"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/out"
+                                                       }
+                                                   ],
+                                  "Resources":  {
+                                                    "CPU":  "1",
+                                                    "Memory":  "2gb"
+                                                },
+                                  "Network":  {
+                                                  "Type":  "Default"
+                                              },
+                                  "Timeouts":  {
+                                                   "TotalTimeout":  600
+                                               }
+                              }
+                          ],
+                "State":  {
+                              "StateType":  "Completed"
+                          },
+                "Version":  1,
+                "Revision":  3,
+                "CreateTime":  1794889951678601600,
+                "ModifyTime":  1794889964341580300
+            },
+    "Executions":  {
+                       "NextToken":  "",
+                       "Items":  [
+                                     {
+                                         "ID":  "e-4b572595-707c-4f5c-a762-5f3c3790bccc",
+                                         "Namespace":  "default",
+                                         "EvalID":  "57c6b6e1-1d37-464d-89ce-2d0ea1354077",
+                                         "Name":  "",
+                                         "NodeID":  "viii-pdf-docker",
+                                         "JobID":  "j-10392bc6-1d88-4417-83e2-b8256fe3d41b",
+                                         "Job":  {
+                                                     "ID":  "j-10392bc6-1d88-4417-83e2-b8256fe3d41b",
+                                                     "Name":  "viii-pdf-docker-60c757e63dfc44589df40a58fe016b02",
+                                                     "Namespace":  "default",
+                                                     "Type":  "batch",
+                                                     "Priority":  0,
+                                                     "Count":  1,
+                                                     "Constraints":  [
+                                                                         {
+                                                                             "Key":  "name",
+                                                                             "Operator":  "in",
+                                                                             "Values":  [
+                                                                                            "viii-pdf-docker"
+                                                                                        ]
+                                                                         }
+                                                                     ],
+                                                     "Meta":  {
+                                                                  "bacalhau.org/orchestrator.id":  "viii-pdf-orchestrator",
+                                                                  "bacalhau.org/requester.id":  "viii-pdf-orchestrator",
+                                                                  "bacalhau.org/server.instance.id":  "bf58b5297d764f8d3dc97c79bb79d7e32760d80b0773cca19f80bb5aaad01f02"
+                                                              },
+                                                     "Labels":  {
+
+                                                                },
+                                                     "Tasks":  [
+                                                                   {
+                                                                       "Name":  "main",
+                                                                       "Engine":  {
+                                                                                      "Type":  "docker",
+                                                                                      "Params":  {
+                                                                                                     "Entrypoint":  [
+                                                                                                                        "/pdf-worker"
+                                                                                                                    ],
+                                                                                                     "Image":  "viii-pdf-worker:local",
+                                                                                                     "Parameters":  [
+                                                                                                                        "/original.pdf",
+                                                                                                                        "1",
+                                                                                                                        "12",
+                                                                                                                        "/out",
+                                                                                                                        "/control/accepted",
+                                                                                                                        "ocr",
+                                                                                                                        "/model"
+                                                                                                                    ],
+                                                                                                     "SkipImagePull":  true
+                                                                                                 }
+                                                                                  },
+                                                                       "Publisher":  {
+                                                                                         "Type":  ""
+                                                                                     },
+                                                                       "InputSources":  [
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  false,
+                                                                                                                              "SourcePath":  "/var/lib/docker/volumes/viii-pdf-63804ab7158b498b9f12616a1c62d82d-data/_data/original.pdf"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/original.pdf"
+                                                                                            },
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  false,
+                                                                                                                              "SourcePath":  "/var/lib/docker/volumes/viii-pdf-63804ab7158b498b9f12616a1c62d82d-data/_data/models"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/model"
+                                                                                            },
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  false,
+                                                                                                                              "SourcePath":  "/var/lib/docker/volumes/viii-pdf-63804ab7158b498b9f12616a1c62d82d-data/_data/control"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/control"
+                                                                                            },
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  true,
+                                                                                                                              "SourcePath":  "/var/lib/docker/volumes/viii-pdf-63804ab7158b498b9f12616a1c62d82d-data/_data/out"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/out"
+                                                                                            }
+                                                                                        ],
+                                                                       "Resources":  {
+                                                                                         "CPU":  "1",
+                                                                                         "Memory":  "2gb"
+                                                                                     },
+                                                                       "Network":  {
+                                                                                       "Type":  "Default"
+                                                                                   },
+                                                                       "Timeouts":  {
+                                                                                        "TotalTimeout":  600
+                                                                                    }
+                                                                   }
+                                                               ],
+                                                     "State":  {
+                                                                   "StateType":  "Pending"
+                                                               },
+                                                     "Version":  1,
+                                                     "Revision":  1,
+                                                     "CreateTime":  1794889951678601600,
+                                                     "ModifyTime":  1794889951678601600
+                                                 },
+                                         "JobVersion":  1,
+                                         "AllocatedResources":  {
+                                                                    "Tasks":  {
+
+                                                                              }
+                                                                },
+                                         "DesiredState":  {
+                                                              "StateType":  2,
+                                                              "Message":  "execution completed"
+                                                          },
+                                         "ComputeState":  {
+                                                              "StateType":  9,
+                                                              "Message":  "Running"
+                                                          },
+                                         "PublishedResult":  {
+                                                                 "Type":  ""
+                                                             },
+                                         "RunOutput":  {
+                                                           "Stdout":  "",
+                                                           "StdoutTruncated":  false,
+                                                           "stderr":  "",
+                                                           "StderrTruncated":  false,
+                                                           "ExitCode":  0,
+                                                           "ErrorMsg":  ""
+                                                       },
+                                         "PreviousExecution":  "",
+                                         "NextExecution":  "",
+                                         "FollowupEvalID":  "",
+                                         "Revision":  4,
+                                         "CreateTime":  1794889951688176000,
+                                         "ModifyTime":  1794889964334539800
+                                     }
+                                 ]
+                   }
+}

@@ -1,0 +1,32 @@
+{
+    "searchable":  27198,
+    "scope":  "intermediate; full acceptance incomplete",
+    "concurrency_comparison_complete":  false,
+    "user_pause_ms":  78444305.1045,
+    "active_elapsed_ms":  8366162.2705,
+    "at":  "2026-11-18T14:09:52.0594812Z",
+    "sampled_peaks":  {
+                          "temporary_bytes":  34572235,
+                          "windows_working_set_bytes":  5940703232,
+                          "windows_private_bytes":  7340552192
+                      },
+    "scanned_pages":  3001,
+    "bytes":  1250617698,
+    "ocr_processed":  199,
+    "ocr_active_elapsed_ms":  3915322.0329,
+    "document_sha256":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+    "first_useful_search_from_import_ms":  55167.9042,
+    "range":  [
+                  1920,
+                  2047
+              ],
+    "large_docker_complete":  false,
+    "raw_elapsed_ms":  86810467.375,
+    "large_wasi_complete":  false,
+    "jobs_per_document":  1,
+    "failed":  0,
+    "pending":  2802,
+    "engine":  "wasi",
+    "attempt":  "rdjotz4mok6vs5w4zz54mzbhef",
+    "pages":  30000
+}

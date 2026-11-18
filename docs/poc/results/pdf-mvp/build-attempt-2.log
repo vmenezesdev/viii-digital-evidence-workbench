@@ -1,0 +1,286 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from pdf-worker.Dockerfile
+#1 DONE 0.0s
+
+#1 [internal] load build definition from pdf-worker.Dockerfile
+#1 transferring dockerfile: 1.92kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#4 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.0s done
+#4 DONE 0.0s
+
+#5 [5/8] RUN curl -fL https://github.com/DanBloomberg/leptonica/releases/download/1.85.0/leptonica-1.85.0.tar.gz | tar xz
+#5 CACHED
+
+#6 [6/8] RUN cmake -S leptonica-1.85.0 -B lept -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/lept     -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DBUILD_SHARED_LIBS=OFF -DBUILD_PROG=OFF -DENABLE_ZLIB=OFF -DENABLE_PNG=OFF -DENABLE_JPEG=OFF     -DENABLE_TIFF=OFF -DENABLE_WEBP=OFF -DENABLE_OPENJPEG=OFF -DENABLE_GIF=OFF     -DCMAKE_C_FLAGS='-D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -Wno-implicit-function-declaration'     && cmake --build lept -j4 && cmake --install lept
+#6 CACHED
+
+#7 [3/8] WORKDIR /build
+#7 CACHED
+
+#8 [2/8] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl cmake ninja-build make python3 xz-utils && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [4/8] RUN curl -fL https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sdk-25.0-x86_64-linux.tar.gz | tar xz && mv wasi-sdk-25.0-x86_64-linux /opt/wasi-sdk
+#9 CACHED
+
+#10 [7/8] RUN curl -fL https://github.com/tesseract-ocr/tesseract/archive/refs/tags/5.5.0.tar.gz | tar xz
+#10 CACHED
+
+#11 [8/8] RUN cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess -j4 && cmake --install tess
+#11 0.230 -- The C compiler identification is Clang 19.1.5
+#11 0.252 -- The CXX compiler identification is Clang 19.1.5
+#11 0.258 -- Detecting C compiler ABI info
+#11 0.299 -- Detecting C compiler ABI info - done
+#11 0.301 -- Check for working C compiler: /opt/wasi-sdk/share/cmake/../..//bin/clang - skipped
+#11 0.302 -- Detecting C compile features
+#11 0.302 -- Detecting C compile features - done
+#11 0.305 -- Detecting CXX compiler ABI info
+#11 0.345 -- Detecting CXX compiler ABI info - done
+#11 0.348 -- Check for working CXX compiler: /opt/wasi-sdk/share/cmake/../..//bin/clang++ - skipped
+#11 0.348 -- Detecting CXX compile features
+#11 0.349 -- Detecting CXX compile features - done
+#11 0.350 -- Configuring tesseract version 5.5.0...
+#11 1.830 -- IPO / LTO supported
+#11 1.830 -- CMAKE_SYSTEM_PROCESSOR=<wasm32>
+#11 1.832 -- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) 
+#11 1.833 -- Found leptonica version: 1.85.0
+#11 1.991 -- TIFF support disabled.
+#11 1.991 -- LibArchive support disabled.
+#11 1.991 -- CURL support disabled.
+#11 1.991 Leptonica was build without TIFF support! Disabling TIFF support...
+#11 1.993 ScrollView debugging disabled.
+#11 1.996 -- Looking for feenableexcept
+#11 2.037 -- Looking for feenableexcept - found
+#11 2.039 -- 
+#11 2.039 -- General configuration for Tesseract 5.5.0
+#11 2.039 -- --------------------------------------------------------
+#11 2.039 -- Build type: Release 32 bits
+#11 2.039 -- Compiler: Clang
+#11 2.039 -- Used standard: C++20
+#11 2.039 -- CXX compiler options: -fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -O3 -DNDEBUG -Wno-unused-command-line-argument
+#11 2.039 -- Compile definitions = CMAKE_BUILD;HAVE_CONFIG_H
+#11 2.039 -- Linker options:  
+#11 2.039 -- Install directory: /opt/tess
+#11 2.039 -- HAVE_AVX: FALSE
+#11 2.039 -- HAVE_AVX2: FALSE
+#11 2.039 -- HAVE_AVX512F: FALSE
+#11 2.039 -- HAVE_FMA: FALSE
+#11 2.039 -- HAVE_SSE4_1: FALSE
+#11 2.039 -- MARCH_NATIVE_OPT: OFF
+#11 2.039 -- HAVE_NEON: FALSE
+#11 2.039 -- Link-time optimization: FALSE
+#11 2.039 -- --------------------------------------------------------
+#11 2.039 -- Build with sw [SW_BUILD]: OFF
+#11 2.039 -- Build with openmp support [OPENMP_BUILD]: OFF
+#11 2.039 -- Build with libarchive support [HAVE_LIBARCHIVE]: OFF
+#11 2.039 -- Build with libcurl support [HAVE_LIBCURL]: OFF
+#11 2.039 -- Enable float for LSTM [FAST_FLOAT]: ON
+#11 2.039 -- Enable optimization for host CPU (could break HW compatibility) [ENABLE_NATIVE]: OFF
+#11 2.039 -- Disable disable graphics (ScrollView) [GRAPHICS_DISABLED]: ON
+#11 2.039 -- Disable the legacy OCR engine [DISABLED_LEGACY_ENGINE]: ON
+#11 2.039 -- Build training tools [BUILD_TRAINING_TOOLS]: OFF
+#11 2.039 -- Build tests [BUILD_TESTS]: OFF
+#11 2.039 -- Use system ICU Library [USE_SYSTEM_ICU]: OFF
+#11 2.039 -- Install tesseract configs [INSTALL_CONFIGS]: ON
+#11 2.039 -- --------------------------------------------------------
+#11 2.039 -- 
+#11 2.056 -- Configuring done
+#11 2.070 -- Generating done
+#11 2.073 CMake Warning:
+#11 2.073   Manually-specified variables were not used by the project:
+#11 2.073 
+#11 2.073     BUILD_TESSERACT_BINARY
+#11 2.073     LEPT_TIFF_RESULT__TRYRUN_OUTPUT
+#11 2.073 
+#11 2.073 
+#11 2.074 -- Build files have been written to: /build/tess
+#11 4.619 [1/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/ltrresultiterator.cpp.obj
+#11 4.619 FAILED: CMakeFiles/libtesseract.dir/src/ccmain/ltrresultiterator.cpp.obj 
+#11 4.619 /opt/wasi-sdk/share/cmake/../..//bin/clang++ --target=wasm32-wasi -DCMAKE_BUILD -DHAVE_CONFIG_H -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS=1 -I/build/tesseract-5.5.0/include -I/build/tesseract-5.5.0/src/arch -I/build/tesseract-5.5.0/src/ccmain -I/build/tesseract-5.5.0/src/ccstruct -I/build/tesseract-5.5.0/src/ccutil -I/build/tesseract-5.5.0/src/classify -I/build/tesseract-5.5.0/src/cutil -I/build/tesseract-5.5.0/src/dict -I/build/tesseract-5.5.0/src/lstm -I/build/tesseract-5.5.0/src/textord -I/build/tesseract-5.5.0/src/viewer -I/build/tesseract-5.5.0/src/wordrec -I/build/tesseract-5.5.0/src/training -I/build/tesseract-5.5.0/src -I/opt/lept/include -I/opt/lept/include/leptonica -I/build/tess -I/build/tess/include -fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -O3 -DNDEBUG -Wno-unused-command-line-argument -std=c++20 -MD -MT CMakeFiles/libtesseract.dir/src/ccmain/ltrresultiterator.cpp.obj -MF CMakeFiles/libtesseract.dir/src/ccmain/ltrresultiterator.cpp.obj.d -o CMakeFiles/libtesseract.dir/src/ccmain/ltrresultiterator.cpp.obj -c /build/tesseract-5.5.0/src/ccmain/ltrresultiterator.cpp
+#11 4.619 In file included from /build/tesseract-5.5.0/src/ccmain/ltrresultiterator.cpp:24:
+#11 4.619 In file included from /build/tesseract-5.5.0/src/ccmain/tesseractclass.h:45:
+#11 4.619 In file included from /build/tesseract-5.5.0/src/wordrec/wordrec.h:29:
+#11 4.619 In file included from /build/tesseract-5.5.0/src/classify/classify.h:30:
+#11 4.619 In file included from /build/tesseract-5.5.0/src/dict/dict.h:30:
+#11 4.619 In file included from /build/tesseract-5.5.0/src/dict/dawg_cache.h:24:
+#11 4.619 /build/tesseract-5.5.0/src/ccutil/object_cache.h:118:8: error: no type named 'mutex' in namespace 'std'
+#11 4.619   118 |   std::mutex mu_;
+#11 4.619       |   ~~~~~^
+#11 4.619 /build/tesseract-5.5.0/src/ccutil/object_cache.h:40:26: error: no member named 'mutex' in namespace 'std'
+#11 4.619    40 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.619       |                     ~~~~~^
+#11 4.619 /build/tesseract-5.5.0/src/ccutil/object_cache.h:63:26: error: no member named 'mutex' in namespace 'std'
+#11 4.619    63 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.619       |                     ~~~~~^
+#11 4.619 /build/tesseract-5.5.0/src/ccutil/object_cache.h:87:26: error: no member named 'mutex' in namespace 'std'
+#11 4.619    87 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.619       |                     ~~~~~^
+#11 4.619 /build/tesseract-5.5.0/src/ccutil/object_cache.h:98:26: error: no member named 'mutex' in namespace 'std'
+#11 4.619    98 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.619       |                     ~~~~~^
+#11 4.619 5 errors generated.
+#11 4.791 [2/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/applybox.cpp.obj
+#11 4.791 FAILED: CMakeFiles/libtesseract.dir/src/ccmain/applybox.cpp.obj 
+#11 4.791 /opt/wasi-sdk/share/cmake/../..//bin/clang++ --target=wasm32-wasi -DCMAKE_BUILD -DHAVE_CONFIG_H -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS=1 -I/build/tesseract-5.5.0/include -I/build/tesseract-5.5.0/src/arch -I/build/tesseract-5.5.0/src/ccmain -I/build/tesseract-5.5.0/src/ccstruct -I/build/tesseract-5.5.0/src/ccutil -I/build/tesseract-5.5.0/src/classify -I/build/tesseract-5.5.0/src/cutil -I/build/tesseract-5.5.0/src/dict -I/build/tesseract-5.5.0/src/lstm -I/build/tesseract-5.5.0/src/textord -I/build/tesseract-5.5.0/src/viewer -I/build/tesseract-5.5.0/src/wordrec -I/build/tesseract-5.5.0/src/training -I/build/tesseract-5.5.0/src -I/opt/lept/include -I/opt/lept/include/leptonica -I/build/tess -I/build/tess/include -fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -O3 -DNDEBUG -Wno-unused-command-line-argument -std=c++20 -MD -MT CMakeFiles/libtesseract.dir/src/ccmain/applybox.cpp.obj -MF CMakeFiles/libtesseract.dir/src/ccmain/applybox.cpp.obj.d -o CMakeFiles/libtesseract.dir/src/ccmain/applybox.cpp.obj -c /build/tesseract-5.5.0/src/ccmain/applybox.cpp
+#11 4.791 In file included from /build/tesseract-5.5.0/src/ccmain/applybox.cpp:28:
+#11 4.791 In file included from /build/tesseract-5.5.0/src/ccmain/tesseractclass.h:45:
+#11 4.791 In file included from /build/tesseract-5.5.0/src/wordrec/wordrec.h:29:
+#11 4.791 In file included from /build/tesseract-5.5.0/src/classify/classify.h:30:
+#11 4.791 In file included from /build/tesseract-5.5.0/src/dict/dict.h:30:
+#11 4.791 In file included from /build/tesseract-5.5.0/src/dict/dawg_cache.h:24:
+#11 4.791 /build/tesseract-5.5.0/src/ccutil/object_cache.h:118:8: error: no type named 'mutex' in namespace 'std'
+#11 4.791   118 |   std::mutex mu_;
+#11 4.791       |   ~~~~~^
+#11 4.791 /build/tesseract-5.5.0/src/ccutil/object_cache.h:40:26: error: no member named 'mutex' in namespace 'std'
+#11 4.791    40 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.791       |                     ~~~~~^
+#11 4.791 /build/tesseract-5.5.0/src/ccutil/object_cache.h:63:26: error: no member named 'mutex' in namespace 'std'
+#11 4.791    63 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.791       |                     ~~~~~^
+#11 4.791 /build/tesseract-5.5.0/src/ccutil/object_cache.h:87:26: error: no member named 'mutex' in namespace 'std'
+#11 4.791    87 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.791       |                     ~~~~~^
+#11 4.791 /build/tesseract-5.5.0/src/ccutil/object_cache.h:98:26: error: no member named 'mutex' in namespace 'std'
+#11 4.791    98 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.791       |                     ~~~~~^
+#11 4.791 5 errors generated.
+#11 4.938 [3/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/linerec.cpp.obj
+#11 4.938 FAILED: CMakeFiles/libtesseract.dir/src/ccmain/linerec.cpp.obj 
+#11 4.938 /opt/wasi-sdk/share/cmake/../..//bin/clang++ --target=wasm32-wasi -DCMAKE_BUILD -DHAVE_CONFIG_H -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS=1 -I/build/tesseract-5.5.0/include -I/build/tesseract-5.5.0/src/arch -I/build/tesseract-5.5.0/src/ccmain -I/build/tesseract-5.5.0/src/ccstruct -I/build/tesseract-5.5.0/src/ccutil -I/build/tesseract-5.5.0/src/classify -I/build/tesseract-5.5.0/src/cutil -I/build/tesseract-5.5.0/src/dict -I/build/tesseract-5.5.0/src/lstm -I/build/tesseract-5.5.0/src/textord -I/build/tesseract-5.5.0/src/viewer -I/build/tesseract-5.5.0/src/wordrec -I/build/tesseract-5.5.0/src/training -I/build/tesseract-5.5.0/src -I/opt/lept/include -I/opt/lept/include/leptonica -I/build/tess -I/build/tess/include -fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -O3 -DNDEBUG -Wno-unused-command-line-argument -std=c++20 -MD -MT CMakeFiles/libtesseract.dir/src/ccmain/linerec.cpp.obj -MF CMakeFiles/libtesseract.dir/src/ccmain/linerec.cpp.obj.d -o CMakeFiles/libtesseract.dir/src/ccmain/linerec.cpp.obj -c /build/tesseract-5.5.0/src/ccmain/linerec.cpp
+#11 4.938 In file included from /build/tesseract-5.5.0/src/ccmain/linerec.cpp:18:
+#11 4.938 In file included from /build/tesseract-5.5.0/src/ccmain/tesseractclass.h:45:
+#11 4.938 In file included from /build/tesseract-5.5.0/src/wordrec/wordrec.h:29:
+#11 4.938 In file included from /build/tesseract-5.5.0/src/classify/classify.h:30:
+#11 4.938 In file included from /build/tesseract-5.5.0/src/dict/dict.h:30:
+#11 4.938 In file included from /build/tesseract-5.5.0/src/dict/dawg_cache.h:24:
+#11 4.938 /build/tesseract-5.5.0/src/ccutil/object_cache.h:118:8: error: no type named 'mutex' in namespace 'std'
+#11 4.938   118 |   std::mutex mu_;
+#11 4.938       |   ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccutil/object_cache.h:40:26: error: no member named 'mutex' in namespace 'std'
+#11 4.938    40 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.938       |                     ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccutil/object_cache.h:63:26: error: no member named 'mutex' in namespace 'std'
+#11 4.938    63 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.938       |                     ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccutil/object_cache.h:87:26: error: no member named 'mutex' in namespace 'std'
+#11 4.938    87 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.938       |                     ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccutil/object_cache.h:98:26: error: no member named 'mutex' in namespace 'std'
+#11 4.938    98 |     std::lock_guard<std::mutex> guard(mu_);
+#11 4.938       |                     ~~~~~^
+#11 4.938 In file included from /build/tesseract-5.5.0/src/ccmain/linerec.cpp:22:
+#11 4.938 /build/tesseract-5.5.0/src/ccstruct/imagedata.h:274:8: error: no type named 'mutex' in namespace 'std'
+#11 4.938   274 |   std::mutex pages_mutex_;
+#11 4.938       |   ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccstruct/imagedata.h:277:16: error: no type named 'mutex' in namespace 'std'
+#11 4.938   277 |   mutable std::mutex general_mutex_;
+#11 4.938       |           ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccstruct/imagedata.h:280:8: error: no type named 'thread' in namespace 'std'
+#11 4.938   280 |   std::thread thread;
+#11 4.938       |   ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccstruct/imagedata.h:191:26: error: no member named 'mutex' in namespace 'std'
+#11 4.938   191 |     std::lock_guard<std::mutex> lock(general_mutex_);
+#11 4.938       |                     ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccstruct/imagedata.h:195:26: error: no member named 'mutex' in namespace 'std'
+#11 4.938   195 |     std::lock_guard<std::mutex> lock(general_mutex_);
+#11 4.938       |                     ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccstruct/imagedata.h:202:26: error: no member named 'mutex' in namespace 'std'
+#11 4.938   202 |     std::lock_guard<std::mutex> lock(general_mutex_);
+#11 4.938       |                     ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccstruct/imagedata.h:227:26: error: no member named 'mutex' in namespace 'std'
+#11 4.938   227 |     std::lock_guard<std::mutex> lock(pages_mutex_);
+#11 4.938       |                     ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccstruct/imagedata.h:246:26: error: no member named 'mutex' in namespace 'std'
+#11 4.938   246 |     std::lock_guard<std::mutex> lock(general_mutex_);
+#11 4.938       |                     ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/ccstruct/imagedata.h:250:26: error: no member named 'mutex' in namespace 'std'
+#11 4.938   250 |     std::lock_guard<std::mutex> lock(general_mutex_);
+#11 4.938       |                     ~~~~~^
+#11 4.938 In file included from /build/tesseract-5.5.0/src/ccmain/linerec.cpp:23:
+#11 4.938 In file included from /build/tesseract-5.5.0/src/lstm/lstmrecognizer.h:25:
+#11 4.938 /build/tesseract-5.5.0/src/lstm/networkscratch.h:263:10: error: no type named 'mutex' in namespace 'std'
+#11 4.938   263 |     std::mutex mutex_;
+#11 4.938       |     ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/lstm/networkscratch.h:232:28: error: no member named 'mutex' in namespace 'std'
+#11 4.938   232 |       std::lock_guard<std::mutex> lock(mutex_);
+#11 4.938       |                       ~~~~~^
+#11 4.938 /build/tesseract-5.5.0/src/lstm/networkscratch.h:246:28: error: no member named 'mutex' in namespace 'std'
+#11 4.938   246 |       std::lock_guard<std::mutex> lock(mutex_);
+#11 4.938       |                       ~~~~~^
+#11 4.938 17 errors generated.
+#11 5.244 [4/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/control.cpp.obj
+#11 5.244 FAILED: CMakeFiles/libtesseract.dir/src/ccmain/control.cpp.obj 
+#11 5.244 /opt/wasi-sdk/share/cmake/../..//bin/clang++ --target=wasm32-wasi -DCMAKE_BUILD -DHAVE_CONFIG_H -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS=1 -I/build/tesseract-5.5.0/include -I/build/tesseract-5.5.0/src/arch -I/build/tesseract-5.5.0/src/ccmain -I/build/tesseract-5.5.0/src/ccstruct -I/build/tesseract-5.5.0/src/ccutil -I/build/tesseract-5.5.0/src/classify -I/build/tesseract-5.5.0/src/cutil -I/build/tesseract-5.5.0/src/dict -I/build/tesseract-5.5.0/src/lstm -I/build/tesseract-5.5.0/src/textord -I/build/tesseract-5.5.0/src/viewer -I/build/tesseract-5.5.0/src/wordrec -I/build/tesseract-5.5.0/src/training -I/build/tesseract-5.5.0/src -I/opt/lept/include -I/opt/lept/include/leptonica -I/build/tess -I/build/tess/include -fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -O3 -DNDEBUG -Wno-unused-command-line-argument -std=c++20 -MD -MT CMakeFiles/libtesseract.dir/src/ccmain/control.cpp.obj -MF CMakeFiles/libtesseract.dir/src/ccmain/control.cpp.obj.d -o CMakeFiles/libtesseract.dir/src/ccmain/control.cpp.obj -c /build/tesseract-5.5.0/src/ccmain/control.cpp
+#11 5.244 In file included from /build/tesseract-5.5.0/src/ccmain/control.cpp:36:
+#11 5.244 In file included from /build/tesseract-5.5.0/src/lstm/lstmrecognizer.h:25:
+#11 5.244 /build/tesseract-5.5.0/src/lstm/networkscratch.h:263:10: error: no type named 'mutex' in namespace 'std'
+#11 5.244   263 |     std::mutex mutex_;
+#11 5.244       |     ~~~~~^
+#11 5.244 /build/tesseract-5.5.0/src/lstm/networkscratch.h:232:28: error: no member named 'mutex' in namespace 'std'
+#11 5.244   232 |       std::lock_guard<std::mutex> lock(mutex_);
+#11 5.244       |                       ~~~~~^
+#11 5.244 /build/tesseract-5.5.0/src/lstm/networkscratch.h:246:28: error: no member named 'mutex' in namespace 'std'
+#11 5.244   246 |       std::lock_guard<std::mutex> lock(mutex_);
+#11 5.244       |                       ~~~~~^
+#11 5.244 In file included from /build/tesseract-5.5.0/src/ccmain/control.cpp:36:
+#11 5.244 In file included from /build/tesseract-5.5.0/src/lstm/lstmrecognizer.h:27:
+#11 5.244 In file included from /build/tesseract-5.5.0/src/lstm/recodebeam.h:24:
+#11 5.244 In file included from /build/tesseract-5.5.0/src/dict/dict.h:30:
+#11 5.244 In file included from /build/tesseract-5.5.0/src/dict/dawg_cache.h:24:
+#11 5.244 /build/tesseract-5.5.0/src/ccutil/object_cache.h:118:8: error: no type named 'mutex' in namespace 'std'
+#11 5.244   118 |   std::mutex mu_;
+#11 5.244       |   ~~~~~^
+#11 5.244 /build/tesseract-5.5.0/src/ccutil/object_cache.h:40:26: error: no member named 'mutex' in namespace 'std'
+#11 5.244    40 |     std::lock_guard<std::mutex> guard(mu_);
+#11 5.244       |                     ~~~~~^
+#11 5.244 /build/tesseract-5.5.0/src/ccutil/object_cache.h:63:26: error: no member named 'mutex' in namespace 'std'
+#11 5.244    63 |     std::lock_guard<std::mutex> guard(mu_);
+#11 5.244       |                     ~~~~~^
+#11 5.244 /build/tesseract-5.5.0/src/ccutil/object_cache.h:87:26: error: no member named 'mutex' in namespace 'std'
+#11 5.244    87 |     std::lock_guard<std::mutex> guard(mu_);
+#11 5.244       |                     ~~~~~^
+#11 5.244 /build/tesseract-5.5.0/src/ccutil/object_cache.h:98:26: error: no member named 'mutex' in namespace 'std'
+#11 5.244    98 |     std::lock_guard<std::mutex> guard(mu_);
+#11 5.244       |                     ~~~~~^
+#11 5.244 8 errors generated.
+#11 5.244 ninja: build stopped: subcommand failed.
+#11 ERROR: process "/bin/sh -c cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess -j4 && cmake --install tess" did not complete successfully: exit code: 1
+------
+ > [8/8] RUN cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess -j4 && cmake --install tess:
+5.244    63 |     std::lock_guard<std::mutex> guard(mu_);
+5.244       |                     ~~~~~^
+5.244 /build/tesseract-5.5.0/src/ccutil/object_cache.h:87:26: error: no member named 'mutex' in namespace 'std'
+5.244    87 |     std::lock_guard<std::mutex> guard(mu_);
+5.244       |                     ~~~~~^
+5.244 /build/tesseract-5.5.0/src/ccutil/object_cache.h:98:26: error: no member named 'mutex' in namespace 'std'
+5.244    98 |     std::lock_guard<std::mutex> guard(mu_);
+5.244       |                     ~~~~~^
+5.244 8 errors generated.
+5.244 ninja: build stopped: subcommand failed.
+------
+pdf-worker.Dockerfile:14
+--------------------
+  13 |     RUN curl -fL https://github.com/tesseract-ocr/tesseract/archive/refs/tags/5.5.0.tar.gz | tar xz
+  14 | >>> RUN cmake -S tesseract-5.5.0 -B tess -G Ninja \
+  15 | >>>     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess \
+  16 | >>>     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY \
+  17 | >>>     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT= \
+  18 | >>>     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF \
+  19 | >>>     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF \
+  20 | >>>     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL' \
+  21 | >>>     && cmake --build tess -j4 && cmake --install tess
+  22 |     
+--------------------
+ERROR: failed to solve: process "/bin/sh -c cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess -j4 && cmake --install tess" did not complete successfully: exit code: 1
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/21nb1brjwlftynfhs9uu2rx9b

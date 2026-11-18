@@ -1,0 +1,19 @@
+{
+    "at":  "2026-11-18T13:43:19.8100444Z",
+    "hashes":  {
+                   "desktop":  "9C1AA1A26CD4158B789A2753D860AC70F1DB571E5E86A78982DB48FAF2FCBBFE",
+                   "bacalhau":  "6EE846F8352246BE157BB6E502185277438C22781201F3635A50354DD0228964",
+                   "worker":  "ED7B4F04AAEAF9280F83B44E8036DCA2677F29953E5FD43F9C4DA17AE0BBA680",
+                   "ocr_model":  "C4932B937207A9514B7514D518B931A99938C02A28A5A5A553F8599ED58B7DEB"
+               },
+    "source_tests":  "docs/poc/results/pdf-mvp/product-all-tests-12.log",
+    "note":  "Desktop rebuilt for saved node identity; worker/model/orchestrator unchanged from bounded-I/O profile. Earlier machine record remains historical.",
+    "runtime_manifest":  {
+                             "WorkerSHA256":  "ED7B4F04AAEAF9280F83B44E8036DCA2677F29953E5FD43F9C4DA17AE0BBA680",
+                             "DockerImage":  "viii-pdf-worker:local",
+                             "ModelSHA256":  "C4932B937207A9514B7514D518B931A99938C02A28A5A5A553F8599ED58B7DEB",
+                             "BacalhauSHA256":  "6EE846F8352246BE157BB6E502185277438C22781201F3635A50354DD0228964"
+                         },
+    "package":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\bin\\pdf-mvp-resume",
+    "reason":  "Explicit user Continue"
+}

@@ -1,0 +1,8 @@
+Exceção ao chamar "Start" com "0" argumento(s): "Normalmente é permitida apenas uma utilização de cada endereço de 
+soquete (protocolo/endereço de rede/porta)"
+No C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\benchmark-pdf.ps1:45 caractere:119
++ ... rt);$listener.ExclusiveAddressUse=$true;try{$listener.Start()}finally ...
++                                                 ~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : SocketException
+ 

@@ -1,0 +1,15 @@
+    Updating crates.io index
+error: failed to select a version for `kurbo`.
+    ... required by package `peniko v0.6.1`
+    ... which satisfies dependency `peniko = "^0.6.1"` of package `vello_common v0.0.8`
+    ... which satisfies dependency `vello_common = "^0.0.8"` of package `vello_cpu v0.0.8`
+    ... which satisfies dependency `vello_cpu = "^0.0.8"` of package `hayro v0.7.1`
+    ... which satisfies dependency `hayro = "=0.7.1"` of package `viii-pdf-worker v0.1.0 (C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\workers\pdf)`
+versions that meet the requirements `^0.13.1` are: 0.13.1
+
+all possible versions conflict with previously selected packages
+
+  previously selected package `kurbo v0.13.0`
+    ... which satisfies dependency `kurbo = "=0.13.0"` of package `viii-pdf-worker v0.1.0 (C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\workers\pdf)`
+
+failed to select a version for `kurbo` which could resolve this conflict

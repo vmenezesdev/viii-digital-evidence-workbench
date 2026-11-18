@@ -1,0 +1,84 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from pdf-worker.Dockerfile
+#1 transferring dockerfile: 3.03kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#2 DONE 0.8s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [build  1/13] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#4 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 170B done
+#5 DONE 0.0s
+
+#6 [build  9/13] COPY scripts/patch-pdf-tesseract.py /build/patch-pdf-tesseract.py
+#6 CACHED
+
+#7 [build 10/13] RUN python3 patch-pdf-tesseract.py tesseract-5.5.0
+#7 CACHED
+
+#8 [build  6/13] RUN cmake -S leptonica-1.85.0 -B lept -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/lept     -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DBUILD_SHARED_LIBS=OFF -DBUILD_PROG=OFF -DENABLE_ZLIB=OFF -DENABLE_PNG=OFF -DENABLE_JPEG=OFF     -DENABLE_TIFF=OFF -DENABLE_WEBP=OFF -DENABLE_OPENJPEG=OFF -DENABLE_GIF=OFF     -DCMAKE_C_FLAGS='-D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -Wno-implicit-function-declaration'     && cmake --build lept -j4 && cmake --install lept
+#8 CACHED
+
+#9 [build  4/13] RUN curl -fL https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sdk-25.0-x86_64-linux.tar.gz | tar xz && mv wasi-sdk-25.0-x86_64-linux /opt/wasi-sdk
+#9 CACHED
+
+#10 [build  2/13] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl cmake ninja-build make python3 xz-utils && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [build 12/13] COPY scripts/pdf-ocr-proof.cpp /build/ocr-proof.cpp
+#11 CACHED
+
+#12 [build  7/13] RUN curl -fL https://github.com/tesseract-ocr/tesseract/archive/refs/tags/5.5.0.tar.gz | tar xz
+#12 CACHED
+
+#13 [build  8/13] COPY scripts/pdf-wasi-threads.h tesseract-5.5.0/src/pdf-wasi-threads.h
+#13 CACHED
+
+#14 [build  5/13] RUN curl -fL https://github.com/DanBloomberg/leptonica/releases/download/1.85.0/leptonica-1.85.0.tar.gz | tar xz
+#14 CACHED
+
+#15 [build 11/13] RUN cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess --target libtesseract -j4
+#15 CACHED
+
+#16 [build  3/13] WORKDIR /build
+#16 CACHED
+
+#17 [build 13/13] RUN mkdir /out && /opt/wasi-sdk/bin/clang++ -O2 -fno-exceptions     -Itesseract-5.5.0/include -Itess/include -I/opt/lept/include ocr-proof.cpp     /build/tess/libtesseract.a /opt/lept/lib/libleptonica.a     -lwasi-emulated-process-clocks -lwasi-emulated-signal     -Wl,-z,stack-size=16777216 -Wl,--max-memory=1073741824 -o /out/ocr-proof.wasm
+#17 CACHED
+
+#18 [artifacts 1/7] COPY --from=build /out/ /
+#18 CACHED
+
+#19 [artifacts 2/7] COPY --from=build /build/tess/libtesseract.a /lib/
+#19 DONE 0.1s
+
+#20 [artifacts 3/7] COPY --from=build /opt/lept/lib/libleptonica.a /lib/
+#20 DONE 0.1s
+
+#21 [artifacts 4/7] COPY --from=build /opt/wasi-sdk/share/wasi-sysroot/lib/wasm32-wasi/libc++.a /lib/
+#21 DONE 0.1s
+
+#22 [artifacts 5/7] COPY --from=build /opt/wasi-sdk/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a /lib/
+#22 DONE 0.1s
+
+#23 [artifacts 6/7] COPY --from=build /opt/wasi-sdk/share/wasi-sysroot/lib/wasm32-wasi/libwasi-emulated-process-clocks.a /lib/
+#23 DONE 0.1s
+
+#24 [artifacts 7/7] COPY --from=build /opt/wasi-sdk/share/wasi-sysroot/lib/wasm32-wasi/libwasi-emulated-signal.a /lib/
+#24 DONE 0.1s
+
+#25 exporting to client directory
+#25 copying files 7.09MB 0.1s
+#25 copying files 21.06MB 0.3s done
+#25 DONE 0.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/qkiff3b30t9w6yl1tpu1s0bo5

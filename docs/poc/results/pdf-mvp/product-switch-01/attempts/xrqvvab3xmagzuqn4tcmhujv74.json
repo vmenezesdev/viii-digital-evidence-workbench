@@ -1,0 +1,45 @@
+{
+  "evidence_id": "504a6a9fa2b76f3c826a50c767c9c0abf7bc498a7537d2760f909b8f73f55dfe",
+  "input_sha256": "504a6a9fa2b76f3c826a50c767c9c0abf7bc498a7537d2760f909b8f73f55dfe",
+  "attempt": "xrqvvab3xmagzuqn4tcmhujv74",
+  "request_id": "xrqvvab3xmagzuqn4tcmhujv74",
+  "mode": "pdf-wasi",
+  "location": "local-only",
+  "status": "completed",
+  "started": "2026-11-17T05:14:04.0158456Z",
+  "finished": "2026-11-17T05:14:07.0089449Z",
+  "duration_ms": 2993,
+  "worker_version": "pdf-v1",
+  "worker_sha256": "183841e9d25feb501f180b8c9e2b47168203b2bd7fcbb5f43a4e3ed9da969329",
+  "worker_url": "C:\\Users\\vinic\\Documents\\Code\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\product-package-01\\runtime\\pdf-worker.wasm",
+  "configuration": "extract:2-12",
+  "authorization": "allow",
+  "requested_node_id": "viii-pdf-033b3dae748d-wasi",
+  "node_id": "viii-pdf-033b3dae748d-wasi",
+  "job_id": "j-09afd80a-5bb4-4adf-9c35-bcb5ba596e7c",
+  "job_state": {
+    "StateType": "Completed"
+  },
+  "job_created_unix_ns": 1794892444029205200,
+  "execution_id": "e-067fbe09-0e15-4453-8b4c-1cbae21bfc48",
+  "executions": [
+    {
+      "ID": "e-067fbe09-0e15-4453-8b4c-1cbae21bfc48",
+      "NodeID": "viii-pdf-033b3dae748d-wasi",
+      "PreviousExecution": "",
+      "NextExecution": "",
+      "CreateTime": 1794892444034321300,
+      "ModifyTime": 1794892446398245000,
+      "ComputeState": {
+        "StateType": 9,
+        "Message": "Running"
+      },
+      "DesiredState": {
+        "StateType": 2,
+        "Message": "execution completed"
+      }
+    }
+  ],
+  "orchestrator": "http://127.0.0.1:63384",
+  "staging_dir": "C:\\Users\\vinic\\Documents\\Code\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\product-switch-01\\data\\control\\xrqvvab3xmagzuqn4tcmhujv74"
+}

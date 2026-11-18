@@ -8,6 +8,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -78,6 +79,18 @@ type Client struct {
 	HTTP *http.Client `json:"-"`
 }
 
+type HTTPError struct {
+	Status  int
+	Message string
+}
+
+func (e *HTTPError) Error() string { return e.Message }
+
+func IsNotFound(err error) bool {
+	var response *HTTPError
+	return errors.As(err, &response) && response.Status == http.StatusNotFound
+}
+
 func (c Client) Request(ctx context.Context, method, path string, body, out any) error {
 	var data []byte
 	if body != nil {
@@ -103,7 +116,7 @@ func (c Client) Request(ctx context.Context, method, path string, body, out any)
 	defer resp.Body.Close()
 	if resp.StatusCode/100 != 2 {
 		b, _ := io.ReadAll(io.LimitReader(resp.Body, 2048))
-		return fmt.Errorf("%s %s: %s: %s", method, path, resp.Status, b)
+		return &HTTPError{Status: resp.StatusCode, Message: fmt.Sprintf("%s %s: %s: %s", method, path, resp.Status, b)}
 	}
 	if out == nil {
 		return nil

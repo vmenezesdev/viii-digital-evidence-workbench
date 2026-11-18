@@ -1,0 +1,10 @@
+=== RUN   TestPDFPageImmutableAcrossEngineSwitch
+--- PASS: TestPDFPageImmutableAcrossEngineSwitch (0.05s)
+=== RUN   TestPDFSearchPartialAndPhysicalCitation
+--- PASS: TestPDFSearchPartialAndPhysicalCitation (0.04s)
+=== RUN   TestPDFMixedArtifacts
+--- PASS: TestPDFMixedArtifacts (0.14s)
+=== RUN   TestPDFOCRArtifact
+--- PASS: TestPDFOCRArtifact (0.02s)
+PASS
+ok  	github.com/vmenezesdev/viii-digital-evidence-workbench/cmd/desktop	0.502s

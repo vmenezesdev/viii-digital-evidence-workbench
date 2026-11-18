@@ -1,0 +1,18 @@
+=== RUN   TestPDFOCRArtifact
+--- PASS: TestPDFOCRArtifact (0.02s)
+PASS
+ok  	github.com/vmenezesdev/viii-digital-evidence-workbench/cmd/desktop	2.314s
+{
+    "model_sha256":  "C4932B937207A9514B7514D518B931A99938C02A28A5A5A553F8599ED58B7DEB",
+    "job":  "j-eabda74b-b257-4616-86a8-c5519cd9796c",
+    "version":  "5.5.0",
+    "tool":  "tesseract",
+    "execution":  "e-bfc7d7b2-eafc-4231-8456-cef1dabb6159",
+    "passed":  true,
+    "input_sha256":  "DA5D13ADEEF121994AE8ADCA3472077A2342C8F17599E4BF7FB693970EBCFF0B",
+    "node":  "viii-pdf-wasi",
+    "elapsed_ms":  3682.3982,
+    "worker_sha256":  "09934889594120EFDC76A63F6EAB0904B8A43D3907369660129E639714512278",
+    "bacalhau_revision":  "3a6a73aa6529755ac2c9d96a771f0566ff3ee5da",
+    "docker_disabled":  true
+}

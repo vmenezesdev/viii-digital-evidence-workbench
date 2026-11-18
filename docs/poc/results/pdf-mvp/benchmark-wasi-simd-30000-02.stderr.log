@@ -1,0 +1,7 @@
+Product paused: worker exit 1 (stdout truncated: false):  I/O error
+No C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\benchmark-pdf.ps1:109 caractere:60
++ ... used' $status;throw "Product paused: $($status.document.diagnostic)"}
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Product paused:...se):  I/O error:String) [], RuntimeException
+    + FullyQualifiedErrorId : Product paused: worker exit 1 (stdout truncated: false):  I/O error
+ 

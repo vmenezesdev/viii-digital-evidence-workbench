@@ -1,0 +1,2 @@
+# Keep captured tool output byte-for-byte, including its whitespace.
+docs/poc/results/pdf-mvp/**/*.log -text -whitespace

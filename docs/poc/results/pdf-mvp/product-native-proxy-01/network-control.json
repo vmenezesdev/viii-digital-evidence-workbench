@@ -1,0 +1,5 @@
+{
+  "url": "https://example.com/",
+  "error": "net::ERR_PROXY_CONNECTION_FAILED",
+  "local_page": "http://wails.localhost/pdf.html"
+}

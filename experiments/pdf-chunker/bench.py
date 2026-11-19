@@ -177,6 +177,8 @@ def main():
         "first": args.first,
         "last": args.last,
         "machine": platform.platform(),
+        "binary_identities": {name: {"path": path, "sha256": sha256(path)} if path else None
+                              for name, path in binaries.items()},
         "python": sys.version,
         "psutil_available": psutil is not None,
         "notes": [

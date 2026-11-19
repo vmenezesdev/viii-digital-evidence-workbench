@@ -1,0 +1,40 @@
+name: PDF chunker experiment checks
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/pdf-chunker/**'
+      - '.github/workflows/pdf-chunker-experiment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  harness-and-wasi-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Harness unit tests
+        run: python -m unittest discover -s experiments/pdf-chunker -p 'test_*.py' -v
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: experiments/pdf-chunker/pdfcpu-go/go.mod
+          cache: false
+      - name: Compile pdfcpu WASI module
+        working-directory: experiments/pdf-chunker/pdfcpu-go
+        run: |
+          go mod download
+          GOOS=wasip1 GOARCH=wasm go build -trimpath -o ../pdfcpu-chunker.wasm .
+          test -s ../pdfcpu-chunker.wasm
+          sha256sum ../pdfcpu-chunker.wasm
+      - name: Store WASI build artifact (unverified in Bacalhau)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdfcpu-wasi-build-unverified
+          path: experiments/pdf-chunker/pdfcpu-chunker.wasm
+          if-no-files-found: error

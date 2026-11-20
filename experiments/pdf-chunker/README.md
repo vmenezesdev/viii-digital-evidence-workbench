@@ -1,116 +1,106 @@
 # Experiment: bounded-memory PDF chunking for VIII
 
 **Branch base:** `mvp/pdf-digestor`, original head `17a23728c677a131aedb1ec4a34b61baa7545702`.
-This experiment is separate from PR #12 and must not modify the current long-running OCR data directory.
+Isolated from PR #12; it must not modify the MVP runtime or its OCR experiment data.
+**Results, decision and limitations: [RESULTS.md](RESULTS.md).**
 
-## Decision to test
+## Question
 
-Find a chunker which produces a **small, structurally valid derivative PDF** for an
-arbitrary 1-based physical page interval of a 30,000-page original, without
-resident memory growing approximately with the original PDF size.
-This is a candidate preprocessing stage for the existing Bacalhau + WASI
-Hayro/Tesseract worker, **not** a replacement for evidence identity.
+Can a separate chunking stage produce a small, valid derivative PDF for an
+arbitrary physical page range of a 30,000-page original, so that the existing
+Bacalhau + WASI Hayro/Tesseract worker (which reads the whole PDF into linear
+memory) only loads the pages it processes, without losing portability,
+reliability or provenance?
 
-Three native baselines are supplied:
+## Compatibility levels (never conflated)
 
-- **pdfcpu (Go)**: `trim --pages A-B`; a Go `wasip1/wasm` worker using `api.TrimFile` is included.
-- **pdq (Rust)**: `split original.pdf --out A-B derivative.pdf`; mmap-based, WASI viability unverified.
-- **qpdf (C++)**: `--empty --pages original.pdf A-B -- derivative.pdf`; native reference, WASI viability unverified.
+1. compiles to WebAssembly;
+2. compiles and runs under a WASI Preview 1 runtime (Wasmtime);
+3. runs correctly as a job on the **pinned VIII Bacalhau v1.9.5** (revision
+   `3a6a73aa…`, wazero v1.12.0) on Windows, Docker disabled, network `none`,
+   read-only mounts, ready/acknowledgement protocol, verified outputs.
 
-No candidate is considered WASI-compatible with the pinned Bacalhau until its
-actual job finishes with a verified output. An external WASI build is not sufficient.
-A successful split does not establish low memory or semantically correct OCR.
+Only level 3 counts as compatibility. CI covers levels 1-2; level 3 is local.
 
-## Reproduction on the Windows PoC machine
+## Contents
 
-Use a separate checkout/worktree and **fresh results directories**.
-Use only synthetic fixtures, and do not run the large test concurrently with the
-current OCR benchmark because memory contention invalidates comparisons.
+| Path | Purpose |
+|---|---|
+| `pdfcpu-go/` | Go `wasip1` chunker using pdfcpu v0.16.4 (`api.Trim`), with tests. |
+| `pdq-wasi/` | Rust chunker using pdq 0.5.1 plus `wasi-read-instead-of-mmap.patch`; `prepare.py` fetches the crate, verifies its sha256 and applies the patch. |
+| `qpdf-wasi-probe/` | Minimal C++ exception probe: the qpdf port gate. |
+| `fsprobe/` | Characterises the Bacalhau WASI file system seen by a guest. |
+| `bench.py` | Native CLI comparison (pdfcpu/pdq/qpdf) with exact OS peak memory, CPU and I/O. |
+| `bacalhau_wasi.py` | Runs WASI modules as real jobs on an isolated pinned node; exact node peaks, attempts, leak scan. |
+| `validate.py` | Per-page text and raster comparison of a derivative against the original (Poppler). |
+| `e2e_ocr.py` | Chunk -> OCR on the derivative -> physical-page citation; optional baseline on the original. |
+| `run_matrix.py` | Reproduces the size x range, startup-control and concurrency matrices. |
+| `results/` | Committed structured results (summaries only, no PDFs). |
 
-Requirements: Python 3, `psutil` for RSS, `qpdf` for independent structural
-checks, candidate CLIs `pdfcpu` and `pdq`, Go >= 1.27.4 for the pinned
-pdfcpu module, and the pinned VIII Bacalhau binary for the WASI proof.
-Pin and record exact binary versions/hashes for any results promoted into an ADR.
+## Worker contract (both chunkers)
 
-```powershell
-python -m pip install psutil
-python scripts/make-pdf-fixture.py .poc-runtime/pdf-chunker/fixtures/small.pdf --pages 12 --ocr-every 4
-python experiments/pdf-chunker/bench.py --input .poc-runtime/pdf-chunker/fixtures/small.pdf --first 9 --last 12 --results .poc-runtime/pdf-chunker/small-01
+```
+chunker original.pdf first last out-dir ack-file [declared-source-sha256]
 ```
 
-Review `summary.json` and per-command logs; do not infer a win from exit code alone.
-The independent qpdf checks verify document structure and number of output pages,
-not visual or text parity. The input SHA-256 is checked before and after.
+Writes `out-dir/chunk.pdf`, `manifest.json` (schema `viii.pdf-chunk.v1`:
+tool/version, physical range, exact `local -> physical` map, chunk sha256,
+page count verified by re-reading the derivative) and finally `ready` with the
+content `ready`; then waits for the host to create `ack-file` and exits 0.
+The derivative is an **operational artifact, not evidence**: citations must
+use the manifest's physical pages of the original, whose sha256 is checked
+before and after every job.
 
-After the small fixture passes, and **only when the currently running benchmark is
-not competing for the machine**, compare the fixed original's late physical range:
+Bacalhau v1.9.5's WASI result mount (`/out`) on Windows behaves unlike a
+normal file system (observed with `fsprobe`): `stat`/`open` of a missing path
+**creates an empty file**, `O_EXCL` is ignored, `rename` and `remove` are not
+implemented, `mkdir` of the mount root returns ENOSYS. Workers therefore never
+stat inside `/out`, list it instead, write final names directly and write
+`ready` last; hosts accept only `ready == "ready"` plus a hash-verified
+manifest. Job stdout/stderr captured in `RunOutput` drops writes after the
+first, so errors are emitted with a single write. A module that returns from
+`_start` without `proc_exit` is reported with exit code -1.
+
+## Reproduction (Windows PoC machine)
+
+Use a separate worktree and fresh result directories, synthetic fixtures only,
+and never run large tests while the MVP OCR benchmark is running (check for
+`bacalhau.exe`/`VIII.exe` processes and `runner-status.json` first).
+
+Tools used for the recorded results (place on `PATH`): Python 3.15 with
+`psutil 7.1.3` and Pillow; Go 1.27.4; Rust with `wasm32-wasip1`; qpdf 12.4.2
+(msvc64 zip, sha256 verified against the release `.sha256`); pdfcpu CLI
+`go install github.com/pdfcpu/pdfcpu/cmd/pdfcpu@v0.16.4`; pdq CLI
+`cargo install pdq --version 0.5.1 --locked`; Poppler 25.07 (`pdftotext`,
+`pdftoppm`); Wasmtime 51.0.0; wasi-sdk 34 (probe only); the pinned
+`C:\Bacalhau\bin\bacalhau.exe`.
 
 ```powershell
-python experiments/pdf-chunker/bench.py --input .poc-runtime/pdf/fixtures/mixed-30000.pdf --first 29961 --last 30000 --results .poc-runtime/pdf-chunker/large-01
+$R='.poc-runtime/pdf-chunker'
+python scripts/make-pdf-fixture.py $R/fixtures/s12.pdf --pages 12 --ocr-every 4
+python scripts/make-pdf-fixture.py $R/fixtures/s1000.pdf --pages 1000 --ocr-every 10
+python scripts/make-pdf-fixture.py $R/fixtures/s10000.pdf --pages 10000 --ocr-every 10
+# 30k: reuse the MVP fixture read-only after checking its sha256 (eb3ca405...)
+
+# Build the WASI chunkers
+Push-Location experiments/pdf-chunker/pdfcpu-go; go test ./...
+$env:GOOS='wasip1'; $env:GOARCH='wasm'; go build -trimpath -o ../../../$R/pdfcpu-chunker.wasm .
+Remove-Item Env:GOOS,Env:GOARCH; Pop-Location
+Push-Location experiments/pdf-chunker/pdq-wasi; python prepare.py; cargo test --release --locked
+cargo build --release --locked --target wasm32-wasip1; Pop-Location
+Copy-Item experiments/pdf-chunker/pdq-wasi/target/wasm32-wasip1/release/viii-pdq-chunker.wasm $R/pdq-chunker.wasm
+
+# Native matrix, WASI matrix, startup control, concurrency
+python experiments/pdf-chunker/run_matrix.py native --fixture s12=$R/fixtures/s12.pdf s1000=$R/fixtures/s1000.pdf s10000=$R/fixtures/s10000.pdf --out $R/matrix --repeat 3 --validate
+python experiments/pdf-chunker/run_matrix.py wasi --fixture s12=$R/fixtures/s12.pdf s1000=$R/fixtures/s1000.pdf s10000=$R/fixtures/s10000.pdf --module pdq=$R/pdq-chunker.wasm pdfcpu=$R/pdfcpu-chunker.wasm --out $R/matrix --repeat 2
+python experiments/pdf-chunker/run_matrix.py startup --module pdq=$R/pdq-chunker.wasm pdfcpu=$R/pdfcpu-chunker.wasm --out $R/matrix --repeat 3
+python experiments/pdf-chunker/run_matrix.py concurrency --fixture s10000=$R/fixtures/s10000.pdf --module pdq=$R/pdq-chunker.wasm --jobs 1 2 4 --out $R/matrix
+
+# End-to-end provenance gate (unchanged MVP worker and model, hashes checked)
+python experiments/pdf-chunker/e2e_ocr.py --original $R/fixtures/s12.pdf --first 9 --last 12 `
+  --chunker $R/pdq-chunker.wasm --worker <bundle>/runtime/pdf-worker.wasm --model-dir <bundle>/runtime/models `
+  --expect-page 11 --baseline --results $R/runs/e2e-pdq-s12
 ```
 
-### pdfcpu Go/WASI integration proof
-
-The module is isolated from the repo's root `go.mod`. The build command is:
-
-```powershell
-Push-Location experiments/pdf-chunker/pdfcpu-go
-go mod download
-$env:GOOS='wasip1'
-$env:GOARCH='wasm'
-go build -trimpath -o ../pdfcpu-chunker.wasm .
-Remove-Item Env:GOOS,Env:GOARCH
-Pop-Location
-
-powershell -NoProfile -ExecutionPolicy Bypass -File experiments/pdf-chunker/prove-pdfcpu-wasi.ps1 `
-  -PDF .poc-runtime/pdf-chunker/fixtures/small.pdf `
-  -Worker experiments/pdf-chunker/pdfcpu-chunker.wasm `
-  -First 9 -Last 12 `
-  -Results .poc-runtime/pdf-chunker/wasi-small-01
-```
-
-The WASI worker writes `chunk.pdf`, `info.json` and a `ready` marker,
-then waits for host acknowledgement before exit. The runner starts its **own**
-loopback Bacalhau node, disables Docker, copies and verifies the output hash,
-acknowledges and stops only the node it owns.
-
-This runner is an *integration probe*, not a validated gate: Bacalhau's response,
-Go's WASI output semantics and pdfcpu memory characteristics must be observed
-on Windows, and the runner may need adjustments based on real diagnostics.
-Avoid using the proof results as acceptance evidence until this happens.
-
-## Further semantic and scaling gates
-
-1. Original PDF SHA-256 unchanged; derivative SHA recorded and reproducible
-   against a pinned chunker version.
-2. qpdf structural validation succeeds; output has exactly `B-A+1` pages.
-3. Existing `workers/pdf` can render and OCR the derivative. The page-local
-   number `n` maps back to the original physical page `A+n-1`.
-   Verify the scanned target at original page 29,999 with `JABUTICABA`,
-   using the original PDF viewer, not a derivative citation.
-4. Benchmark time, sampled process-tree RSS, output bytes and disk amplification
-   at 12, 1,000, 10,000 and 30,000 pages with controlled corpus generation.
-   Sampled RSS is a lower bound, not peak allocation. Record host/VM memory as well.
-5. Compare work duplicated by four concurrent range jobs; repeated mmap and file
-   cache bytes require a separate machine-wide metric.
-6. Repeat on representative PDFs with shared resources, compressed object streams,
-   incremental updates, encryption and malformed xref. Only synthetic/copyright-safe
-   inputs should go into committed CI fixtures.
-7. Check privacy: no network, no evidence contents in job arguments or log output.
-   Keep the original immutable and reject derivations if its identity changes.
-
-**Decision threshold (proposal):** both full-page correctness and actual Bacalhau
-WASI execution must pass; 1.25 GB input should not require approximately 1.25 GB
-per concurrent worker; the improvement should outweigh preprocessing time and
-disk amplification. Otherwise retain the current implementation and consider
-a native preprocessing backend or a lazy PDF parser. No winner is declared yet.
-
-## Status
-
-- [x] Isolated branch and candidate/harness sources.
-- [ ] Dependency installation and local CLI smoke test.
-- [ ] Native candidate comparison on small synthetic PDF.
-- [ ] `GOOS=wasip1 GOARCH=wasm` build of pdfcpu.
-- [ ] Actual Bacalhau Windows execution and semantic OCR gate.
-- [ ] Controlled large-file and parallelism comparison.
-- [ ] Evidence-backed recommendation and integration decision.
+The 30,000-page commands, and why some could not be completed on the PoC
+machine, are in RESULTS.md.

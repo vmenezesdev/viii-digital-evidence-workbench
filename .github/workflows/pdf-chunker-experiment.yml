@@ -10,31 +10,67 @@ on:
 permissions:
   contents: read
 
+# Level 1 (compiles to Wasm) and level 2 (runs under a WASI Preview 1 runtime,
+# here Wasmtime) only. Level 3 (pinned Bacalhau v1.9.5 on Windows) is a local
+# gate: see experiments/pdf-chunker/README.md and RESULTS.md.
 jobs:
-  harness-and-wasi-build:
+  chunker:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
+    env:
+      WASMTIME_VERSION: v51.0.0
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Independent PDF tools (qpdf, Poppler)
+        run: sudo apt-get update && sudo apt-get install -y qpdf poppler-utils
       - name: Harness unit tests
-        run: python -m unittest discover -s experiments/pdf-chunker -p 'test_*.py' -v
+        run: |
+          python -m pip install psutil==7.1.3
+          python -m unittest discover -s experiments/pdf-chunker -p 'test_*.py' -v
       - uses: actions/setup-go@v5
         with:
           go-version-file: experiments/pdf-chunker/pdfcpu-go/go.mod
           cache: false
-      - name: Compile pdfcpu WASI module
+      - name: pdfcpu worker tests and WASI build
         working-directory: experiments/pdf-chunker/pdfcpu-go
         run: |
-          go mod download
+          go vet ./...
+          go test -count=1 ./...
           GOOS=wasip1 GOARCH=wasm go build -trimpath -o ../pdfcpu-chunker.wasm .
-          test -s ../pdfcpu-chunker.wasm
           sha256sum ../pdfcpu-chunker.wasm
-      - name: Store WASI build artifact (unverified in Bacalhau)
+      - name: pdq worker tests and WASI build
+        working-directory: experiments/pdf-chunker/pdq-wasi
+        run: |
+          rustup target add wasm32-wasip1
+          python prepare.py
+          cargo test --release --locked
+          cargo build --release --locked --target wasm32-wasip1
+          cp target/wasm32-wasip1/release/viii-pdq-chunker.wasm ../pdq-chunker.wasm
+          sha256sum ../pdq-chunker.wasm
+      - name: Install Wasmtime
+        run: |
+          curl -fsSL -o wt.tar.xz "https://github.com/bytecodealliance/wasmtime/releases/download/${WASMTIME_VERSION}/wasmtime-${WASMTIME_VERSION}-x86_64-linux.tar.xz"
+          tar xf wt.tar.xz
+          echo "$PWD/wasmtime-${WASMTIME_VERSION}-x86_64-linux" >> "$GITHUB_PATH"
+      - name: Level 2 smoke - both chunkers under Wasmtime (WASI Preview 1)
+        working-directory: experiments/pdf-chunker
+        run: |
+          python -c "import test_bench as t, pathlib; pathlib.Path('/tmp/in').mkdir(); t.tiny_pdf('/tmp/in/original.pdf', 9)"
+          for c in pdfcpu pdq; do
+            mkdir -p /tmp/$c/out /tmp/$c/ctl && touch /tmp/$c/ctl/accepted
+            wasmtime run --dir /tmp/in::/in --dir /tmp/$c/out::/out --dir /tmp/$c/ctl::/ctl \
+              $c-chunker.wasm /in/original.pdf 4 7 /out /ctl/accepted
+            test "$(cat /tmp/$c/out/ready)" = ready
+            test "$(qpdf --show-npages /tmp/$c/out/chunk.pdf)" = 4
+            qpdf --check /tmp/$c/out/chunk.pdf
+            python validate.py --original /tmp/in/original.pdf --derived /tmp/$c/out/chunk.pdf --first 4 --last 7
+          done
+      - name: Store WASI builds (level 3 unverified in CI)
         uses: actions/upload-artifact@v4
         with:
-          name: pdfcpu-wasi-build-unverified
-          path: experiments/pdf-chunker/pdfcpu-chunker.wasm
+          name: pdf-chunker-wasi-builds
+          path: experiments/pdf-chunker/*-chunker.wasm
           if-no-files-found: error

@@ -150,6 +150,25 @@ class RunnerTests(unittest.TestCase):
             self.assertFalse(runner.verify_chunk_dir(self._chunk_dir(Path(d) / "b", tamper=True), 3, 4)[0])
             self.assertFalse(runner.verify_chunk_dir(self._chunk_dir(Path(d) / "c"), 2, 4)[0])
 
+    def test_chunkset_must_tile_range(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            chunks = []
+            for a, b in ((1, 2), (3, 4)):
+                data = f"%PDF {a}".encode()
+                (root / f"chunk-{a}.pdf").write_bytes(data)
+                chunks.append({"file": f"chunk-{a}.pdf", "physical_first": a, "physical_last": b,
+                               "chunk_page_count": 2, "chunk_sha256": hashlib.sha256(data).hexdigest(),
+                               "chunk_bytes": len(data),
+                               "pages": [{"local": 1, "physical": a}, {"local": 2, "physical": b}]})
+            (root / "ready").write_bytes(b"ready")
+            (root / "manifest.json").write_text(json.dumps({"physical_first": 1, "physical_last": 4, "chunks": chunks}))
+            self.assertTrue(runner.verify_chunkset_dir(root, 1, 4)[0])
+            self.assertFalse(runner.verify_chunkset_dir(root, 1, 5)[0])
+            (root / "manifest.json").write_text(json.dumps({"physical_first": 1, "physical_last": 4,
+                                                             "chunks": chunks[::-1]}))
+            self.assertFalse(runner.verify_chunkset_dir(root, 1, 4)[0])
+
     def test_empty_ready_marker_is_rejected(self):
         # Bacalhau's /out creates an empty file when a guest stats a missing path.
         with tempfile.TemporaryDirectory() as d:

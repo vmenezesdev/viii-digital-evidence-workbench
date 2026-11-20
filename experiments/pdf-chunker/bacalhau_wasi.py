@@ -165,6 +165,33 @@ def verify_chunk_dir(out_dir, expect_first=None, expect_last=None):
     return True, "ok", manifest
 
 
+def verify_chunkset_dir(out_dir, expect_first, expect_last):
+    """Validate a batch (viii.pdf-chunk-set.v1): every chunk hash-verified and the
+    chunks tile [first,last] exactly, in order, without gaps or overlaps."""
+    out_dir = Path(out_dir)
+    if not ready_marker(out_dir):
+        return False, "ready marker missing or empty", None
+    try:
+        manifest = json.loads((out_dir / "manifest.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        return False, f"manifest unreadable: {exc}", None
+    nxt = expect_first
+    for c in manifest.get("chunks", []):
+        path = out_dir / c.get("file", "")
+        if path.parent != out_dir or not path.is_file() or sha256(path) != c.get("chunk_sha256"):
+            return False, f"chunk {c.get('file')} missing or hash mismatch", manifest
+        if c.get("physical_first") != nxt:
+            return False, f"gap or overlap before {c.get('file')}", manifest
+        want = [{"local": i + 1, "physical": p} for i, p in enumerate(range(c["physical_first"], c["physical_last"] + 1))]
+        if c.get("pages") != want or c.get("chunk_page_count") != len(want):
+            return False, f"page map of {c.get('file')} is not exact", manifest
+        nxt = c["physical_last"] + 1
+    if nxt != expect_last + 1 or (manifest.get("physical_first"), manifest.get("physical_last")) != (expect_first, expect_last):
+        return False, "chunks do not cover the requested range", manifest
+    return True, "ok", {k: v for k, v in manifest.items() if k != "chunks"} | {"chunk_count": len(manifest["chunks"]),
+        "chunk_bytes_total": sum(c["chunk_bytes"] for c in manifest["chunks"])}
+
+
 def verify_pages_dir(out_dir, first, last):
     """Validate a workers/pdf output directory: ready plus one JSON per physical page."""
     out_dir = Path(out_dir)
@@ -380,7 +407,9 @@ def run(plan, results, bacalhau, poll=0.1):
                             shutil.rmtree(dest)
                         shutil.copytree(out, dest)
                         first, last = int(rec["args"][1]), int(rec["args"][2])
-                        if plan.get("verify", "chunk") == "pages":
+                        if plan.get("verify", "chunk") == "chunkset":
+                            ok, reason, manifest = verify_chunkset_dir(dest, first, last)
+                        elif plan.get("verify", "chunk") == "pages":
                             ok, reason, manifest = verify_pages_dir(dest, first, last)
                         else:
                             ok, reason, manifest = verify_chunk_dir(dest, first, last)

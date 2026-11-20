@@ -1,0 +1,21 @@
+[package]
+name = "viii-pdq-chunker"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Standalone experiment; not part of the repository's Go module or workers/pdf.
+[workspace]
+
+[dependencies]
+pdq = { version = "=0.5.1", default-features = false }
+sha2 = "0.10"
+serde_json = "1"
+
+# vendor-pdq/ is produced by prepare.py: the crates.io pdq-0.5.1 archive,
+# checksum-verified, plus wasi-read-instead-of-mmap.patch. It is not committed.
+[patch.crates-io]
+pdq = { path = "vendor-pdq" }
+
+[profile.release]
+panic = "abort"

@@ -44,6 +44,9 @@ try:
 except ImportError:  # pragma: no cover - reported in metadata
     psutil = None
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from bench import exact_metrics  # noqa: E402  (Windows: exact peaks from the process handle)
+
 PINNED_VERSION = "v1.9.5"
 PINNED_REVISION = "3a6a73aa6529755ac2c9d96a771f0566ff3ee5da"
 # Bacalhau v1.9.5 models.ExecutionStateType, observed: 9 Completed, 10 Failed (11 Cancelled).
@@ -58,6 +61,17 @@ def sha256(path):
         for block in iter(lambda: stream.read(1 << 20), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def identity(path):
+    """sha256 of a file, or of a directory tree as sorted 'relpath NUL sha256 LF' lines."""
+    path = Path(path)
+    if path.is_file():
+        return sha256(path)
+    digest = hashlib.sha256()
+    for f in sorted(p for p in path.rglob("*") if p.is_file()):
+        digest.update(f"{f.relative_to(path).as_posix()}\0{sha256(f)}\n".encode())
+    return "tree:" + digest.hexdigest()
 
 
 def verify_pin(go_version_m_output):
@@ -151,6 +165,25 @@ def verify_chunk_dir(out_dir, expect_first=None, expect_last=None):
     return True, "ok", manifest
 
 
+def verify_pages_dir(out_dir, first, last):
+    """Validate a workers/pdf output directory: ready plus one JSON per physical page."""
+    out_dir = Path(out_dir)
+    if not ready_marker(out_dir):
+        return False, "ready marker missing or empty", None
+    statuses = {}
+    for number in range(first, last + 1):
+        path = out_dir / f"page-{number:06d}.json"
+        try:
+            page = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return False, f"missing or invalid page-{number:06d}.json", None
+        if page.get("page") != number:
+            return False, f"page-{number:06d}.json reports page {page.get('page')}", None
+        statuses[number] = {"status": page.get("status"), "source": page.get("source"),
+                            "tool": page.get("tool"), "chars": len((page.get("text") or "").strip())}
+    return True, "ok", {"pages": statuses}
+
+
 def dir_bytes(path):
     total = 0
     for root, _, files in os.walk(path):
@@ -178,9 +211,10 @@ class Api:
 class Sampler(threading.Thread):
     """Samples node-tree working set and host memory; sampled, not exact."""
 
-    def __init__(self, pid, path, interval=0.2):
+    def __init__(self, pid, path, interval=0.2, min_available=0, on_low_memory=None):
         super().__init__(daemon=True)
         self.pid, self.path, self.interval = pid, path, interval
+        self.min_available, self.on_low_memory, self.guard_tripped = min_available, on_low_memory, False
         self.stop_event = threading.Event()
         self.peak_tree_rss = 0
         self.min_available = None
@@ -203,6 +237,10 @@ class Sampler(threading.Thread):
                 self.peak_tree_rss = max(self.peak_tree_rss, rss)
                 self.min_available = vm.available if self.min_available is None else min(self.min_available, vm.available)
                 self.samples += 1
+                if self.min_available and vm.available < self.min_available and not self.guard_tripped:
+                    self.guard_tripped = True
+                    if self.on_low_memory:
+                        self.on_low_memory()
                 log.write(json.dumps({"t": round(time.perf_counter() - t0, 3), "tree_rss": rss,
                                       "host_available": vm.available, "cpu_user": cpu.user,
                                       "cpu_system": cpu.system}) + "\n")
@@ -264,7 +302,7 @@ def run(plan, results, bacalhau, poll=0.1):
     if version_m.returncode or not verify_pin(version_m.stdout):
         raise SystemExit("Bacalhau binary does not match the pinned VIII v1.9.5 revision")
     contention = other_bacalhau_processes(bacalhau)
-    before = {t: sha256(p) for t, p in mounts.items()}
+    before = {t: identity(p) for t, p in mounts.items()}
     identities = {"module": {"path": str(module), "sha256": sha256(module), "bytes": module.stat().st_size},
                   "bacalhau": {"path": str(bacalhau), "sha256": sha256(bacalhau),
                                "version": PINNED_VERSION, "revision": PINNED_REVISION}}
@@ -306,7 +344,12 @@ def run(plan, results, bacalhau, poll=0.1):
         summary["node_ready_s"] = round(time.perf_counter() - t_node, 3)
         time.sleep(2)  # let the idle node settle before taking its baseline
         summary["node_baseline"] = process_snapshot(node)
-        sampler = Sampler(node.pid, results / "timeline.jsonl")
+        def abort_for_memory():
+            # Protect the workstation: stop the owned node; peaks become lower bounds.
+            node.kill()
+
+        sampler = Sampler(node.pid, results / "timeline.jsonl",
+                          min_available=plan.get("min_available_mb", 0) * 2**20, on_low_memory=abort_for_memory)
         sampler.start()
         t0 = time.perf_counter()
         for j in jobs:
@@ -317,7 +360,7 @@ def run(plan, results, bacalhau, poll=0.1):
             records[j["id"]].update(job_id=submitted["JobID"], submitted_s=round(time.perf_counter() - t0, 3))
         deadline = time.time() + plan.get("timeout_s", 900) + 30
         pending = set(records)
-        while pending and time.time() < deadline:
+        while pending and time.time() < deadline and node.poll() is None:
             for jid in sorted(pending):
                 rec = records[jid]
                 desc = api.call("GET", f"/jobs/{rec['job_id']}?include=executions")
@@ -337,7 +380,10 @@ def run(plan, results, bacalhau, poll=0.1):
                             shutil.rmtree(dest)
                         shutil.copytree(out, dest)
                         first, last = int(rec["args"][1]), int(rec["args"][2])
-                        ok, reason, manifest = verify_chunk_dir(dest, first, last)
+                        if plan.get("verify", "chunk") == "pages":
+                            ok, reason, manifest = verify_pages_dir(dest, first, last)
+                        else:
+                            ok, reason, manifest = verify_chunk_dir(dest, first, last)
                         rec.update(verified=ok, verify_reason=reason, manifest=manifest)
                         if ok:  # acknowledge only verified, copied artifacts
                             ack = control / f"{jid}.ack"
@@ -364,9 +410,9 @@ def run(plan, results, bacalhau, poll=0.1):
                     pending.discard(jid)
             time.sleep(poll)
         for jid in pending:
-            records[jid]["state"] = "runner-timeout"
+            records[jid]["state"] = "node-killed-by-memory-guard" if node.poll() is not None else "runner-timeout"
         summary["wall_s"] = round(time.perf_counter() - t0, 3)
-        summary["node_final"] = process_snapshot(node)
+        summary["node_final"] = process_snapshot(node) if node.poll() is None else None
     finally:
         if sampler:
             sampler.stop_event.set()
@@ -374,6 +420,7 @@ def run(plan, results, bacalhau, poll=0.1):
             summary["sampled_peak_tree_rss"] = sampler.peak_tree_rss
             summary["sampled_min_host_available"] = sampler.min_available
             summary["samples"] = sampler.samples
+            summary["killed_by_memory_guard"] = sampler.guard_tripped
         for rec in records.values():
             if rec.get("job_id") and rec.get("state") not in TERMINAL:
                 try:
@@ -387,18 +434,29 @@ def run(plan, results, bacalhau, poll=0.1):
             except subprocess.TimeoutExpired:
                 node.kill()
                 node.wait()
-    after = {t: sha256(p) for t, p in mounts.items()}
+        if node and os.name == "nt":
+            # Lifetime peaks of the node process, readable after exit through the handle.
+            summary["node_exact_lifetime"] = exact_metrics(node)
+    after = {t: identity(p) for t, p in mounts.items()}
     summary.update(jobs=list(records.values()), mounts_sha256_before=before, mounts_sha256_after=after,
                    mounts_unchanged=before == after, node_data_bytes=dir_bytes(results / "node"),
                    artifact_bytes=dir_bytes(artifacts), finished_utc=dt.datetime.now(dt.timezone.utc).isoformat())
     if summary.get("node_baseline") and summary.get("node_final"):
         b, f = summary["node_baseline"], summary["node_final"]
-        if "peak_wset" in f:
-            summary["node_peak_wset_minus_baseline_rss"] = f["peak_wset"] - b["rss"]
         if "read_bytes" in f and "read_bytes" in b:
             summary["node_read_bytes_during_jobs"] = f["read_bytes"] - b["read_bytes"]
             summary["node_write_bytes_during_jobs"] = f["write_bytes"] - b["write_bytes"]
         summary["node_cpu_s_during_jobs"] = round((f["cpu_user_s"] + f["cpu_system_s"]) - (b["cpu_user_s"] + b["cpu_system_s"]), 3)
+    life = summary.get("node_exact_lifetime") or {}
+    if summary.get("node_baseline") and "peak_working_set_bytes" in life:
+        b = summary["node_baseline"]
+        summary["node_peak_wset_bytes"] = life["peak_working_set_bytes"]
+        summary["node_peak_private_bytes"] = life.get("peak_private_bytes")
+        summary["node_baseline_rss_bytes"] = b["rss"]
+        summary["node_baseline_private_bytes"] = b.get("private")
+        summary["node_peak_wset_minus_baseline_rss"] = life["peak_working_set_bytes"] - b["rss"]
+        if b.get("private") is not None and life.get("peak_private_bytes") is not None:
+            summary["node_peak_private_minus_baseline"] = life["peak_private_bytes"] - b["private"]
     jobs_ok = all(r.get("state") == "Completed" and r.get("exit_code") == 0 and not r.get("leaks")
                   and (r.get("compute_state") or {}).get("StateType") == EXECUTION_COMPLETED
                   and (r.get("acknowledged") or not plan.get("ready_protocol")) for r in records.values())
@@ -417,7 +475,8 @@ def main():
         p.error("results directory already exists; use a fresh directory")
     plan = json.loads(args.plan.read_text(encoding="utf-8"))
     summary = run(plan, args.results.resolve(), args.bacalhau.resolve(strict=True))
-    brief = {k: summary.get(k) for k in ("passed", "wall_s", "mounts_unchanged", "node_peak_wset_minus_baseline_rss",
+    brief = {k: summary.get(k) for k in ("passed", "wall_s", "mounts_unchanged", "killed_by_memory_guard",
+                                         "node_peak_wset_minus_baseline_rss", "node_peak_private_minus_baseline",
                                          "node_read_bytes_during_jobs", "node_cpu_s_during_jobs")}
     brief["jobs"] = [{k: r.get(k) for k in ("id", "state", "exit_code", "ready_s", "terminal_s", "verified",
                                            "verify_reason", "leaks")} for r in summary["jobs"]]

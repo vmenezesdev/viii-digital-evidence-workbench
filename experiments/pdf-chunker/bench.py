@@ -122,11 +122,12 @@ def kill_tree(proc):
     proc.kill()
 
 
-def run_one(name, cmd, output, timeout, logdir, tag=None):
+def run_one(name, cmd, output, timeout, logdir, tag=None, min_available=0):
+    """min_available: kill the tree if host available RAM drops below it (bytes)."""
     tag = tag or name
     stdout = logdir / f"{tag}.stdout.log"
     stderr = logdir / f"{tag}.stderr.log"
-    state = {"peak": 0, "samples": 0, "timed_out": False}
+    state = {"peak": 0, "samples": 0, "timed_out": False, "memory_guard": False, "min_host_available": None}
     started = time.perf_counter()
     with stdout.open("wb") as so, stderr.open("wb") as se:
         proc = subprocess.Popen(cmd, stdout=so, stderr=se)
@@ -140,6 +141,12 @@ def run_one(name, cmd, output, timeout, logdir, tag=None):
                         rss = sum(p.memory_info().rss for p in [root] + root.children(recursive=True))
                         state["peak"] = max(state["peak"], rss)
                         state["samples"] += 1
+                        avail = psutil.virtual_memory().available
+                        low = state["min_host_available"]
+                        state["min_host_available"] = avail if low is None else min(low, avail)
+                        if min_available and avail < min_available and not state["memory_guard"]:
+                            state["memory_guard"] = True
+                            kill_tree(proc)
                     except psutil.Error:
                         pass
                 if time.perf_counter() - started > timeout and not state["timed_out"]:
@@ -154,7 +161,9 @@ def run_one(name, cmd, output, timeout, logdir, tag=None):
         watcher.join()
     return {
         "candidate": name, "command": [str(c) for c in cmd], "returncode": code,
-        "timed_out": state["timed_out"], "elapsed_seconds": round(elapsed, 3),
+        "timed_out": state["timed_out"], "killed_by_memory_guard": state["memory_guard"],
+        "min_host_available_bytes": state["min_host_available"],
+        "elapsed_seconds": round(elapsed, 3),
         "exact": exact,
         "sampled_peak_process_tree_rss_bytes": state["peak"] if state["samples"] else None,
         "memory_samples": state["samples"],
@@ -185,6 +194,8 @@ def main(argv=None):
     p.add_argument("--timeout", type=int, default=600)
     p.add_argument("--repeat", type=int, default=1, help="runs per candidate (round-robin order)")
     p.add_argument("--validate", action="store_true", help="per-page text/raster comparison with Poppler")
+    p.add_argument("--min-available-mb", type=int, default=0,
+                   help="abort a run when host available RAM falls below this (protects the workstation)")
     args = p.parse_args(argv)
 
     original = args.input.resolve(strict=True)
@@ -217,7 +228,7 @@ def main(argv=None):
                 continue
             try:
                 record = run_one(name, commands(name, binaries[name], original, args.first, args.last, output),
-                                 output, args.timeout, logdir, tag)
+                                 output, args.timeout, logdir, tag, args.min_available_mb * 2**20)
                 record.update(repeat=rep, status="failed")
                 if record["returncode"] == 0 and not record["timed_out"] and output.is_file():
                     check = capture([binaries["qpdf"], "--check", str(output)])
@@ -237,7 +248,9 @@ def main(argv=None):
                     else:
                         record["reason"] = "output failed qpdf check or expected page count"
                 else:
-                    record["reason"] = "process failed, timed out or omitted output"
+                    record["reason"] = ("aborted by host memory guard; exact peak is a lower bound"
+                                        if record["killed_by_memory_guard"] else
+                                        "process failed, timed out or omitted output")
             except (OSError, ValueError, subprocess.SubprocessError, RuntimeError) as exc:
                 record = {"candidate": name, "repeat": rep, "status": "failed", "reason": str(exc)}
             records.append(record)

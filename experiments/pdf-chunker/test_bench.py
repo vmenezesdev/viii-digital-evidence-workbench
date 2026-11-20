@@ -24,6 +24,7 @@ def load(name, file):
 chunkbench = load("chunkbench", "bench.py")
 runner = load("bacalhau_wasi", "bacalhau_wasi.py")
 validate = load("validate", "validate.py")
+e2e = load("e2e_ocr", "e2e_ocr.py")
 
 
 def tiny_pdf(path, n):
@@ -154,6 +155,36 @@ class RunnerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             self.assertFalse(runner.verify_chunk_dir(self._chunk_dir(Path(d) / "a", ready=b""), 3, 4)[0])
             self.assertFalse(runner.ready_marker(self._chunk_dir(Path(d) / "b", ready=None)))
+
+
+class ProvenanceTests(unittest.TestCase):
+    MANIFEST = {"pages": [{"local": 1, "physical": 29998}, {"local": 2, "physical": 29999},
+                          {"local": 3, "physical": 30000}]}
+
+    def test_citation_points_to_physical_page_of_original(self):
+        pages = {1: {"page": 1, "text": "a", "source": "digital"},
+                 2: {"page": 2, "text": "x JABUTICABA y", "source": "ocr"},
+                 3: {"page": 3, "text": "", "source": "ocr"}}
+        mapped = e2e.map_results(self.MANIFEST, pages)
+        self.assertEqual(e2e.search(mapped, "jabuticaba"),
+                         [{"physical_page": 29999, "chunk_local_page": 2, "source": "ocr"}])
+
+    def test_rejects_results_outside_chunk_or_mislabelled(self):
+        with self.assertRaises(ValueError):
+            e2e.map_results(self.MANIFEST, {4: {"page": 4}})
+        with self.assertRaises(ValueError):
+            e2e.map_results(self.MANIFEST, {2: {"page": 3}})
+        with self.assertRaises(ValueError):
+            e2e.map_results({"pages": [{"local": 2, "physical": 5}]}, {})
+
+    def test_directory_identity_detects_changes(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "m").mkdir()
+            (Path(d) / "m" / "por.traineddata").write_bytes(b"x")
+            before = runner.identity(Path(d) / "m")
+            self.assertTrue(before.startswith("tree:"))
+            (Path(d) / "m" / "por.traineddata").write_bytes(b"y")
+            self.assertNotEqual(before, runner.identity(Path(d) / "m"))
 
 
 @unittest.skipUnless(shutil.which("pdftotext") and shutil.which("pdftoppm"), "Poppler not installed")

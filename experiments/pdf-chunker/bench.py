@@ -104,6 +104,10 @@ if os.name == "nt":
         code = proc.wait()
         return code, exact_metrics(proc)
 else:
+    def exact_metrics(proc):
+        """POSIX: per-process peaks come from wait4 in wait_exact; nothing to read afterwards."""
+        return {"source": "unavailable-after-exit"}
+
     def wait_exact(proc):
         _, status, usage = os.wait4(proc.pid, 0)
         proc.returncode = os.waitstatus_to_exitcode(status)

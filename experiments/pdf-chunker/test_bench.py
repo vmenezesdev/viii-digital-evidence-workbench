@@ -63,6 +63,10 @@ class BenchmarkTests(unittest.TestCase):
             self.assertEqual(chunkbench.sha256(p),
                              "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")
 
+    def test_exact_metrics_defined_on_every_platform(self):
+        # Regression: it was Windows-only and broke `import bacalhau_wasi` on Linux CI.
+        self.assertTrue(callable(chunkbench.exact_metrics))
+
     def test_cli_syntax_matches_verified_tools(self):
         self.assertEqual(chunkbench.commands("pdq", "pdq", "in.pdf", 3, 5, "o.pdf"),
                          ["pdq", "split", "in.pdf", "--out", "3-5", "o.pdf"])

@@ -144,8 +144,12 @@ def run(fixtures, results, wasm, bacalhau):
             out = results / f"{case}-{cand}.pdf"
             rec = bench.run_one(cand, bench.commands(cand, binary, pdf, first, last, out), out, 120, results,
                                 f"{case}-{cand}")
-            rows.append(judge(case, cand, "native", rec["returncode"] == 0 and out.is_file(), out, pdf, oracle_ok,
-                              q, validate, rec["returncode"]))
+            ok_codes = (0, 3) if cand == "qpdf" else (0,)  # qpdf: 3 = succeeded with warnings
+            row = judge(case, cand, "native", rec["returncode"] in ok_codes and out.is_file(), out, pdf, oracle_ok,
+                        q, validate, rec["returncode"])
+            stderr = Path(rec["stderr_log"]).read_text(encoding="utf-8", errors="replace")
+            row["reported_damage_or_warning"] = bool(re.search(r"warn|damag|repair|reconstruct", stderr, re.I))
+            rows.append(row)
         for cand, module in wasm.items():
             import bacalhau_wasi as runner
             plan = {"module": str(module), "mounts": {"/original.pdf": str(pdf)}, "ready_protocol": True,
@@ -163,8 +167,8 @@ def run(fixtures, results, wasm, bacalhau):
         assert bench.sha256(pdf) == before, f"{case} input mutated"
     (results / "adversarial.json").write_text(json.dumps(rows, indent=1), encoding="utf-8")
     for r in rows:
-        print(json.dumps({k: r[k] for k in ("case", "candidate", "mode", "outcome", "pages", "content_equal",
-                                            "exit_code", "output_kb")}))
+        print(json.dumps({k: r.get(k) for k in ("case", "candidate", "mode", "outcome", "pages", "content_equal",
+                                                "exit_code", "output_kb", "reported_damage_or_warning")}))
 
 
 def judge(case, cand, mode, produced, out, pdf, oracle_ok, q, validate, code):

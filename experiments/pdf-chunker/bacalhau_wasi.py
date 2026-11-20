@@ -316,6 +316,18 @@ def other_bacalhau_processes(own_exe):
 
 
 def run(plan, results, bacalhau, poll=0.1):
+    """Run the plan; a summary.json is written even if the run raises."""
+    try:
+        return _run(plan, results, bacalhau, poll)
+    except Exception as exc:
+        partial = {"schema": SCHEMA, "passed": False, "runner_error": repr(exc)[:500], "plan": plan,
+                   "results": str(results), "jobs": []}
+        if results.is_dir() and not (results / "summary.json").exists():
+            (results / "summary.json").write_text(json.dumps(partial, indent=2), encoding="utf-8")
+        raise
+
+
+def _run(plan, results, bacalhau, poll=0.1):
     started_utc = dt.datetime.now(dt.timezone.utc).isoformat()
     module = Path(plan["module"]).resolve(strict=True)
     mounts = {t: Path(s).resolve(strict=True) for t, s in plan.get("mounts", {}).items()}
@@ -392,7 +404,12 @@ def run(plan, results, bacalhau, poll=0.1):
         while pending and time.time() < deadline and node.poll() is None:
             for jid in sorted(pending):
                 rec = records[jid]
-                desc = api.call("GET", f"/jobs/{rec['job_id']}?include=executions")
+                try:
+                    desc = api.call("GET", f"/jobs/{rec['job_id']}?include=executions")
+                except (urllib.error.URLError, OSError, ValueError):
+                    if node.poll() is not None:  # node killed (memory guard) or crashed
+                        break
+                    raise
                 items = (desc.get("Executions") or {}).get("Items") or []
                 # Bacalhau retries failed executions; keep the whole attempt history.
                 rec["executions"] = [{"id": x.get("ID"), "compute_state": x.get("ComputeState"),

@@ -127,9 +127,39 @@ def concurrency(a):
     return rows
 
 
+def ocr_concurrency(a):
+    """k simultaneous workers/pdf OCR jobs on one node: each on its own chunk from a
+    batch run (--chunks DIR) versus each on the original (current MVP behaviour)."""
+    rows = []
+    worker, model = Path(a.worker).resolve(strict=True), Path(a.model_dir).resolve(strict=True)
+    chunks_dir = Path(a.chunks).resolve(strict=True)
+    manifest = json.loads((chunks_dir / "manifest.json").read_text(encoding="utf-8"))
+    chunks = manifest["chunks"][::-1]  # latest chunks first: they contain the late scanned pages
+    for name, pdf in pairs(a.fixture).items():
+        for k in a.jobs:
+            for mode in ("chunk", "original"):
+                jobs = []
+                for i, c in enumerate(chunks[:k]):
+                    if mode == "chunk":
+                        args = [f"/chunks/{c['file']}", "1", str(c["chunk_page_count"])]
+                    else:
+                        args = ["/original.pdf", str(c["physical_first"]), str(c["physical_last"])]
+                    jobs.append({"id": f"j{i}", "args": args + ["/out", f"/control/j{i}.ack", "ocr", "/model"]})
+                mounts = {"/model": str(model)}
+                mounts.update({"/chunks": str(chunks_dir)} if mode == "chunk" else {"/original.pdf": str(pdf)})
+                res = a.out / f"ocrconc-{mode}-{name}-k{k}"
+                plan = {"module": str(worker), "mounts": mounts, "ready_protocol": True, "verify": "pages",
+                        "memory": a.memory, "timeout_s": a.timeout, "min_available_mb": a.min_available_mb,
+                        "leak_markers": ["JABUTICABA", "Documento", "prova documental"], "jobs": jobs}
+                print("RUN", res.name, flush=True)
+                s = runner.run(plan, res.resolve(), a.bacalhau.resolve(strict=True))
+                rows.append({"mode": mode, "fixture": name, "jobs": k, "results": str(res), "passed": s["passed"]})
+    return rows
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("mode", choices=["native", "wasi", "startup", "concurrency"])
+    p.add_argument("mode", choices=["native", "wasi", "startup", "concurrency", "ocr-concurrency"])
     p.add_argument("--fixture", nargs="*", default=[])
     p.add_argument("--module", nargs="*", default=[])
     p.add_argument("--out", required=True, type=Path)
@@ -139,10 +169,14 @@ def main():
     p.add_argument("--timeout", type=int, default=1800)
     p.add_argument("--min-available-mb", type=int, default=600)
     p.add_argument("--validate", action="store_true")
+    p.add_argument("--worker", help="workers/pdf pdf-worker.wasm (ocr-concurrency)")
+    p.add_argument("--model-dir", help="OCR model directory (ocr-concurrency)")
+    p.add_argument("--chunks", help="artifacts dir of a batch chunk run (ocr-concurrency)")
     p.add_argument("--bacalhau", type=Path, default=Path(r"C:\Bacalhau\bin\bacalhau.exe"))
     a = p.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
-    rows = {"native": native, "wasi": wasi, "startup": startup, "concurrency": concurrency}[a.mode](a)
+    rows = {"native": native, "wasi": wasi, "startup": startup, "concurrency": concurrency,
+            "ocr-concurrency": ocr_concurrency}[a.mode](a)
     index = a.out / f"index-{a.mode}.jsonl"
     with index.open("a", encoding="utf-8") as f:
         for r in rows:

@@ -108,7 +108,7 @@ def startup_rows(matrix):
 
 def concurrency_rows(matrix):
     rows = []
-    for d in sorted(matrix.glob("conc-*")):
+    for d in sorted(list(matrix.glob("conc-*")) + list(matrix.glob("ocrconc-*")) + list(matrix.glob("batch-*"))):
         s = load(d / "summary.json")
         if not s:
             rows.append({"run": d.name, "passed": False, "state": "no summary"})
@@ -116,6 +116,7 @@ def concurrency_rows(matrix):
         jobs = s["jobs"]
         rows.append({"run": d.name, "jobs": len(jobs), "passed": s["passed"], "wall_s": s.get("wall_s"),
                      "ready_s": [j.get("ready_s") for j in jobs], "states": [j.get("state") for j in jobs],
+                     "verified": [j.get("verified") for j in jobs], "leaks": sorted({x for j in jobs for x in (j.get("leaks") or [])}),
                      "exit_codes": [j.get("exit_code") for j in jobs],
                      "node_peak_wset_minus_baseline_mb": mb(s.get("node_peak_wset_minus_baseline_rss")),
                      "node_peak_private_minus_baseline_mb": mb(s.get("node_peak_private_minus_baseline")),

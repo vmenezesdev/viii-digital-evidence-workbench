@@ -241,7 +241,9 @@ class Sampler(threading.Thread):
     def __init__(self, pid, path, interval=0.2, min_available=0, on_low_memory=None):
         super().__init__(daemon=True)
         self.pid, self.path, self.interval = pid, path, interval
-        self.min_available, self.on_low_memory, self.guard_tripped = min_available, on_low_memory, False
+        # guard_threshold (bytes) and min_available (observed) must stay distinct:
+        # an earlier version reused one attribute and the guard could never trip.
+        self.guard_threshold, self.on_low_memory, self.guard_tripped = min_available, on_low_memory, False
         self.stop_event = threading.Event()
         self.peak_tree_rss = 0
         self.min_available = None
@@ -264,7 +266,7 @@ class Sampler(threading.Thread):
                 self.peak_tree_rss = max(self.peak_tree_rss, rss)
                 self.min_available = vm.available if self.min_available is None else min(self.min_available, vm.available)
                 self.samples += 1
-                if self.min_available and vm.available < self.min_available and not self.guard_tripped:
+                if self.guard_threshold and vm.available < self.guard_threshold and not self.guard_tripped:
                     self.guard_tripped = True
                     if self.on_low_memory:
                         self.on_low_memory()

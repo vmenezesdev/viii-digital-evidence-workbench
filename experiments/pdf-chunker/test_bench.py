@@ -127,6 +127,22 @@ class RunnerTests(unittest.TestCase):
         self.assertTrue(all(not i["Source"]["Params"]["ReadWrite"] for i in task["InputSources"]))
         self.assertEqual(task["Engine"]["Type"], "wasm")
 
+    @unittest.skipUnless(runner.psutil, "psutil required")
+    def test_memory_guard_trips(self):
+        tripped = []
+        with tempfile.TemporaryDirectory() as d:
+            huge = runner.psutil.virtual_memory().total * 4  # always above available RAM
+            sampler = runner.Sampler(os.getpid(), Path(d) / "t.jsonl", interval=0.01, min_available=huge,
+                                     on_low_memory=lambda: tripped.append(True))
+            sampler.start()
+            deadline = time.time() + 5
+            while not tripped and time.time() < deadline:
+                time.sleep(0.01)
+            sampler.stop_event.set()
+            sampler.join(2)
+        self.assertTrue(sampler.guard_tripped)
+        self.assertEqual(tripped, [True])
+
     def test_leak_scan(self):
         self.assertEqual(runner.find_leaks("x JABUTICABA y", ["JABUTICABA", "ARARA"]), ["JABUTICABA"])
         self.assertEqual(runner.find_leaks(None, ["JABUTICABA"]), [])

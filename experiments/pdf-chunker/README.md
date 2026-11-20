@@ -3,6 +3,7 @@
 **Branch base:** `mvp/pdf-digestor`, original head `17a23728c677a131aedb1ec4a34b61baa7545702`.
 Isolated from PR #12; it must not modify the MVP runtime or its OCR experiment data.
 **Results, decision and limitations: [RESULTS.md](RESULTS.md).**
+**Follow-up, on-demand I/O alternatives (flpdf, otf-pdf): [ALTERNATIVES.md](ALTERNATIVES.md).**
 
 ## Question
 

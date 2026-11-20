@@ -64,6 +64,8 @@ def commands(name, binary, original, first, last, output):
         "pdq": [binary, "split", str(original), "--out", rng, str(output)],
         # --deterministic-id: otherwise the trailer /ID is random and chunk hashes differ per run.
         "qpdf": [binary, "--deterministic-id", "--empty", "--pages", str(original), rng, "--", str(output)],
+        # ALTERNATIVES.md: flpdf-wasi built natively, simple contract.
+        "flpdf": [binary, str(original), str(first), str(last), str(output)],
     }[name]
 
 

@@ -129,6 +129,8 @@ def run(fixtures, results, wasm, bacalhau):
     results.mkdir(parents=True, exist_ok=False)
     q = qpdf()
     bins = {n: shutil.which(n) for n in ("pdfcpu", "pdq", "qpdf")}
+    if os.environ.get("FLPDF_CHUNKER"):  # ALTERNATIVES.md
+        bins["flpdf"] = os.environ["FLPDF_CHUNKER"]
     rows = []
     first, last = RANGE
     for pdf in sorted(fixtures.glob("*.pdf")):
@@ -162,6 +164,9 @@ def run(fixtures, results, wasm, bacalhau):
             row = judge(case, cand, "wasi-bacalhau", produced and j.get("exit_code") == 0, out, pdf, oracle_ok, q,
                         validate, j.get("exit_code"))
             row["wasi_state"] = j.get("state")
+            manifest = out.parent / "manifest.json"
+            if manifest.is_file():
+                row["manifest_diagnostics"] = json.loads(manifest.read_text(encoding="utf-8")).get("diagnostics")
             row["verify_reason"] = j.get("verify_reason")
             rows.append(row)
         assert bench.sha256(pdf) == before, f"{case} input mutated"

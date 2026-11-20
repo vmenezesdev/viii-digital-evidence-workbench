@@ -1,0 +1,16 @@
+[package]
+name = "viii-flpdf-chunker"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Standalone experiment (ALTERNATIVES.md); not part of workers/pdf.
+[workspace]
+
+[dependencies]
+flpdf = { version = "=0.10.0", default-features = false }
+sha2 = "0.10"
+serde_json = "1"
+
+[profile.release]
+panic = "abort"

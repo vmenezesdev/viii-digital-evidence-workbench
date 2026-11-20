@@ -1,0 +1,2 @@
+# Applied with git apply against LF crate sources.
+*.patch text eol=lf

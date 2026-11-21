@@ -4,6 +4,7 @@
 Isolated from PR #12; it must not modify the MVP runtime or its OCR experiment data.
 **Results, decision and limitations: [RESULTS.md](RESULTS.md).**
 **Follow-up, on-demand I/O alternatives (flpdf, otf-pdf): [ALTERNATIVES.md](ALTERNATIVES.md).**
+**Follow-up, batch chunking pdq vs flpdf and adaptive selection: [BATCH-RESULTS.md](BATCH-RESULTS.md).**
 
 ## Question
 
@@ -36,6 +37,7 @@ Only level 3 counts as compatibility. CI covers levels 1-2; level 3 is local.
 | `validate.py` | Per-page text and raster comparison of a derivative against the original (Poppler). |
 | `e2e_ocr.py` | Chunk -> OCR on the derivative -> physical-page citation; optional baseline on the original. |
 | `run_matrix.py` | Reproduces the size x range, startup-control and concurrency matrices. |
+| `batch_bench.py`, `batch_validate.py`, `batch_adversarial.py`, `batch_summarize.py`, `selection_model.py` | Batch comparison (BATCH-RESULTS.md): guarded runs, oracle validation, adversarial cases, cost model and policy replay. |
 | `results/` | Committed structured results (summaries only, no PDFs). |
 
 ## Worker contract (both chunkers)

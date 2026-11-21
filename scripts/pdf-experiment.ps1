@@ -5,6 +5,8 @@ param(
     [string]$PDF='.poc-runtime/pdf/fixtures/mixed-30000.pdf',
     [ValidateSet('wasi','docker')][string]$Engine='wasi',
     [ValidateRange(1,65535)][int]$Port=49181,
+    # Simultaneous page jobs on chunks (VIII --pdf-jobs); 0 keeps the product default.
+    [ValidateRange(0,16)][int]$Jobs=0,
     [string]$Output,
     [ValidateRange(1,1000)][int]$Tail=10
 )
@@ -73,8 +75,8 @@ try{
     if(!$config){
         if($Action -notin 'start','resume'){throw 'Use resume -Package <existing bundle> once to adopt an existing benchmark'}
         $state=Read-JSON "$Results/state.json"
-        if($state){$PDF=$state.pdf;$Port=$state.port;$Engine=$state.engine}
-        $config=@{package=(Resolve-Path $Package).Path;pdf=(Resolve-Path $PDF).Path;engine=$Engine;port=$Port}
+        if($state){$PDF=$state.pdf;$Port=$state.port;$Engine=$state.engine;if($state.jobs){$Jobs=[int]$state.jobs}}
+        $config=@{package=(Resolve-Path $Package).Path;pdf=(Resolve-Path $PDF).Path;engine=$Engine;port=$Port;jobs=$Jobs}
         if(!(Test-Path "$($config.package)/VIII.exe")){throw 'Packaged VIII.exe is missing'}
         Write-JSON "$Results/experiment.json" $config
     }
@@ -129,6 +131,19 @@ try{
         Write-JSON "$Results/runner-status.json" @{state='pausing';at=[DateTime]::UtcNow.ToString('o')}
         $snapshot=Snapshot
         if($snapshot.progress){Write-JSON "$Results/progress.json" $snapshot.progress}
+        # The product cancels the preparation and every page job and keeps
+        # reconciling them; wait until none is active before closing it.
+        if(Owned-Process "$Results/app-owned.json" "$($config.package)/VIII.exe"){
+            $base="http://127.0.0.1:$([int]$config.port)"
+            Invoke-RestMethod "$base/api/pdf/pause" -Method Post -TimeoutSec 10|Out-Null
+            $deadline=[DateTime]::UtcNow.AddSeconds(60)
+            do{
+                Start-Sleep -Milliseconds 500
+                $live=Invoke-RestMethod "$base/api/pdf/status" -TimeoutSec 10
+                Write-JSON "$Results/pause-status.json" $live
+            }until(([int]$live.active_jobs -eq 0 -and !$live.document.prepare) -or [DateTime]::UtcNow -gt $deadline)
+            if([int]$live.active_jobs -ne 0 -or $live.document.prepare){throw 'Cancellation pending; run pause again, do not resume'}
+        }
         Stop-Owned "$Results/app-owned.json" "$($config.package)/VIII.exe"
         $doc=Read-JSON "$Results/data/pdf-document.json"
         if($doc.attempt){
@@ -202,7 +217,7 @@ try{
         $pause=Read-JSON "$Results/experiment-pause.json"
         if($pause -and $pause.completed -and !$pause.accounted_at){$pause.accounted_at=[DateTime]::UtcNow.ToString('o');Write-JSON "$Results/experiment-pause.json" $pause}
     }
-    & "$PSScriptRoot/benchmark-pdf.ps1" -Engine $config.engine -PDF $config.pdf -Package $config.package -Results $Results -Port $config.port -Resume:$resume -ContinuePaused:$continuePaused > "$Results/runner-$PID.stdout.log" 2> "$Results/runner-$PID.stderr.log"
+    & "$PSScriptRoot/benchmark-pdf.ps1" -Engine $config.engine -PDF $config.pdf -Package $config.package -Results $Results -Port $config.port -Jobs ([int]$config.jobs) -Resume:$resume -ContinuePaused:$continuePaused > "$Results/runner-$PID.stdout.log" 2> "$Results/runner-$PID.stderr.log"
     if(!(Test-Path "$Results/summary.json")){throw 'Collector ended without a successful summary'}
     Close-Runtime
     Write-JSON "$Results/runner-status.json" @{state='completed';at=[DateTime]::UtcNow.ToString('o')}

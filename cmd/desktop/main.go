@@ -25,6 +25,7 @@ func main() {
 	bundle := flag.String("pdf-bundle", "", "installed PDF runtime directory")
 	listen := flag.String("http", "", "loopback HTTP listener for validation")
 	inference := flag.String("inference", "http://127.0.0.1:48081", "local llama-server endpoint")
+	pdfJobs := flag.Int("pdf-jobs", defaultPDFJobs, "maximum simultaneous PDF page jobs on chunks")
 	flag.Parse()
 	dir, err := os.UserConfigDir()
 	if err != nil {
@@ -49,7 +50,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	s.pdf = &pdfService{s: s, runtime: &pdfRuntime{Root: s.root, Bundle: *bundle, Inference: *inference}}
+	s.pdf = &pdfService{s: s, runtime: &pdfRuntime{Root: s.root, Bundle: *bundle, Inference: *inference}, Jobs: *pdfJobs}
 	if *policy != "" {
 		data, err := os.ReadFile(*policy)
 		if err != nil {

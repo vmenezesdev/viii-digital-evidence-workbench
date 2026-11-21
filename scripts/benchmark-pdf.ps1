@@ -4,6 +4,8 @@ param(
     [string]$Package='bin/pdf-mvp',
     [string]$Results='.poc-runtime/pdf/benchmark-wasi-30000',
     [int]$Port=49181,
+    # Simultaneous page jobs on chunks (VIII --pdf-jobs); 0 keeps the product default.
+    [int]$Jobs=0,
     [switch]$Resume,
     [switch]$ContinuePaused
 )
@@ -34,7 +36,7 @@ function Owned-Process($Owner,$Path) {
 if ($Resume) {
     $Results=(Resolve-Path $Results).Path
     $state=Get-Content -Raw "$Results/state.json" | ConvertFrom-Json
-    if ($state.engine -ne $Engine -or $state.port -ne $Port) {throw 'Resume arguments differ from saved benchmark'}
+    if ($state.engine -ne $Engine -or $state.port -ne $Port -or [int]$state.jobs -ne $Jobs) {throw 'Resume arguments differ from saved benchmark'}
     if ($state.pdf -ne $PDF) {
         if ((Get-FileHash $PDF).Hash.ToLowerInvariant() -ne $state.sha256 -or (Get-Item $PDF).Length -ne $state.manifest.bytes) {throw 'Relocated fixture identity mismatch'}
         Event 'source-relocated' @{previous=$state.pdf;current=$PDF;sha256=$state.sha256}
@@ -49,7 +51,7 @@ if ($Resume) {
     $hash=(Get-FileHash $PDF).Hash.ToLowerInvariant()
     if($hash -ne $manifest.sha256 -or (Get-Item $PDF).Length -ne $manifest.bytes){throw 'Fixture identity mismatch'}
     New-Item -ItemType Directory "$Results/data" | Out-Null
-    $state=[pscustomobject]@{engine=$Engine;pdf=$PDF;port=$Port;started=[DateTime]::UtcNow.ToString('o');sha256=$hash;manifest=$manifest;import_started=$null;first_search_ms=$null;ocr_started=$null;peak_windows_working_set=0L;peak_windows_private_bytes=0L;peak_temporary_bytes=0L}
+    $state=[pscustomobject]@{engine=$Engine;pdf=$PDF;port=$Port;jobs=$Jobs;first_chunk_ms=$null;chunks_ready_ms=$null;peak_active_jobs=0;started=[DateTime]::UtcNow.ToString('o');sha256=$hash;manifest=$manifest;import_started=$null;first_search_ms=$null;ocr_started=$null;peak_windows_working_set=0L;peak_windows_private_bytes=0L;peak_temporary_bytes=0L}
     Write-JSON "$Results/state.json" $state
     Write-JSON "$Results/machine.json" @{os=Get-CimInstance Win32_OperatingSystem|Select-Object Caption,Version,TotalVisibleMemorySize;cpu=Get-CimInstance Win32_Processor|Select-Object Name,NumberOfCores,NumberOfLogicalProcessors;disk=Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'"|Select-Object Size,FreeSpace;package_sha256=(Get-FileHash $exe).Hash}
 }
@@ -60,7 +62,9 @@ if(Test-Path "$Results/app-owned.json") {$app=Owned-Process (Get-Content -Raw "$
 if(!$app){
     $listener=[Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback,$Port);$listener.ExclusiveAddressUse=$true;try{$listener.Start()}finally{$listener.Stop()}
     $suffix=[DateTime]::UtcNow.ToString('yyyyMMddHHmmss')
-    $app=Start-Process $exe -ArgumentList "--data-dir `"$data`" --http 127.0.0.1:$Port" -WindowStyle Hidden -PassThru -RedirectStandardOutput "$Results/app-$suffix.stdout.log" -RedirectStandardError "$Results/app-$suffix.stderr.log"
+    $arguments="--data-dir `"$data`" --http 127.0.0.1:$Port"
+    if($Jobs -gt 0){$arguments+=" --pdf-jobs $Jobs"}
+    $app=Start-Process $exe -ArgumentList $arguments -WindowStyle Hidden -PassThru -RedirectStandardOutput "$Results/app-$suffix.stdout.log" -RedirectStandardError "$Results/app-$suffix.stderr.log"
     Write-JSON "$Results/app-owned.json" @{pid=$app.Id;started=$app.StartTime.ToUniversalTime().ToString('o')}
     Event 'app-start' @{pid=$app.Id;resume=[bool]$Resume}
 }
@@ -114,6 +118,10 @@ while($true){
             Event 'first-useful-search' @{elapsed_ms=$elapsed;from_import_ms=$fromImport;query_ms=$queryMs;pending=$status.pending;hits=@($hits|Select-Object page,url)}
         }
         if(!$state.ocr_started -and $status.document.phase -eq 'ocr'){$state.ocr_started=[DateTime]::UtcNow.ToString('o')}
+        if($null -eq $state.first_chunk_ms -and [int]$status.chunks -gt 0){$state.first_chunk_ms=$elapsed;Event 'first-chunk' @{elapsed_ms=$elapsed;chunks=$status.chunks}}
+        if($null -eq $state.chunks_ready_ms -and $status.document.chunking -eq 'ready'){$state.chunks_ready_ms=$elapsed;Event 'chunks-ready' @{elapsed_ms=$elapsed;chunks=$status.chunks;chunked_pages=$status.chunked_pages}}
+        if($status.document.chunking -eq 'unavailable'){Event 'chunking-unavailable' @{diagnostic=$status.document.chunk_diagnostic}}
+        $state.peak_active_jobs=[Math]::Max([int]$state.peak_active_jobs,[int]$status.active_jobs)
         $processes=@($app)
         if(Test-Path "$data/runtime/owned.json"){$owner=Get-Content -Raw "$data/runtime/owned.json"|ConvertFrom-Json;$node=Owned-Process $owner (Join-Path $Package 'runtime/bacalhau.exe');if($node){$processes+=$node}}
         [long]$working=0;[long]$private=0;$metrics=@()
@@ -125,7 +133,7 @@ while($true){
         if(([DateTime]::UtcNow-$lastDisk).TotalSeconds -ge 30){
             $temporary=(Tree-Bytes "$data/control")+(Tree-Bytes "$data/artifacts")+(Tree-Bytes "$data/runtime")
             $state.peak_temporary_bytes=[Math]::Max([long]$state.peak_temporary_bytes,$temporary)
-            Event 'disk' @{windows_temporary_bytes=$temporary;accepted_pages_bytes=Tree-Bytes "$data/$($state.sha256)";original_bytes=Tree-Bytes "$data/originals";drive_free_bytes=(Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace}
+            Event 'disk' @{windows_temporary_bytes=$temporary;chunk_store_bytes=Tree-Bytes "$data/chunks";accepted_pages_bytes=Tree-Bytes "$data/$($state.sha256)";original_bytes=Tree-Bytes "$data/originals";drive_free_bytes=(Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace}
             if($Engine -eq 'docker'){
                 $stats=& docker stats --no-stream --format '{{json .}}' 2>&1
                 Event 'docker-stats' @{exit=$LASTEXITCODE;lines=@($stats|ForEach-Object{"$_"})}
@@ -157,5 +165,6 @@ if((Get-FileHash $PDF).Hash.ToLowerInvariant() -ne $state.sha256 -or (Get-FileHa
 $ocrWallSeconds=([DateTime]::UtcNow-([DateTime]$state.ocr_started).ToUniversalTime()).TotalSeconds
 $ocrSeconds=$ocrWallSeconds-[double]$state.ocr_user_pause_ms/1000
 if($ocrSeconds -le 0){throw 'Invalid OCR duration after subtracting recorded user pause'}
-Write-JSON "$Results/summary.json" @{passed=$true;engine=$Engine;pages=$status.document.pages;bytes=$state.manifest.bytes;sha256=$state.sha256;ocr_pages=$status.ocr_processed;ocr_ratio=$state.manifest.ocr_ratio;first_useful_search_ms=$state.first_search_ms;elapsed_ms=$elapsed;user_pause_ms=[double]$state.user_pause_ms;active_elapsed_ms=$elapsed-[double]$state.user_pause_ms;ocr_phase_wall_seconds=$ocrWallSeconds;ocr_phase_seconds=$ocrSeconds;ocr_pages_per_second=$status.ocr_processed/$ocrSeconds;peak_windows_working_set_sum=$state.peak_windows_working_set;peak_windows_private_sum=$state.peak_windows_private_bytes;peak_windows_temporary_bytes=$state.peak_temporary_bytes;final_status=$status;target_hits=$finalHits;sampling='RAM 5s, disk/docker 30s. Sampled peaks are lower bounds; Windows processes exclude Docker VM. Docker stats and volume samples retained separately in events.jsonl. Active times exclude only explicitly recorded user pauses.'}
+$chunkBytes=Tree-Bytes "$data/chunks"
+Write-JSON "$Results/summary.json" @{passed=$true;engine=$Engine;jobs=$Jobs;peak_active_jobs=$state.peak_active_jobs;chunking=$status.document.chunking;chunks=$status.chunks;first_chunk_ms=$state.first_chunk_ms;chunks_ready_ms=$state.chunks_ready_ms;chunk_store_bytes=$chunkBytes;pages=$status.document.pages;bytes=$state.manifest.bytes;sha256=$state.sha256;ocr_pages=$status.ocr_processed;ocr_ratio=$state.manifest.ocr_ratio;first_useful_search_ms=$state.first_search_ms;elapsed_ms=$elapsed;user_pause_ms=[double]$state.user_pause_ms;active_elapsed_ms=$elapsed-[double]$state.user_pause_ms;ocr_phase_wall_seconds=$ocrWallSeconds;ocr_phase_seconds=$ocrSeconds;ocr_pages_per_second=$status.ocr_processed/$ocrSeconds;peak_windows_working_set_sum=$state.peak_windows_working_set;peak_windows_private_sum=$state.peak_windows_private_bytes;peak_windows_temporary_bytes=$state.peak_temporary_bytes;final_status=$status;target_hits=$finalHits;sampling='RAM 5s, disk/docker 30s. Sampled peaks are lower bounds; Windows processes exclude Docker VM. Docker stats and volume samples retained separately in events.jsonl. Active times exclude only explicitly recorded user pauses.'}
 Get-Content "$Results/summary.json"

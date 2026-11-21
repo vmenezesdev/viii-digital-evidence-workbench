@@ -1,0 +1,17 @@
+[package]
+name = "viii-otfpdf-chunker"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+# Standalone experiment (ALTERNATIVES.md); not part of workers/pdf.
+[workspace]
+
+[dependencies]
+otf-pdf-doc = "=0.2.0"
+otf-pdf-syntax = "=0.2.0"
+sha2 = "0.10"
+serde_json = "1"
+
+[profile.release]
+panic = "abort"

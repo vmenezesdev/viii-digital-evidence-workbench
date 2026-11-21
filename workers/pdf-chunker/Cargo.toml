@@ -1,0 +1,17 @@
+[package]
+name = "viii-pdf-chunker"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# VIII PDF chunker (ADR-0003). Built for wasm32-wasip1 with
+# RUSTFLAGS="-C link-arg=--initial-memory=134217728" (128 MiB, 30,000 pages).
+[workspace]
+
+[dependencies]
+flpdf = { version = "=0.10.0", default-features = false }
+sha2 = "0.10"
+serde_json = "1"
+
+[profile.release]
+panic = "abort"

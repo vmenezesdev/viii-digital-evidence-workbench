@@ -1,0 +1,262 @@
+[
+ {
+  "run": "batch-pdq-s10000-all40-r1",
+  "jobs": 1,
+  "passed": true,
+  "wall_s": 14.979,
+  "ready_s": [
+   8.274
+  ],
+  "states": [
+   "Completed"
+  ],
+  "verified": [
+   true
+  ],
+  "leaks": [],
+  "exit_codes": [
+   0
+  ],
+  "node_peak_wset_minus_baseline_mb": 927.8,
+  "node_peak_private_minus_baseline_mb": 927.0,
+  "node_cpu_s": 8.469,
+  "min_host_available_mb": 1155.2,
+  "killed_by_memory_guard": false
+ },
+ {
+  "run": "batch-pdq-s30000-all40-r1",
+  "jobs": 1,
+  "passed": true,
+  "wall_s": 57.715,
+  "ready_s": [
+   26.238
+  ],
+  "states": [
+   "Completed"
+  ],
+  "verified": [
+   true
+  ],
+  "leaks": [],
+  "exit_codes": [
+   0
+  ],
+  "node_peak_wset_minus_baseline_mb": 2737.0,
+  "node_peak_private_minus_baseline_mb": 2739.3,
+  "node_cpu_s": 27.297,
+  "min_host_available_mb": 2055.6,
+  "killed_by_memory_guard": false
+ },
+ {
+  "run": "ocrconc-chunk-s10000-k1",
+  "jobs": 1,
+  "passed": true,
+  "wall_s": 142.664,
+  "ready_s": [
+   141.822
+  ],
+  "states": [
+   "Completed"
+  ],
+  "verified": [
+   true
+  ],
+  "leaks": [],
+  "exit_codes": [
+   0
+  ],
+  "node_peak_wset_minus_baseline_mb": 306.6,
+  "node_peak_private_minus_baseline_mb": 303.0,
+  "node_cpu_s": 141.734,
+  "min_host_available_mb": 4236.3,
+  "killed_by_memory_guard": false
+ },
+ {
+  "run": "ocrconc-chunk-s10000-k2",
+  "jobs": 2,
+  "passed": true,
+  "wall_s": 135.624,
+  "ready_s": [
+   135.186,
+   107.353
+  ],
+  "states": [
+   "Completed",
+   "Completed"
+  ],
+  "verified": [
+   true,
+   true
+  ],
+  "leaks": [],
+  "exit_codes": [
+   0,
+   0
+  ],
+  "node_peak_wset_minus_baseline_mb": 521.8,
+  "node_peak_private_minus_baseline_mb": 518.2,
+  "node_cpu_s": 242.453,
+  "min_host_available_mb": 3839.7,
+  "killed_by_memory_guard": false
+ },
+ {
+  "run": "ocrconc-chunk-s10000-k4",
+  "jobs": 4,
+  "passed": true,
+  "wall_s": 133.04,
+  "ready_s": [
+   132.717,
+   106.38,
+   107.161,
+   106.568
+  ],
+  "states": [
+   "Completed",
+   "Completed",
+   "Completed",
+   "Completed"
+  ],
+  "verified": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "leaks": [],
+  "exit_codes": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "node_peak_wset_minus_baseline_mb": 1042.0,
+  "node_peak_private_minus_baseline_mb": 1039.5,
+  "node_cpu_s": 452.625,
+  "min_host_available_mb": 3474.7,
+  "killed_by_memory_guard": false
+ },
+ {
+  "run": "ocrconc-chunk-s10000-k4-r2",
+  "jobs": 4,
+  "passed": true,
+  "wall_s": 133.776,
+  "ready_s": [
+   133.325,
+   105.642,
+   106.098,
+   105.789
+  ],
+  "states": [
+   "Completed",
+   "Completed",
+   "Completed",
+   "Completed"
+  ],
+  "verified": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "leaks": [],
+  "exit_codes": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "node_peak_wset_minus_baseline_mb": 1018.1,
+  "node_peak_private_minus_baseline_mb": 1015.1,
+  "node_cpu_s": 450.516,
+  "min_host_available_mb": 3530.6,
+  "killed_by_memory_guard": false
+ },
+ {
+  "run": "ocrconc-original-s10000-k1",
+  "jobs": 1,
+  "passed": true,
+  "wall_s": 144.673,
+  "ready_s": [
+   143.752
+  ],
+  "states": [
+   "Completed"
+  ],
+  "verified": [
+   true
+  ],
+  "leaks": [],
+  "exit_codes": [
+   0
+  ],
+  "node_peak_wset_minus_baseline_mb": 1094.0,
+  "node_peak_private_minus_baseline_mb": 1092.0,
+  "node_cpu_s": 143.359,
+  "min_host_available_mb": 3154.9,
+  "killed_by_memory_guard": false
+ },
+ {
+  "run": "ocrconc-original-s10000-k2",
+  "jobs": 2,
+  "passed": true,
+  "wall_s": 133.586,
+  "ready_s": [
+   133.208,
+   106.227
+  ],
+  "states": [
+   "Completed",
+   "Completed"
+  ],
+  "verified": [
+   true,
+   true
+  ],
+  "leaks": [],
+  "exit_codes": [
+   0,
+   0
+  ],
+  "node_peak_wset_minus_baseline_mb": 2152.6,
+  "node_peak_private_minus_baseline_mb": 2152.5,
+  "node_cpu_s": 238.578,
+  "min_host_available_mb": 2261.7,
+  "killed_by_memory_guard": false
+ },
+ {
+  "run": "ocrconc-original-s10000-k4",
+  "jobs": 4,
+  "passed": true,
+  "wall_s": 132.446,
+  "ready_s": [
+   131.962,
+   105.64,
+   105.809,
+   104.983
+  ],
+  "states": [
+   "Completed",
+   "Completed",
+   "Completed",
+   "Completed"
+  ],
+  "verified": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "leaks": [],
+  "exit_codes": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "node_peak_wset_minus_baseline_mb": 4075.9,
+  "node_peak_private_minus_baseline_mb": 4077.8,
+  "node_cpu_s": 447.266,
+  "min_host_available_mb": 842.1,
+  "killed_by_memory_guard": false
+ }
+]

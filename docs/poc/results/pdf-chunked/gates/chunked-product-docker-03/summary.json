@@ -1,0 +1,12 @@
+{
+    "mode":  "docker",
+    "searchable":  11,
+    "first_useful_search_ms":  11612.166500000001,
+    "passed":  true,
+    "switched":  false,
+    "sha256":  "504a6a9fa2b76f3c826a50c767c9c0abf7bc498a7537d2760f909b8f73f55dfe",
+    "elapsed_ms":  31256.705,
+    "restarted":  false,
+    "failed":  1,
+    "physical_page":  11
+}

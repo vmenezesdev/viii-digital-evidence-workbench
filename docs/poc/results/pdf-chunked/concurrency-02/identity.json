@@ -1,0 +1,71 @@
+{
+    "chunks":  [
+                   {
+                       "last":  29720,
+                       "sha256":  "2c42fc9a78af9e5bb1a4c3e360861d7ed0498a87022d8a339bdf6bef3c92fe2e",
+                       "name":  "chunk-029681-029720",
+                       "file":  "<workspace>\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29681-30000\\chunk-029681-029720.pdf",
+                       "first":  29681
+                   },
+                   {
+                       "last":  29760,
+                       "sha256":  "feeece0caf1b55fbef922cd3941ff9714f71000238c05457d8defcab664e6a5f",
+                       "name":  "chunk-029721-029760",
+                       "file":  "<workspace>\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29681-30000\\chunk-029721-029760.pdf",
+                       "first":  29721
+                   },
+                   {
+                       "last":  29800,
+                       "sha256":  "aba5446763d086ed6d4767964508428182d5f6b8ff699644083879a35c7d65b1",
+                       "name":  "chunk-029761-029800",
+                       "file":  "<workspace>\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29681-30000\\chunk-029761-029800.pdf",
+                       "first":  29761
+                   },
+                   {
+                       "last":  29840,
+                       "sha256":  "068ad8996e564874a39619adff216c47d1bcaa37ccd51bf1ee689207f47abaee",
+                       "name":  "chunk-029801-029840",
+                       "file":  "<workspace>\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29681-30000\\chunk-029801-029840.pdf",
+                       "first":  29801
+                   },
+                   {
+                       "last":  29880,
+                       "sha256":  "c27f79d7f8dbea8885d3db0f70d32416464764fa215090bdfa49c0dc6e562367",
+                       "name":  "chunk-029841-029880",
+                       "file":  "<workspace>\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29681-30000\\chunk-029841-029880.pdf",
+                       "first":  29841
+                   },
+                   {
+                       "last":  29920,
+                       "sha256":  "7a8d3e7da7fa6c3c437ccaf290a77770ff9827b4b0e7c2d2dc3ad8ebfb8e49a4",
+                       "name":  "chunk-029881-029920",
+                       "file":  "<workspace>\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29681-30000\\chunk-029881-029920.pdf",
+                       "first":  29881
+                   },
+                   {
+                       "last":  29960,
+                       "sha256":  "4a4800c5c96003eb5b4465ada8b4922af44c8c596129f872250f3771e627df06",
+                       "name":  "chunk-029921-029960",
+                       "file":  "<workspace>\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29681-30000\\chunk-029921-029960.pdf",
+                       "first":  29921
+                   },
+                   {
+                       "last":  30000,
+                       "sha256":  "29f0418ead75682d14aa86588fbdbf5424c362cca3ddabd380c7d2b8e8f87a48",
+                       "name":  "chunk-029961-030000",
+                       "file":  "<workspace>\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29681-30000\\chunk-029961-030000.pdf",
+                       "first":  29961
+                   }
+               ],
+    "machine":  {
+                    "logical_cpus":  12,
+                    "physical_cores":  8,
+                    "build":  "10.0.26300.0",
+                    "os":  "Microsoft Windows 11 Home Single Language",
+                    "ram_bytes":  16890322944
+                },
+    "worker_sha256":  "ed7b4f04aaeaf9280f83b44e8036dca2677f29953e5fd43f9c4da17ae0bba680",
+    "model_sha256":  "c4932b937207a9514b7514d518b931a99938c02a28a5a5a553f8599ed58b7deb",
+    "bacalhau_sha256":  "6ee846f8352246be157bb6e502185277438c22781201f3635a50354dd0228964",
+    "job_memory":  "1gb"
+}

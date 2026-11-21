@@ -1,0 +1,2 @@
+# Applied with git apply against LF crate sources; blank context lines are a single space.
+*.patch text eol=lf -whitespace

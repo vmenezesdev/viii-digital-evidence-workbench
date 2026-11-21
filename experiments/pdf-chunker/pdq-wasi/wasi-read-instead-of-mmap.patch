@@ -1,0 +1,57 @@
+--- a/src/load.rs
++++ b/src/load.rs
+@@ -1,7 +1,8 @@
+ use std::{fs::File, path::Path};
+ 
+ use lopdf::{Document, FilterFunc, LoadOptions};
+-use memmap2::{Mmap, MmapOptions};
++#[cfg(not(target_os = "wasi"))]
++use memmap2::{Mmap, MmapOptions};
+ 
+ use crate::{
+     filter::normalize_filter_names_for_lopdf_load, range::PageRangeError, PdfOpsError, Result,
+@@ -97,9 +98,44 @@
+     Ok(())
+ }
+ 
++#[cfg(not(target_os = "wasi"))]
+ pub(crate) fn map_file(path: &Path) -> Result<Mmap> {
+     let file = File::open(path)?;
+     // The mmap is read-only. Concurrent truncation of the input can still
+     // SIGBUS the process, which is the standard memmap tradeoff.
+     Ok(unsafe { MmapOptions::new().map(&file)? })
+ }
++
++/// VIII experiment: WASI Preview 1 has no mmap (memmap2 returns
++/// `Unsupported`), so the whole file is read into linear memory. Parsing stays
++/// lazy, but resident memory is at least the input size. Reads use 64 KiB
++/// requests: one huge read made Wasmtime on Windows fail with ENOMEM (the
++/// same failure workers/pdf avoids with bounded reads).
++#[cfg(target_os = "wasi")]
++pub(crate) fn map_file(path: &Path) -> Result<Vec<u8>> {
++    use std::io::Read;
++    let mut file = File::open(path)?;
++    let expected = file.metadata()?.len() as usize;
++    let mut bytes = Vec::new();
++    bytes
++        .try_reserve_exact(expected)
++        .map_err(|e| std::io::Error::new(std::io::ErrorKind::OutOfMemory, e))?;
++    let mut block = vec![0u8; 64 * 1024];
++    loop {
++        let n = match file.read(&mut block) {
++            Err(e) if e.kind() == std::io::ErrorKind::Interrupted => continue,
++            r => r?,
++        };
++        if n == 0 {
++            break;
++        }
++        if bytes.len() + n > expected {
++            return Err(std::io::Error::other("input grew while reading").into());
++        }
++        bytes.extend_from_slice(&block[..n]);
++    }
++    if bytes.len() != expected {
++        return Err(std::io::Error::new(std::io::ErrorKind::UnexpectedEof, "short read").into());
++    }
++    Ok(bytes)
++}

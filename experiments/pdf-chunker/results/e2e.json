@@ -1,0 +1,584 @@
+[
+ {
+  "run": "e2e-pdq-s12-03",
+  "passed": true,
+  "original_sha256": "04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869",
+  "original_unchanged": true,
+  "range": [
+   9,
+   12
+  ],
+  "derivative": {
+   "role": "operational derivative, not evidence",
+   "path": "<workspace>/viii-pdf-chunker\\.poc-runtime\\pdf-chunker\\runs\\e2e-pdq-s12-03\\chunk\\artifacts\\chunk\\chunk.pdf",
+   "sha256": "aaa1e4c5d28b0509487d078db821dd2bf570ed2c3e1e9f41d88e1dd24514fbec",
+   "bytes": 828318,
+   "pages": 4,
+   "physical_first": 9,
+   "physical_last": 12,
+   "source_sha256_declared": "04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869",
+   "chunker_tool": "pdq",
+   "chunker_tool_version": "0.5.1+viii-wasi-read-patch",
+   "chunker_module_sha256": "31b06bff99703f0086fbc3b411db7eda92df39f4a97674ec22ac49453e4087c1"
+  },
+  "citations": [
+   {
+    "physical_page": 11,
+    "chunk_local_page": 3,
+    "source": "ocr"
+   }
+  ],
+  "baseline_comparison": {
+   "pages": 4,
+   "identical_text_and_source": 4,
+   "differs": [],
+   "baseline_citations": [
+    {
+     "physical_page": 11,
+     "source": "ocr"
+    }
+   ]
+  },
+  "steps": {
+   "chunk": {
+    "passed": true,
+    "wall_s": 0.863,
+    "node_peak_wset_minus_baseline_rss": 41013248,
+    "node_peak_private_minus_baseline": 38658048,
+    "killed_by_memory_guard": false,
+    "job_id": "j-933491c1-75bf-48af-b961-89cc7305c7d4",
+    "execution_id": "e-57b1dd8a-31c6-4b57-8f69-46e7ddc43070",
+    "executions": [
+     {
+      "id": "e-57b1dd8a-31c6-4b57-8f69-46e7ddc43070",
+      "compute_state": {
+       "StateType": 9,
+       "Message": "Running"
+      },
+      "exit_code": 0
+     }
+    ]
+   },
+   "ocr_chunk": {
+    "passed": true,
+    "wall_s": 50.526,
+    "node_peak_wset_minus_baseline_rss": 272539648,
+    "node_peak_private_minus_baseline": 268980224,
+    "killed_by_memory_guard": false,
+    "job_id": "j-476bec03-15db-4df2-bd05-dfc7e1ee408a",
+    "execution_id": "e-001ac2d4-e0eb-48bc-a281-6153f6985a88",
+    "executions": [
+     {
+      "id": "e-001ac2d4-e0eb-48bc-a281-6153f6985a88",
+      "compute_state": {
+       "StateType": 9,
+       "Message": "Running"
+      },
+      "exit_code": 0
+     }
+    ]
+   },
+   "ocr_original_baseline": {
+    "passed": true,
+    "wall_s": 48.912,
+    "node_peak_wset_minus_baseline_rss": 271695872,
+    "node_peak_private_minus_baseline": 268242944,
+    "killed_by_memory_guard": false,
+    "job_id": null,
+    "execution_id": null,
+    "executions": null
+   }
+  },
+  "pages": [
+   {
+    "physical": 9,
+    "local": 1,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2847
+   },
+   {
+    "physical": 10,
+    "local": 2,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2848
+   },
+   {
+    "physical": 11,
+    "local": 3,
+    "status": "complete",
+    "source": "ocr",
+    "tool": "tesseract",
+    "version": "5.5.0",
+    "chars": 2458
+   },
+   {
+    "physical": 12,
+    "local": 4,
+    "status": "complete",
+    "source": "ocr",
+    "tool": "tesseract",
+    "version": "5.5.0",
+    "chars": 2408
+   }
+  ]
+ },
+ {
+  "run": "e2e-pdq-s30000-01",
+  "passed": true,
+  "original_sha256": "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+  "original_unchanged": true,
+  "range": [
+   29961,
+   30000
+  ],
+  "derivative": {
+   "role": "operational derivative, not evidence",
+   "path": "<workspace>/viii-pdf-chunker\\.poc-runtime\\pdf-chunker\\runs\\e2e-pdq-s30000-01\\chunk\\artifacts\\chunk\\chunk.pdf",
+   "sha256": "5ade5f8b7962d20301239763c9d1bfd4e25b3eeae755395ae6c1ba37b79708b2",
+   "bytes": 2083254,
+   "pages": 40,
+   "physical_first": 29961,
+   "physical_last": 30000,
+   "source_sha256_declared": "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+   "chunker_tool": "pdq",
+   "chunker_tool_version": "0.5.1+viii-wasi-read-patch",
+   "chunker_module_sha256": "9316f81b8a85670e61fa0667bac51616887d069ef9ab17ff16c669bb8224f5ba"
+  },
+  "citations": [
+   {
+    "physical_page": 29999,
+    "chunk_local_page": 39,
+    "source": "ocr"
+   }
+  ],
+  "baseline_comparison": {
+   "pages": 40,
+   "identical_text_and_source": 40,
+   "differs": [],
+   "baseline_citations": [
+    {
+     "physical_page": 29999,
+     "source": "ocr"
+    }
+   ]
+  },
+  "steps": {
+   "chunk": {
+    "passed": true,
+    "wall_s": 4.601,
+    "node_peak_wset_minus_baseline_rss": 2851414016,
+    "node_peak_private_minus_baseline": 2854055936,
+    "killed_by_memory_guard": false,
+    "job_id": "j-1c9e91c0-71d6-4f35-90f2-3dfdcc730eb4",
+    "execution_id": "e-9625ca30-654c-4dfc-aa16-bdc06d45271f",
+    "executions": [
+     {
+      "id": "e-9625ca30-654c-4dfc-aa16-bdc06d45271f",
+      "compute_state": {
+       "StateType": 9,
+       "Message": "Running"
+      },
+      "exit_code": 0
+     }
+    ]
+   },
+   "ocr_chunk": {
+    "passed": true,
+    "wall_s": 129.495,
+    "node_peak_wset_minus_baseline_rss": 283136000,
+    "node_peak_private_minus_baseline": 279330816,
+    "killed_by_memory_guard": false,
+    "job_id": "j-5bd86685-eb38-4725-b8e1-ffbdc1262c33",
+    "execution_id": "e-2d5e7547-0917-4f3d-9298-5659b960f8ff",
+    "executions": [
+     {
+      "id": "e-2d5e7547-0917-4f3d-9298-5659b960f8ff",
+      "compute_state": {
+       "StateType": 9,
+       "Message": "Running"
+      },
+      "exit_code": 0
+     }
+    ]
+   },
+   "ocr_original_baseline": {
+    "passed": true,
+    "wall_s": 141.965,
+    "node_peak_wset_minus_baseline_rss": 3030069248,
+    "node_peak_private_minus_baseline": 3031629824,
+    "killed_by_memory_guard": false,
+    "job_id": null,
+    "execution_id": null,
+    "executions": null
+   }
+  },
+  "pages": [
+   {
+    "physical": 29961,
+    "local": 1,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29962,
+    "local": 2,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29963,
+    "local": 3,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29964,
+    "local": 4,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29965,
+    "local": 5,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29966,
+    "local": 6,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29967,
+    "local": 7,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29968,
+    "local": 8,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29969,
+    "local": 9,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29970,
+    "local": 10,
+    "status": "complete",
+    "source": "ocr",
+    "tool": "tesseract",
+    "version": "5.5.0",
+    "chars": 2411
+   },
+   {
+    "physical": 29971,
+    "local": 11,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29972,
+    "local": 12,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29973,
+    "local": 13,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29974,
+    "local": 14,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29975,
+    "local": 15,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29976,
+    "local": 16,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29977,
+    "local": 17,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29978,
+    "local": 18,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29979,
+    "local": 19,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29980,
+    "local": 20,
+    "status": "complete",
+    "source": "ocr",
+    "tool": "tesseract",
+    "version": "5.5.0",
+    "chars": 2411
+   },
+   {
+    "physical": 29981,
+    "local": 21,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29982,
+    "local": 22,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29983,
+    "local": 23,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29984,
+    "local": 24,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29985,
+    "local": 25,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29986,
+    "local": 26,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29987,
+    "local": 27,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29988,
+    "local": 28,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29989,
+    "local": 29,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29990,
+    "local": 30,
+    "status": "complete",
+    "source": "ocr",
+    "tool": "tesseract",
+    "version": "5.5.0",
+    "chars": 2411
+   },
+   {
+    "physical": 29991,
+    "local": 31,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29992,
+    "local": 32,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29993,
+    "local": 33,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29994,
+    "local": 34,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29995,
+    "local": 35,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29996,
+    "local": 36,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29997,
+    "local": 37,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29998,
+    "local": 38,
+    "status": "complete",
+    "source": "digital",
+    "tool": "hayro",
+    "version": "0.7.1",
+    "chars": 2851
+   },
+   {
+    "physical": 29999,
+    "local": 39,
+    "status": "complete",
+    "source": "ocr",
+    "tool": "tesseract",
+    "version": "5.5.0",
+    "chars": 2461
+   },
+   {
+    "physical": 30000,
+    "local": 40,
+    "status": "complete",
+    "source": "ocr",
+    "tool": "tesseract",
+    "version": "5.5.0",
+    "chars": 2411
+   }
+  ]
+ }
+]

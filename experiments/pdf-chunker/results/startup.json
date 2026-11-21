@@ -1,0 +1,62 @@
+[
+ {
+  "candidate": "pdfcpu",
+  "run": "startup-pdfcpu-r1",
+  "exit_code": 1,
+  "terminal_s": 10.1,
+  "module_mb": 22.1,
+  "node_peak_wset_minus_baseline_mb": 538.1,
+  "node_peak_private_minus_baseline_mb": 536.6,
+  "node_cpu_s": 10.219
+ },
+ {
+  "candidate": "pdfcpu",
+  "run": "startup-pdfcpu-r2",
+  "exit_code": 1,
+  "terminal_s": 10.664,
+  "module_mb": 22.1,
+  "node_peak_wset_minus_baseline_mb": 538.5,
+  "node_peak_private_minus_baseline_mb": 537.9,
+  "node_cpu_s": 10.656
+ },
+ {
+  "candidate": "pdfcpu",
+  "run": "startup-pdfcpu-r3",
+  "exit_code": 1,
+  "terminal_s": 11.408,
+  "module_mb": 22.1,
+  "node_peak_wset_minus_baseline_mb": 522.7,
+  "node_peak_private_minus_baseline_mb": 521.8,
+  "node_cpu_s": 11.562
+ },
+ {
+  "candidate": "pdq",
+  "run": "startup-pdq-r1",
+  "exit_code": 1,
+  "terminal_s": 0.607,
+  "module_mb": 1.4,
+  "node_peak_wset_minus_baseline_mb": 28.7,
+  "node_peak_private_minus_baseline_mb": 27.2,
+  "node_cpu_s": 0.578
+ },
+ {
+  "candidate": "pdq",
+  "run": "startup-pdq-r2",
+  "exit_code": 1,
+  "terminal_s": 0.675,
+  "module_mb": 1.4,
+  "node_peak_wset_minus_baseline_mb": 28.9,
+  "node_peak_private_minus_baseline_mb": 26.7,
+  "node_cpu_s": 0.672
+ },
+ {
+  "candidate": "pdq",
+  "run": "startup-pdq-r3",
+  "exit_code": 1,
+  "terminal_s": 0.757,
+  "module_mb": 1.4,
+  "node_peak_wset_minus_baseline_mb": 28.8,
+  "node_peak_private_minus_baseline_mb": 27.6,
+  "node_cpu_s": 0.516
+ }
+]

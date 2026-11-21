@@ -62,12 +62,18 @@ type attemptRecord struct {
 	Executions      []executionRecord     `json:"executions,omitempty"`
 	Orchestrator    string                `json:"orchestrator,omitempty"`
 	StagingDir      string                `json:"staging_dir,omitempty"`
-	CancelRequested *time.Time            `json:"cancel_requested,omitempty"`
-	Diagnostic      string                `json:"diagnostic,omitempty"`
-	Error           string                `json:"error,omitempty"`
-	Result          *ufdr.Result          `json:"result,omitempty"`
-	ResultSHA256    string                `json:"result_sha256,omitempty"`
-	OriginalXML     string                `json:"original_xml,omitempty"`
+	// PDF chunk jobs: the operational derivative mounted instead of the original
+	// and its physical page range; local page n maps to ChunkFirst+n-1.
+	ChunkFile       string       `json:"chunk_file,omitempty"`
+	ChunkSHA256     string       `json:"chunk_sha256,omitempty"`
+	ChunkFirst      int          `json:"chunk_first,omitempty"`
+	ChunkLast       int          `json:"chunk_last,omitempty"`
+	CancelRequested *time.Time   `json:"cancel_requested,omitempty"`
+	Diagnostic      string       `json:"diagnostic,omitempty"`
+	Error           string       `json:"error,omitempty"`
+	Result          *ufdr.Result `json:"result,omitempty"`
+	ResultSHA256    string       `json:"result_sha256,omitempty"`
+	OriginalXML     string       `json:"original_xml,omitempty"`
 }
 
 type executionRecord struct {

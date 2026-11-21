@@ -1,8 +1,0 @@
-ok  	github.com/vmenezesdev/viii-digital-evidence-workbench/cmd/desktop	2.128s
-?   	github.com/vmenezesdev/viii-digital-evidence-workbench/cmd/latency	[no test files]
-?   	github.com/vmenezesdev/viii-digital-evidence-workbench/cmd/stage	[no test files]
-?   	github.com/vmenezesdev/viii-digital-evidence-workbench/cmd/synthetic-ufdr	[no test files]
-?   	github.com/vmenezesdev/viii-digital-evidence-workbench/cmd/worker	[no test files]
-?   	github.com/vmenezesdev/viii-digital-evidence-workbench/internal/spikework	[no test files]
-ok  	github.com/vmenezesdev/viii-digital-evidence-workbench/internal/ufdr	0.568s
-?   	github.com/vmenezesdev/viii-digital-evidence-workbench/internal/wasijob	[no test files]

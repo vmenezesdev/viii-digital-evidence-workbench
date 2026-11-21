@@ -9,13 +9,22 @@ Digital evidence is rarely handed over in a convenient form. A single case may i
 VIII (Digital Evidence Workbench) is an early-stage effort to make that work more accessible to legal teams, more reproducible for forensic practitioners, and more extensible for developers.
 
 > [!IMPORTANT]
-> **Project status: inception / pre-alpha.** VIII is a project proposal under active design—not a usable forensic product yet. There are no stable releases, validated workflows, or production-ready security guarantees. **Do not upload or process real case material with this project at this stage.**
+> **Project status: pre-alpha.** VIII is under active design, with two experimental slices that run on synthetic data. It is not a usable forensic product yet: there are no stable releases, validated forensic workflows, or production-ready security guarantees. **Do not upload or process real case material with this project at this stage.**
+
+## What exists today
+
+Two experimental slices, tested on one Windows workstation with **synthetic data only**:
+
+- **Large PDFs (experimental).** Import a PDF of up to 30,000 pages, search pages as soon as they are processed, OCR scanned pages in Portuguese, and ask a local model (llama.cpp) whose citations open the original's physical page. Jobs run through Bacalhau with WASI workers by default, so Docker is not required; Docker is an optional accelerator. Large PDFs are split into verified 40-page chunks, and every result points back to the immutable original. On a synthetic 30,000-page, 1.25 GB file with 3,001 scanned pages, the complete workflow took 6 h 04 min with WASI and 2 h 30 min with Docker, with no failed pages. Start with the [PDF documentation](docs/poc/pdf/README.md).
+- **UFDR messages (proof of concept).** A Docker-free WASI worker normalizes a synthetic UFDR message fixture with source references, and a development desktop slice displays the result. See the [validation report](docs/poc/issue-9-validation.md) and [issue #9](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/9).
+
+Neither slice has been evaluated on real evidence, installed on a clean machine by end users, or reviewed by forensic practitioners.
 
 ## What could you do with VIII?
 
 The goal is to help people move from *a collection of files* to *an investigation they can explain and verify*.
 
-Here are a few **illustrative workflows we want to support**, not features available today:
+Here are a few **illustrative workflows we want to support**. Only the scanned-documents workflow exists, as the experimental PDF slice above:
 
 | Starting point | Questions to investigate | Intended output |
 | --- | --- | --- |
@@ -57,7 +66,7 @@ Initial milestones (proposed):
 4. Explore a desktop interface and installation that does not require Docker.
 5. Evaluate optional remote execution and heavier document/audio pipelines.
 
-The ordering can change as practitioners validate the workflows.
+The UFDR proof of concept covers early versions of milestones 1–3 and a development desktop slice; the PDF slice added OCR earlier than planned and was validated without Docker. Installation on a clean machine, updates, cross-host execution and practitioner validation remain open ([issue #9](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/9), [issue #11](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/11)). The ordering can change as practitioners validate the workflows.
 
 ## Where processing happens
 
@@ -71,25 +80,24 @@ The long-term goal is **one workbench with three execution modes**, not three di
 
 **Air-gapped is a security property to verify, not a marketing switch.** It will not be claimed until offline installation and behavior can be tested.
 
-### Technical direction (under evaluation)
+### Technical direction
 
-The proposed architecture separates forensic logic from *where* a task runs:
+The architecture separates forensic logic from *where* a task runs. Its current decisions are recorded as [architecture decision records](docs/adr):
 
 ```text
-Desktop workbench
-  ├── Case and evidence workspace
-  ├── Findings, search, and provenance
-  └── Processing interface
-       ├── Local native workers          (no Docker required)
-       └── Distributed job execution     (when authorized)
-            └── Bacalhau — candidate runtime
-                 ├── Portable jobs, where practical
-                 └── Containerized workers for heavier tasks
+Desktop workbench                       Go + Wails v3 (ADR-0002, proposed)
+  ├── Case and evidence workspace       immutable originals, SHA-256 identity
+  ├── Findings, search and provenance   local index; every result links to its source
+  └── Processing                        Bacalhau as the single orchestrator (ADR-0001, accepted)
+       ├── WASI workers                 portable default, no Docker required
+       └── Docker workers               optional, for performance or native dependencies
 ```
 
-[Bacalhau](https://github.com/bacalhau-project/bacalhau) is being evaluated for distributed execution. Rust/Tauri, Go, Python-based processing tools, WASM, and OCR pipelines are **implementation candidates**, not finalized dependencies or shipped integrations.
+- **One job lifecycle, local or remote.** [Bacalhau](https://github.com/bacalhau-project/bacalhau) runs every processing job, on the workstation today and on authorized remote nodes later. Direct native jobs outside Bacalhau are excluded from the product; the PDF slice follows this, while the UFDR development slice still offers native execution as its default and has yet to be aligned. Cross-host execution has only been exercised on a single physical machine so far.
+- **Large documents are processed in verified pieces.** PDFs are chunked by a WASI worker before OCR, and the chunks are operational copies bound to the original, never evidence themselves ([ADR-0003](docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md)).
+- **Inference stays local and optional.** Questions use a separately installed local model; search and OCR work without it.
 
-Keeping workers behind a stable interface should make it possible to run suitable tasks locally without installing Docker, while allowing containers on remote compute nodes where they make sense.
+Air-gapped operation is still a goal: restricted-network first use passed on the development workstation, but offline installation and updates have not been verified.
 
 ## Help shape VIII
 
@@ -117,7 +125,7 @@ VIII is **not** a forensic certification, an official forensic examination, a le
 
 ## License and stewardship
 
-**MPL 2.0 is the planned license for the project core.** The licensing files, third-party notices, and contribution guidance will be added before the initial source release. Until then, please do not infer permission to reuse unpublished or unlicensed code.
+**The project core is licensed under MPL 2.0** ([LICENSE](LICENSE)). Third-party notices for the tools and models used by the workers (for example Bacalhau, Tesseract and its Portuguese model, and flpdf) still need to be compiled before any release.
 
 The project starts under [`vmenezesdev`](https://github.com/vmenezesdev). The intention is to keep the core openly inspectable and usable for both noncommercial and commercial work, while encouraging distributed improvements to covered source files to remain open under the terms of the MPL.
 

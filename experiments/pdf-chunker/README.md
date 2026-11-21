@@ -3,7 +3,7 @@
 **Branch base:** `mvp/pdf-digestor`, original head `17a23728c677a131aedb1ec4a34b61baa7545702`.
 Isolated from PR #12; it must not modify the MVP runtime or its OCR experiment data.
 **Current state and decision: [large-PDF chunking overview](../../docs/poc/pdf-chunking.md)
-and [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (flpdf batch, Proposed;
+and [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (flpdf batch, Accepted;
 not integrated into VIII).** The reports below are the detailed record, in order:
 
 1. [RESULTS.md](RESULTS.md): pdfcpu, pdq, qpdf; Bacalhau WASI behaviour; OCR on chunks (its pdq recommendation is superseded).

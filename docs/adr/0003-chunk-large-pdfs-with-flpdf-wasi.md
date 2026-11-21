@@ -1,16 +1,17 @@
 # ADR-0003: Chunk large PDFs with flpdf in batch mode on Bacalhau + WASI
 
-- **Status:** Proposed — technically selected by experiment; **not integrated into the product**
+- **Status:** Accepted — **not yet integrated into the product**
 - **Date:** 2026-11-20
+- **Accepted:** 2026-11-21 — project maintainer decision, on the experimental evidence.
 - **Decision scope:** how VIII prepares very large PDFs (up to the validated 30,000 pages) before OCR
 - **Project:** VIII — Digital Evidence Workbench
 - **Depends on:** [ADR-0001](0001-adopt-go-wails-v3-bacalhau.md) (Bacalhau as sole orchestrator; WASI portable, Docker optional)
 - **Evidence:** [PDF chunking overview](../poc/pdf-chunking.md) · PR [#13] (including merged PR [#15]) · issue [#14]
 
-Acceptance requires the host integration tracked in
+Accepting the decision does not integrate it. Implementation is tracked in
 issue [#16]
 ([summary](../poc/pdf-chunking.md#what-is-left-for-the-product)).
-Until then the MVP of PR [#12] keeps processing the original in place.
+Until it is done the MVP of PR [#12] keeps processing the original in place.
 
 ## Context
 

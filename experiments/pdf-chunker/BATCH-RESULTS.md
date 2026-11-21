@@ -1,6 +1,6 @@
 # Batch PDF chunking: pdq vs flpdf, and adaptive selection
 
-> **Round 3 of 3.** Decision recorded in [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (Proposed); VIII host integration
+> **Round 3 of 3.** Decision recorded in [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (Accepted); VIII host integration
 > is [issue #16](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/16). Current state: [large-PDF chunking overview](../../docs/poc/pdf-chunking.md).
 
 Branch `experiment/pdf-chunker-batch-selection` (from `experiment/pdf-chunker-wasi`

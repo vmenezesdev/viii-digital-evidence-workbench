@@ -1,7 +1,7 @@
 # Large-PDF chunking: overview and current state
 
-**Status (2026-11-21):** chunker selected by experiment ([ADR-0003](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md),
-Proposed). **Not integrated into VIII.** Integration: issue [#16]. Experiment: PR [#13]
+**Status (2026-11-21):** chunker selected by experiment; [ADR-0003](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md)
+accepted. **Not integrated into VIII.** Integration: issue [#16]. Experiment: PR [#13]
 (includes merged PR [#15]), issue [#14]. MVP: PR [#12], issue [#11].
 
 This page is the entry point. Details and every number's source are in the linked

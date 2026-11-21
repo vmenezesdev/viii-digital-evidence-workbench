@@ -1,5 +1,9 @@
 # PDF chunking in WASI with on-demand I/O: alternatives to pdq
 
+> **Historical record (round 2 of 3).** Its condition 2, "batch mode is not implemented",
+> was resolved in [BATCH-RESULTS.md](BATCH-RESULTS.md); the decision is [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md).
+> Current state: [large-PDF chunking overview](../../docs/poc/pdf-chunking.md).
+
 Branch `experiment/pdf-chunker-io-alternatives` (from `experiment/pdf-chunker-wasi`,
 PR #13, issue #14). Measured on 2026-11-20 on the same Windows workstation,
 fixtures and runner as [RESULTS.md](RESULTS.md). Every number comes from

@@ -2,9 +2,13 @@
 
 **Branch base:** `mvp/pdf-digestor`, original head `17a23728c677a131aedb1ec4a34b61baa7545702`.
 Isolated from PR #12; it must not modify the MVP runtime or its OCR experiment data.
-**Results, decision and limitations: [RESULTS.md](RESULTS.md).**
-**Follow-up, on-demand I/O alternatives (flpdf, otf-pdf): [ALTERNATIVES.md](ALTERNATIVES.md).**
-**Follow-up, batch chunking pdq vs flpdf and adaptive selection: [BATCH-RESULTS.md](BATCH-RESULTS.md).**
+**Current state and decision: [large-PDF chunking overview](../../docs/poc/pdf-chunking.md)
+and [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (flpdf batch, Proposed;
+not integrated into VIII).** The reports below are the detailed record, in order:
+
+1. [RESULTS.md](RESULTS.md): pdfcpu, pdq, qpdf; Bacalhau WASI behaviour; OCR on chunks (its pdq recommendation is superseded).
+2. [ALTERNATIVES.md](ALTERNATIVES.md): on-demand I/O, flpdf and otf-pdf.
+3. [BATCH-RESULTS.md](BATCH-RESULTS.md): batch pdq vs flpdf, `lean` route, adaptive selection.
 
 ## Question
 
@@ -30,6 +34,9 @@ Only level 3 counts as compatibility. CI covers levels 1-2; level 3 is local.
 |---|---|
 | `pdfcpu-go/` | Go `wasip1` chunker using pdfcpu v0.16.4 (`api.Trim`), with tests. |
 | `pdq-wasi/` | Rust chunker using pdq 0.5.1 plus `wasi-read-instead-of-mmap.patch`; `prepare.py` fetches the crate, verifies its sha256 and applies the patch. |
+| `flpdf-wasi/` | **Selected chunker** (ADR-0003): flpdf 0.10.0, unmodified, `Read + Seek` on the original; single-range and batch modes, `lean` route (`FLPDF_EXTRACT=lean`), per-chunk sidecars. |
+| `otfpdf-wasi/` | otf-pdf 0.2.0 chunker (ALTERNATIVES.md); blocked by a classic-xref rescan. |
+| `alt_bench.py`, `alt_summarize.py` | Native/Wasmtime runs and summary for ALTERNATIVES.md. |
 | `qpdf-wasi-probe/` | Minimal C++ exception probe: the qpdf port gate. |
 | `fsprobe/` | Characterises the Bacalhau WASI file system seen by a guest. |
 | `bench.py` | Native CLI comparison (pdfcpu/pdq/qpdf) with exact OS peak memory, CPU and I/O. |

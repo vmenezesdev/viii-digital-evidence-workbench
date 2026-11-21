@@ -1,5 +1,10 @@
 # PDF chunking for VIII: results and decision
 
+> **Historical record (round 1 of 3).** Its recommendation, pdq-WASI as a batch job, is
+> superseded by [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (flpdf batch, after [ALTERNATIVES.md](ALTERNATIVES.md) and
+> [BATCH-RESULTS.md](BATCH-RESULTS.md)). The measurements stand for what they measured.
+> Current state: [large-PDF chunking overview](../../docs/poc/pdf-chunking.md).
+
 Experiment branch `experiment/pdf-chunker-wasi` (PR #13, base `mvp/pdf-digestor`), issue #11.
 Measured on 2026-11-20 on the Windows PoC workstation. Every number below
 comes from the structured files in [`results/`](results/), produced by the

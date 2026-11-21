@@ -1,5 +1,8 @@
 # Batch PDF chunking: pdq vs flpdf, and adaptive selection
 
+> **Round 3 of 3.** Decision recorded in [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (Proposed); VIII host integration
+> is [issue #16](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/16). Current state: [large-PDF chunking overview](../../docs/poc/pdf-chunking.md).
+
 Branch `experiment/pdf-chunker-batch-selection` (from `experiment/pdf-chunker-wasi`
 @ `175e428`, PR #13, issue #14). Measured on 2026-11-20 on the same Windows
 workstation, fixtures and pinned Bacalhau v1.9.5 / wazero v1.12.0 as

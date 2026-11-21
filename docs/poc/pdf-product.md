@@ -1,5 +1,35 @@
 # PDF product validation on Windows
 
+## Current build: chunked processing (PR #17)
+
+Large PDFs are split into verified 40-page chunks before extraction and OCR
+([overview and results](pdf-chunking.md#product-integration),
+[acceptance](pdf-acceptance.md)). Build the chunker, then package it with the OCR worker:
+
+```powershell
+cd workers/pdf-chunker
+$env:RUSTFLAGS='-C link-arg=--initial-memory=134217728'
+cargo build --release --locked --target wasm32-wasip1 --target-dir target-initmem
+Remove-Item Env:RUSTFLAGS; cd ../..
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-pdf.ps1 -Output bin/pdf-chunked
+bin/pdf-chunked/VIII.exe            # --pdf-jobs N overrides the default of 4 page jobs
+```
+
+Repeat the decisive runs (fresh result directories; Docker needs `viii-pdf-worker:local`):
+
+```powershell
+./scripts/pdf-experiment.ps1 start -Package bin/pdf-chunked -Engine wasi -Jobs 4 -Port 49181 `
+  -PDF .poc-runtime/pdf/fixtures/mixed-30000.pdf -Results "$PWD/.poc-runtime/pdf/chunked-wasi-30000"
+./scripts/pdf-experiment.ps1 start -Package bin/pdf-chunked -Engine docker -Jobs 4 -Port 49183 `
+  -PDF .poc-runtime/pdf/fixtures/mixed-30000.pdf -Results "$PWD/.poc-runtime/pdf/chunked-docker-30000"
+./scripts/benchmark-pdf-chunk-concurrency.ps1 -Chunks <dir of verified chunks> -Package bin/pdf-chunked `
+  -UIData <completed product profile> -Results .poc-runtime/pdf/chunk-concurrency
+```
+
+Pass an absolute `-Results` path: the CLI resolves relative paths against the calling
+process's directory. The sections below record the earlier in-place MVP (PR #12).
+
+
 For detached operation, pause/resume, inspection and persisted reports without an
 AI session, see [the experiment CLI](pdf-experiment.md).
 

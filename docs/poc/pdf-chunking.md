@@ -1,8 +1,9 @@
 # Large-PDF chunking: overview and current state
 
-**Status (2026-11-21):** chunker selected by experiment; [ADR-0003](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md)
-accepted. **Not integrated into VIII.** Integration: issue [#16]. Experiment: PR [#13]
-(includes merged PR [#15]), issue [#14]. MVP: PR [#12], issue [#11].
+**Status (2026-11-21):** [ADR-0003](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) accepted;
+**integrated into VIII** in PR [#17] (issue [#16]), which builds on PR [#13] (experiments,
+including PR [#15]) and PR [#12] (MVP). Full-size acceptance runs: see
+[Product integration](#product-integration).
 
 This page is the entry point. Details and every number's source are in the linked
 reports; nothing here needs the historical discussion to be read first.
@@ -17,7 +18,7 @@ Bacalhau + WASI without Docker ([MVP-PDF.md](../../MVP-PDF.md)). The MVP's OCR w
 stops at 4 GiB. Chunking splits the original into small page-range derivatives so
 that OCR memory follows the chunk, not the document.
 
-## What VIII can do today (PR [#12], not merged)
+## What VIII could do before chunking (PR [#12])
 
 Demonstrated on the Windows workstation with Bacalhau 1.9.5 ([product report](pdf-product.md),
 [acceptance matrix](pdf-acceptance.md)):
@@ -32,7 +33,7 @@ Demonstrated on the Windows workstation with Bacalhau 1.9.5 ([product report](pd
 **Not demonstrated:** the full 30,000-page run on either engine, the 1/2/4-job
 comparison and the final package audit. The last committed snapshot of the 30k WASI
 run has 27,198 pages searchable and 2,802 pending ([snapshot](results/pdf-mvp/intermediate-20261118.json)).
-The MVP does **not** use chunks.
+That MVP processes the original in place; [Product integration](#product-integration) replaces it for large PDFs.
 
 ## What the experiments demonstrated
 
@@ -105,33 +106,103 @@ Its speed advantage (≤ 55 s per 30k document) is under 0.3% of that document's
 Keeping it as a second, adaptively selected strategy was measured and rejected.
 pdfcpu, qpdf, otf-pdf and native pdq: see the [alternatives table](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md#alternatives).
 
-## Intended architecture
+## Architecture (implemented in PR [#17])
 
 ```
 import original (sha256, immutable)
   └─ Bacalhau WASI job: flpdf batch, 40-page chunks ──► chunk-*.pdf + chunk-*.json sidecars … manifest.json, ready
-        host: copy + verify each chunk (hash, count, local→physical map) while the job waits; ack at the end
-  └─ chunk store: operational derivatives bound to the original's sha256 (never evidence)
-  └─ Bacalhau WASI OCR jobs (Hayro/Tesseract) on chunks already verified, while preparation continues
+        host: copy + verify each chunk (hash, size, plan, local→physical map, original sha256) while the job waits
+              store under chunks/<evidence>/ with job, execution and chunker identities; check manifest; ack
+  └─ up to 4 Bacalhau page jobs at once (extraction, then OCR), each on one verified chunk, while preparation continues
+        unchanged Hayro/Tesseract worker sees local pages; only the verified map yields physical pages
   └─ page records, FTS5 index, citations and viewer: physical pages of the ORIGINAL only
-Docker: optional acceleration of the same jobs; never required.
+pause: cancels preparation and every page job, reconciles them to terminal states; resume continues after the last verified chunk
+fallback: two failed preparations → in-place processing, one job, reported in the document status
+Docker: optional acceleration of the same page jobs (per-job staged chunk); preparation stays on WASI.
 ```
+
+## Product integration
+
+Code: `workers/pdf-chunker` (supported copy of the measured worker, sidecars carry source
+page count and original sha256), `cmd/desktop/pdf_chunks.go`, `pdf_document.go`,
+`pdf_runtime.go`. Package `bin/pdf-chunked` (built by `scripts/package-pdf.ps1`):
+chunker `19e96848…` (128 MiB pre-sized), OCR worker `ed7b4f04…` (unchanged), pinned Bacalhau.
+
+**Concurrency, 1/2/4 jobs** ([raw](results/pdf-chunked/README.md)): the same 8 verified chunks
+of the 30k fixture (pages 29,681–30,000, 33 scanned), one whole chunk per WASI job.
+
+| Jobs | Total | OCR pages/h | Speed-up | Mean job wall | Node peak | UI search p95 / max |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 666 s | 178 | 1.00× | 82 s | 465 MiB | 62 / 101 ms |
+| 2 | 347 s | 342 | 1.92× | 84 s | 710 MiB | 62 / 110 ms |
+| 4 | 196 s | 606 | **3.40×** | 90 s | 1,008 MiB | 64 / 134 ms |
+
+The default became 4 jobs on chunks (in place stays at 1). A first 4-chunk run is kept
+but marked contaminated (concurrent builds; a single k=4 wave).
+
+**Small product gates** (12-page mixed fixture, real local model, package `bin/pdf-chunked`):
+WASI 72.5 s, Docker 27.0 s, live restart then WASI→Docker switch 32.6 s; all 11 searchable +
+1 unreadable, answer cited on physical page 11, original hash unchanged, accepted pages not
+overwritten.
+
+**30,000-page runs:** the same 1.19 GiB fixture (30,000 pages, 3,001 scanned), 4 page jobs, fresh
+profiles, detached CLI collector ([raw](results/pdf-chunked/README.md)).
+
+| | WASI ([`wasi-30000`](results/pdf-chunked/wasi-30000/summary.json)) | Docker ([`docker-30000`](results/pdf-chunked/docker-30000/summary.json)) |
+| --- | ---: | ---: |
+| Result | passed: 30,000 searchable, 0 failed | passed: 30,000 searchable, 0 failed |
+| Upload of the original | ~95 s (cold cache) | 4 s (warm cache) |
+| First verified chunk after upload | 10 s | 13 s |
+| First useful search from import start | 107.6 s | 27.4 s |
+| All 750 chunks verified | 190 s from collector start | 105 s from collector start |
+| Total | **6 h 04 min** | **2 h 30 min** |
+| OCR phase / rate | 5 h 40 min / 529 pages/h | 1 h 43 min / 1,750 pages/h |
+| Attempts | 1 preparation + 750 extraction + 750 OCR, all completed | same |
+| Sampled peak RAM, app + node | 3.0 GiB | 474 MiB Windows (Docker VM excluded); containers ≤ 323 MiB |
+| Chunk store / temporary | 1.19 GiB / 905 MiB | 1.19 GiB / 1.0 GiB (+2.66 GB Docker volume, fixed in `54fc169`) |
+| Late term | `JABUTICABA` on physical page 29,999 (OCR), citation `#page=29999` | same, OCR by Docker |
+
+For comparison, the in-place MVP run (PR [#12]) sampled 5.53 GiB working set / 6.84 GiB
+private and, at its last snapshot, still had 2,548 pages pending with an estimated
+~15 h of serial OCR left. The WASI node grew to 1.8–2.25 GiB during OCR and stayed there
+(Go heap retained under `GOMEMLIMIT=3GiB` across ~1,500 executions), not a leak.
+
+**Product UI on the completed WASI profile** ([`ui-29999`](results/pdf-chunked/ui-29999/browser-ui.json)):
+search, a real local-model answer ("pagamento previsto para 15 de março", physical page
+29,999) and the citation opening the original at page 29,999 / 30,000. The original is
+served in 2 s; Chrome's PDF viewer needs 30–90 s to render page 29,999 of a 1.2 GB file.
+
+**Defects found by these runs and fixed**: the preparation job was left un-reconciled after
+`ready` (`5f70ad5`); the viewer re-hashed the 1.2 GB original on every range request, ~0.9 s
+each (`4c10a35`); Docker page jobs reserved 2 GB, so Bacalhau rejected the fifth job and
+the first Docker run paused at the start of OCR, kept as
+[`docker-30000-failed-01`](results/pdf-chunked/docker-30000-failed-01) (`8be1d82`); finished
+Docker jobs left their staging in the Docker volume (`54fc169`).
+
+**Package audit** ([`package-identity.json`](results/pdf-chunked/package-identity.json)): every
+bundled file matches the manifest, chunker linear memory is exactly 128 MiB, Bacalhau
+v1.9.5 / `3a6a73aa`. Restricted-network first use (Windows-only PATH, no Docker or Go, dead
+proxies) passed ([`gates`](results/pdf-chunked/gates)).
 
 ## Limitations
 
-- Host integration does not exist (issue [#16]).
 - Encrypted PDFs are refused (no policy yet); a lying xref is repaired silently.
-- Not measured: cold cache, > 30,000 pages, other workstations, UI responsiveness during
-  preparation, concurrent OCR on chunks, the ~160 MiB node jump after `ready` (cause not traced).
+- Not measured: cold cache, > 30,000 pages, other workstations, concurrency above 4 jobs,
+  the ~160 MiB node jump after `ready` (cause not traced).
 - Synthetic fixtures only. flpdf is 0.x with one main author.
+- The full runs used successive packages: WASI `bin/pdf-chunked` (2 GB reservation per
+  chunk job, no effect on WASI), Docker `bin/pdf-chunked-03`. The viewer and Docker-volume
+  fixes were validated on the 12-page gates and the completed profile, not by repeating
+  the 30k runs. Docker-volume cleanup is in memory: staging left by jobs that finish
+  while the app is closed stays until the volume is removed.
+- Opening a citation deep in a 1.2 GB original takes 30–90 s in Chrome's PDF viewer.
+- One shared Windows workstation; the two runs had different upload cache states.
 
 ## What is left for the product
 
-One issue, [#16]: supported worker, progressive sidecar consumption, copy-and-verify before
-deletion, chunk store bound to the original, OCR on available chunks, physical-page mapping,
-idempotence/resume/cancellation/history and regression of citations, index and integrity
-(P0); encryption policy, repair reporting, responsiveness/concurrency/cold-cache, another
-workstation and > 30k pages (P1). The MVP's own gates remain in [#11].
+P0 of [#16] is implemented in PR [#17]; its acceptance evidence is above. Remaining (P1,
+tracked in [#16]): encrypted-PDF policy, reporting silent structural repairs, cold-cache I/O,
+another workstation and > 30,000 pages. MVP acceptance: [#11].
 
 ## Reproduce the decisive results
 
@@ -188,3 +259,4 @@ is in [pdf-product.md](pdf-product.md).
 [#12]: https://github.com/vmenezesdev/viii-digital-evidence-workbench/pull/12
 [#13]: https://github.com/vmenezesdev/viii-digital-evidence-workbench/pull/13
 [#15]: https://github.com/vmenezesdev/viii-digital-evidence-workbench/pull/15
+[#17]: https://github.com/vmenezesdev/viii-digital-evidence-workbench/pull/17

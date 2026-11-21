@@ -124,7 +124,7 @@ jobs:
           tar xf wt.tar.xz
           export PATH="$PWD/wasmtime-${WASMTIME_VERSION}-x86_64-linux:$PATH"
           mkdir -p /tmp/in /tmp/out /tmp/ctl && touch /tmp/ctl/accepted
-          (cd experiments/pdf-chunker && python -c "import test_bench as t; t.tiny_pdf('/tmp/in/original.pdf', 9)")
+          (cd experiments/pdf-chunker/harness && python -c "import test_bench as t; t.tiny_pdf('/tmp/in/original.pdf', 9)")
           sha=$(sha256sum /tmp/in/original.pdf | cut -d' ' -f1)
           wasmtime run --dir /tmp/in::/in --dir /tmp/out::/out --dir /tmp/ctl::/ctl pdf-chunker.wasm \
             /in/original.pdf --chunk-size 4 --out-dir /out --ack /ctl/accepted --source-sha256 "$sha"
@@ -139,7 +139,7 @@ jobs:
               assert s["source_page_count"] == 9 and s["source_sha256_declared"] == sha and s["chunk_size"] == 4, s
               assert s["pages"] == [{"local": n - first + 1, "physical": n} for n in range(first, last + 1)], s
               subprocess.run(["qpdf", "--check", name + ".pdf"], check=True, capture_output=True)
-              subprocess.run([sys.executable, "experiments/pdf-chunker/validate.py", "--original", "/tmp/in/original.pdf",
+              subprocess.run([sys.executable, "experiments/pdf-chunker/harness/validate.py", "--original", "/tmp/in/original.pdf",
                               "--derived", name + ".pdf", "--first", str(first), "--last", str(last)], check=True)
           PY
       - uses: actions/upload-artifact@v4.6.2

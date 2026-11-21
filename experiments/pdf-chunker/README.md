@@ -2,13 +2,13 @@
 
 **Branch base:** `mvp/pdf-digestor`, original head `17a23728c677a131aedb1ec4a34b61baa7545702`.
 Isolated from PR #12; it must not modify the MVP runtime or its OCR experiment data.
-**Current state and decision: [large-PDF chunking overview](../../docs/poc/pdf-chunking.md)
+**Current state and decision: [large-PDF chunking overview](../../docs/poc/pdf/chunking.md)
 and [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (flpdf batch, Accepted;
 not integrated into VIII).** The reports below are the detailed record, in order:
 
-1. [RESULTS.md](RESULTS.md): pdfcpu, pdq, qpdf; Bacalhau WASI behaviour; OCR on chunks (its pdq recommendation is superseded).
-2. [ALTERNATIVES.md](ALTERNATIVES.md): on-demand I/O, flpdf and otf-pdf.
-3. [BATCH-RESULTS.md](BATCH-RESULTS.md): batch pdq vs flpdf, `lean` route, adaptive selection.
+1. [RESULTS.md](reports/RESULTS.md): pdfcpu, pdq, qpdf; Bacalhau WASI behaviour; OCR on chunks (its pdq recommendation is superseded).
+2. [ALTERNATIVES.md](reports/ALTERNATIVES.md): on-demand I/O, flpdf and otf-pdf.
+3. [BATCH-RESULTS.md](reports/BATCH-RESULTS.md): batch pdq vs flpdf, `lean` route, adaptive selection.
 
 ## Question
 
@@ -32,20 +32,15 @@ Only level 3 counts as compatibility. CI covers levels 1-2; level 3 is local.
 
 | Path | Purpose |
 |---|---|
-| `pdfcpu-go/` | Go `wasip1` chunker using pdfcpu v0.16.4 (`api.Trim`), with tests. |
-| `pdq-wasi/` | Rust chunker using pdq 0.5.1 plus `wasi-read-instead-of-mmap.patch`; `prepare.py` fetches the crate, verifies its sha256 and applies the patch. |
-| `flpdf-wasi/` | **Selected chunker** (ADR-0003): flpdf 0.10.0, unmodified, `Read + Seek` on the original; single-range and batch modes, `lean` route (`FLPDF_EXTRACT=lean`), per-chunk sidecars. |
-| `otfpdf-wasi/` | otf-pdf 0.2.0 chunker (ALTERNATIVES.md); blocked by a classic-xref rescan. |
-| `alt_bench.py`, `alt_summarize.py` | Native/Wasmtime runs and summary for ALTERNATIVES.md. |
-| `qpdf-wasi-probe/` | Minimal C++ exception probe: the qpdf port gate. |
-| `fsprobe/` | Characterises the Bacalhau WASI file system seen by a guest. |
-| `bench.py` | Native CLI comparison (pdfcpu/pdq/qpdf) with exact OS peak memory, CPU and I/O. |
-| `bacalhau_wasi.py` | Runs WASI modules as real jobs on an isolated pinned node; exact node peaks, attempts, leak scan. |
-| `validate.py` | Per-page text and raster comparison of a derivative against the original (Poppler). |
-| `e2e_ocr.py` | Chunk -> OCR on the derivative -> physical-page citation; optional baseline on the original. |
-| `run_matrix.py` | Reproduces the size x range, startup-control and concurrency matrices. |
-| `batch_bench.py`, `batch_validate.py`, `batch_adversarial.py`, `batch_summarize.py`, `selection_model.py` | Batch comparison (BATCH-RESULTS.md): guarded runs, oracle validation, adversarial cases, cost model and policy replay. |
-| `results/` | Committed structured results (summaries only, no PDFs). |
+| `reports/` | The three measurement reports, in order: `RESULTS.md`, `ALTERNATIVES.md`, `BATCH-RESULTS.md`. |
+| `results/` | Committed structured results each report is built from (summaries only, no PDFs). |
+| `harness/` | Python runners, validators and their tests: `bench.py` (native, exact OS peaks), `bacalhau_wasi.py` (real jobs on an isolated pinned node), `validate.py` (Poppler oracle), `e2e_ocr.py` (chunk → OCR → physical citation), `run_matrix.py`, `summarize.py`, `adversarial.py`, `alt_*.py` (ALTERNATIVES.md), `batch_*.py` and `selection_model.py` (BATCH-RESULTS.md), `test_bench.py`, `test_batch.py`. |
+| `workers/flpdf-wasi/` | flpdf 0.10.0 chunker as measured; the supported copy is `workers/pdf-chunker` at the repository root (ADR-0003). |
+| `workers/pdq-wasi/` | pdq 0.5.1 plus `wasi-read-instead-of-mmap.patch`; `prepare.py` fetches the crate, verifies its sha256 and applies the patch. |
+| `workers/pdfcpu-go/` | Go `wasip1` chunker using pdfcpu v0.16.4 (`api.Trim`), with tests. |
+| `workers/otfpdf-wasi/` | otf-pdf 0.2.0 chunker; blocked by a classic-xref rescan. |
+| `workers/qpdf-wasi-probe/` | Minimal C++ exception probe: the qpdf port gate. |
+| `workers/fsprobe/` | Characterises the Bacalhau WASI file system seen by a guest. |
 
 ## Worker contract (both chunkers)
 
@@ -93,21 +88,21 @@ python scripts/make-pdf-fixture.py $R/fixtures/s10000.pdf --pages 10000 --ocr-ev
 # 30k: reuse the MVP fixture read-only after checking its sha256 (eb3ca405...)
 
 # Build the WASI chunkers
-Push-Location experiments/pdf-chunker/pdfcpu-go; go test ./...
-$env:GOOS='wasip1'; $env:GOARCH='wasm'; go build -trimpath -o ../../../$R/pdfcpu-chunker.wasm .
+Push-Location experiments/pdf-chunker/workers/pdfcpu-go; go test ./...
+$env:GOOS='wasip1'; $env:GOARCH='wasm'; go build -trimpath -o ../../../../$R/pdfcpu-chunker.wasm .
 Remove-Item Env:GOOS,Env:GOARCH; Pop-Location
-Push-Location experiments/pdf-chunker/pdq-wasi; python prepare.py; cargo test --release --locked
+Push-Location experiments/pdf-chunker/workers/pdq-wasi; python prepare.py; cargo test --release --locked
 cargo build --release --locked --target wasm32-wasip1; Pop-Location
-Copy-Item experiments/pdf-chunker/pdq-wasi/target/wasm32-wasip1/release/viii-pdq-chunker.wasm $R/pdq-chunker.wasm
+Copy-Item experiments/pdf-chunker/workers/pdq-wasi/target/wasm32-wasip1/release/viii-pdq-chunker.wasm $R/pdq-chunker.wasm
 
 # Native matrix, WASI matrix, startup control, concurrency
-python experiments/pdf-chunker/run_matrix.py native --fixture s12=$R/fixtures/s12.pdf s1000=$R/fixtures/s1000.pdf s10000=$R/fixtures/s10000.pdf --out $R/matrix --repeat 3 --validate
-python experiments/pdf-chunker/run_matrix.py wasi --fixture s12=$R/fixtures/s12.pdf s1000=$R/fixtures/s1000.pdf s10000=$R/fixtures/s10000.pdf --module pdq=$R/pdq-chunker.wasm pdfcpu=$R/pdfcpu-chunker.wasm --out $R/matrix --repeat 2
-python experiments/pdf-chunker/run_matrix.py startup --module pdq=$R/pdq-chunker.wasm pdfcpu=$R/pdfcpu-chunker.wasm --out $R/matrix --repeat 3
-python experiments/pdf-chunker/run_matrix.py concurrency --fixture s10000=$R/fixtures/s10000.pdf --module pdq=$R/pdq-chunker.wasm --jobs 1 2 4 --out $R/matrix
+python experiments/pdf-chunker/harness/run_matrix.py native --fixture s12=$R/fixtures/s12.pdf s1000=$R/fixtures/s1000.pdf s10000=$R/fixtures/s10000.pdf --out $R/matrix --repeat 3 --validate
+python experiments/pdf-chunker/harness/run_matrix.py wasi --fixture s12=$R/fixtures/s12.pdf s1000=$R/fixtures/s1000.pdf s10000=$R/fixtures/s10000.pdf --module pdq=$R/pdq-chunker.wasm pdfcpu=$R/pdfcpu-chunker.wasm --out $R/matrix --repeat 2
+python experiments/pdf-chunker/harness/run_matrix.py startup --module pdq=$R/pdq-chunker.wasm pdfcpu=$R/pdfcpu-chunker.wasm --out $R/matrix --repeat 3
+python experiments/pdf-chunker/harness/run_matrix.py concurrency --fixture s10000=$R/fixtures/s10000.pdf --module pdq=$R/pdq-chunker.wasm --jobs 1 2 4 --out $R/matrix
 
 # End-to-end provenance gate (unchanged MVP worker and model, hashes checked)
-python experiments/pdf-chunker/e2e_ocr.py --original $R/fixtures/s12.pdf --first 9 --last 12 `
+python experiments/pdf-chunker/harness/e2e_ocr.py --original $R/fixtures/s12.pdf --first 9 --last 12 `
   --chunker $R/pdq-chunker.wasm --worker <bundle>/runtime/pdf-worker.wasm --model-dir <bundle>/runtime/models `
   --expect-page 11 --baseline --results $R/runs/e2e-pdq-s12
 ```

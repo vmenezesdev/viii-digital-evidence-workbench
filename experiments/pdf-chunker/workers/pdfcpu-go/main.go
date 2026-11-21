@@ -10,7 +10,7 @@
 // local page to the physical page of the original evidence. It never logs PDF
 // content; errors contain only paths, numbers and library error strings.
 //
-// Do not use for evidentiary decisions; see experiments/pdf-chunker/RESULTS.md.
+// Do not use for evidentiary decisions; see experiments/pdf-chunker/reports/RESULTS.md.
 package main
 
 import (

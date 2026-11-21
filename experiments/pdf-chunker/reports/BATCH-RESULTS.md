@@ -1,13 +1,13 @@
 # Batch PDF chunking: pdq vs flpdf, and adaptive selection
 
-> **Round 3 of 3.** Decision recorded in [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (Accepted); VIII host integration
-> is [issue #16](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/16). Current state: [large-PDF chunking overview](../../docs/poc/pdf-chunking.md).
+> **Round 3 of 3.** Decision recorded in [ADR-0003](../../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (Accepted); VIII host integration
+> is [issue #16](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/16). Current state: [large-PDF chunking overview](../../../docs/poc/pdf/chunking.md).
 
 Branch `experiment/pdf-chunker-batch-selection` (from `experiment/pdf-chunker-wasi`
 @ `175e428`, PR #13, issue #14). Measured on 2026-11-20 on the same Windows
 workstation, fixtures and pinned Bacalhau v1.9.5 / wazero v1.12.0 as
 [RESULTS.md](RESULTS.md) and [ALTERNATIVES.md](ALTERNATIVES.md). Every number
-comes from [`results/batch.json`](results/batch.json) unless it is marked as
+comes from [`results/batch.json`](../results/batch.json) unless it is marked as
 historical. Units: MiB/GiB, seconds. Labels: **[F]** measured fact, **[I]**
 inference from measurements, **[H]** hypothesis not demonstrated.
 
@@ -314,13 +314,13 @@ Bacalhau). Fixtures as in README.md; t30000 as in ALTERNATIVES.md.
 
 ```bash
 R=.poc-runtime/batch
-(cd experiments/pdf-chunker/pdq-wasi && python prepare.py && cargo build --release --locked \
+(cd experiments/pdf-chunker/workers/pdq-wasi && python prepare.py && cargo build --release --locked \
    && cargo build --release --locked --target wasm32-wasip1)
-(cd experiments/pdf-chunker/flpdf-wasi && cargo test --release && cargo build --release \
+(cd experiments/pdf-chunker/workers/flpdf-wasi && cargo test --release && cargo build --release \
    && cargo build --release --target wasm32-wasip1 \
    && RUSTFLAGS="-C link-arg=--initial-memory=134217728" cargo build --release --target wasm32-wasip1 --target-dir target-initmem)
 # copy: pdq-native.exe, pdq.wasm, flpdf-native.exe, flpdf.wasm, flpdf-im128.wasm into $R
-cd experiments/pdf-chunker
+cd experiments/pdf-chunker/harness   # harness scripts; R is relative to the repository root
 FLPDF_CHUNKER=$R/flpdf-native.exe PDQ_CHUNKER=$R/pdq-native.exe python -m unittest test_batch test_bench
 LEAN="flpdf-lean=FLPDF_EXTRACT=lean,CHUNKER_READ_BUF=2048"
 python batch_bench.py native --impl pdq=$R/pdq-native.exe flpdf=$R/flpdf-native.exe flpdf-lean=$R/flpdf-native.exe \
@@ -336,7 +336,7 @@ python batch_adversarial.py --fixtures $R/adv1000 --pdq $R/pdq-native.exe --flpd
 python e2e_ocr.py --original mixed-30000.pdf --first 29961 --last 30000 --chunker $R/flpdf-im128.wasm \
   --worker <MVP>/pdf-worker.wasm --model-dir <MVP>/models --expect-page 29999 --results $R/e2e --memory 1gb --min-available-mb 1024
 python batch_summarize.py --runs $R/native* $R/wasi-* --fixtures fixtures.json --historical historical.json \
-  --extra extra.json --out results/batch.json
+  --extra extra.json --out ../results/batch.json
 ```
 
 `fixtures.json`, `historical.json` and `extra.json` (identities, validation,

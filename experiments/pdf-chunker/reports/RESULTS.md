@@ -1,13 +1,13 @@
 # PDF chunking for VIII: results and decision
 
 > **Historical record (round 1 of 3).** Its recommendation, pdq-WASI as a batch job, is
-> superseded by [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (flpdf batch, after [ALTERNATIVES.md](ALTERNATIVES.md) and
+> superseded by [ADR-0003](../../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) (flpdf batch, after [ALTERNATIVES.md](ALTERNATIVES.md) and
 > [BATCH-RESULTS.md](BATCH-RESULTS.md)). The measurements stand for what they measured.
-> Current state: [large-PDF chunking overview](../../docs/poc/pdf-chunking.md).
+> Current state: [large-PDF chunking overview](../../../docs/poc/pdf/chunking.md).
 
 Experiment branch `experiment/pdf-chunker-wasi` (PR #13, base `mvp/pdf-digestor`), issue #11.
 Measured on 2026-11-20 on the Windows PoC workstation. Every number below
-comes from the structured files in [`results/`](results/), produced by the
+comes from the structured files in [`results/`](../results/), produced by the
 scripts in this directory from raw runs. Units: MiB/GiB (2^20/2^30 bytes).
 Labels: **[F]** observed fact, **[I]** inference from observations,
 **[H]** hypothesis not yet demonstrated.
@@ -29,7 +29,7 @@ synthetic original (sha256 `eb3ca405...`) in WASI, then OCR of the derivative
 with the unchanged MVP worker, found `JABUTICABA` on chunk-local page 39 and
 cited **physical page 29,999 of the original**. OCR text and source were
 identical to OCR of the original range for 40/40 pages. The original's sha256
-was unchanged. ([`results/e2e.json`](results/e2e.json))
+was unchanged. ([`results/e2e.json`](../results/e2e.json))
 
 ## Environment and method
 
@@ -41,7 +41,7 @@ was unchanged. ([`results/e2e.json`](results/e2e.json))
 - Bacalhau v1.9.5, revision `3a6a73aa...`, wazero v1.12.0, sha256 `6ee846f8...`.
   Each WASI run uses its own fresh node on free loopback ports, with Docker
   disabled, `Network: none`, read-only `local` inputs, a `noop` publisher and
-  ready/acknowledgement. Full identities are in [`results/environment.json`](results/environment.json).
+  ready/acknowledgement. Full identities are in [`results/environment.json`](../results/environment.json).
 - Candidates: pdfcpu v0.16.4 (Go, Apache-2.0); pdq 0.5.1 (Rust,
   Artistic-2.0, built on lopdf 0.43 MIT); qpdf 12.4.2 (C++, Apache-2.0).
   Independent oracles: qpdf `--check`/`--show-npages` and Poppler 25.07
@@ -142,7 +142,7 @@ the last requested page. qpdf reads objects on demand through a seekable input.
 ~146 s because of a runner defect (see Incidents), so its timing is inflated
 by paging. The same module under Wasmtime 51 **[F]**: s10000 418 MiB / 0.4-1.6 s,
 s30000 **1,215 MiB / 1.0-4.2 s**, with the same chunk hashes
-([`results/runtime-comparison.json`](results/runtime-comparison.json)).
+([`results/runtime-comparison.json`](../results/runtime-comparison.json)).
 
 pdfcpu's per-job startup alone (~10 s, ~0.5 GiB to compile a 23 MB Go module
 in wazero) and its document-proportional memory, ~5.3x the file at 30k in
@@ -309,5 +309,5 @@ a k=4 run at 516 MiB available as intended.
 
 ## Reproduction
 
-See [README.md](README.md). The raw run directories (`.poc-runtime/pdf-chunker/`)
+See [README.md](../README.md). The raw run directories (`.poc-runtime/pdf-chunker/`)
 are not committed. `summarize.py` rebuilds `results/*.json` from them.

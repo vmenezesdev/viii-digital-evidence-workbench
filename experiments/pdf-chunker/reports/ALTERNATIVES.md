@@ -1,13 +1,13 @@
 # PDF chunking in WASI with on-demand I/O: alternatives to pdq
 
 > **Historical record (round 2 of 3).** Its condition 2, "batch mode is not implemented",
-> was resolved in [BATCH-RESULTS.md](BATCH-RESULTS.md); the decision is [ADR-0003](../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md).
-> Current state: [large-PDF chunking overview](../../docs/poc/pdf-chunking.md).
+> was resolved in [BATCH-RESULTS.md](BATCH-RESULTS.md); the decision is [ADR-0003](../../../docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md).
+> Current state: [large-PDF chunking overview](../../../docs/poc/pdf/chunking.md).
 
 Branch `experiment/pdf-chunker-io-alternatives` (from `experiment/pdf-chunker-wasi`,
 PR #13, issue #14). Measured on 2026-11-20 on the same Windows workstation,
 fixtures and runner as [RESULTS.md](RESULTS.md). Every number comes from
-[`results/alternatives.json`](results/alternatives.json) (built by
+[`results/alternatives.json`](../results/alternatives.json) (built by
 `alt_summarize.py` from the raw runs) unless it is quoted from RESULTS.md,
 which is marked. Units: MiB/GiB. Labels: **[F]** observed fact, **[I]**
 inference from observations, **[H]** hypothesis not demonstrated.
@@ -314,31 +314,31 @@ R=.poc-runtime/alt; F=.poc-runtime/pdf-chunker/fixtures   # fixtures as in READM
 F30=<MVP>/.poc-runtime/pdf/fixtures/mixed-30000.pdf          # read-only, sha256 eb3ca405...
 python scripts/make-pdf-fixture.py $R/fixtures/t30000.pdf --pages 30000 --ocr-every 1000000
 
-cd experiments/pdf-chunker/flpdf-wasi && cargo test --release && cargo build --release
+cd experiments/pdf-chunker/workers/flpdf-wasi && cargo test --release && cargo build --release
 cargo build --release --target wasm32-wasip1
 RUSTFLAGS="-C link-arg=--initial-memory=100663296" cargo build --release --target wasm32-wasip1 --target-dir target-initmem
 cd ../otfpdf-wasi && cargo build --release && cargo build --release --target wasm32-wasip1
 # copy the modules to $R/flpdf.wasm, $R/flpdf-im96.wasm, $R/otfpdf.wasm
 
 # native and level 2 (repeat per fixture/range)
-python experiments/pdf-chunker/alt_bench.py --chunker <native exe> --name flpdf \
+python experiments/pdf-chunker/harness/alt_bench.py --chunker <native exe> --name flpdf \
   --fixture s30000=$F30 --range 29961-30000 --repeat 3 --out $R/n-flpdf-s30000 --log $R/native.jsonl
-python experiments/pdf-chunker/alt_bench.py --wasmtime <wasmtime.exe> --max-linear-mib 512 --chunker $R/flpdf.wasm \
+python experiments/pdf-chunker/harness/alt_bench.py --wasmtime <wasmtime.exe> --max-linear-mib 512 --chunker $R/flpdf.wasm \
   --name flpdf --fixture s30000=$F30 --range 29961-30000 --repeat 3 --out $R/w-flpdf-s30000 --log $R/wasmtime.jsonl
 
 # level 3 (existing runner and protocol)
-python experiments/pdf-chunker/run_matrix.py wasi --fixture s12=$F/s12.pdf s1000=$F/s1000.pdf s10000=$F/s10000.pdf \
+python experiments/pdf-chunker/harness/run_matrix.py wasi --fixture s12=$F/s12.pdf s1000=$F/s1000.pdf s10000=$F/s10000.pdf \
   --module flpdf=$R/flpdf.wasm flpdf-im96=$R/flpdf-im96.wasm --out $R/matrix --repeat 2 --memory 1gb --min-available-mb 1024
-python experiments/pdf-chunker/run_matrix.py wasi --fixture s30000=$F30 \
+python experiments/pdf-chunker/harness/run_matrix.py wasi --fixture s30000=$F30 \
   --module flpdf=$R/flpdf.wasm flpdf-im96=$R/flpdf-im96.wasm --out $R/matrix --repeat 2 --memory 1gb --min-available-mb 1024
-python experiments/pdf-chunker/run_matrix.py startup --module flpdf=$R/flpdf.wasm flpdf-im96=$R/flpdf-im96.wasm --out $R/matrix --repeat 3 --memory 1gb
+python experiments/pdf-chunker/harness/run_matrix.py startup --module flpdf=$R/flpdf.wasm flpdf-im96=$R/flpdf-im96.wasm --out $R/matrix --repeat 3 --memory 1gb
 # t30000 and otf-pdf runs: bacalhau_wasi.py --plan <plan> with the same plan shape (worker contract args)
 
 # forensic checks
-python experiments/pdf-chunker/validate.py --original $F30 --derived <chunk.pdf> --first 29961 --last 30000 --output $R/validate/s30000-late40.json
-FLPDF_CHUNKER=<native exe> python experiments/pdf-chunker/adversarial.py run --fixtures $F/adversarial \
+python experiments/pdf-chunker/harness/validate.py --original $F30 --derived <chunk.pdf> --first 29961 --last 30000 --output $R/validate/s30000-late40.json
+FLPDF_CHUNKER=<native exe> python experiments/pdf-chunker/harness/adversarial.py run --fixtures $F/adversarial \
   --results $R/adversarial --wasm flpdf=$R/flpdf.wasm
-python experiments/pdf-chunker/alt_summarize.py --runs $R --out experiments/pdf-chunker/results/alternatives.json
+python experiments/pdf-chunker/harness/alt_summarize.py --runs $R --out experiments/pdf-chunker/results/alternatives.json
 ```
 
 Safety: no MVP OCR job or other `bacalhau.exe`/`VIII.exe` process ran during

@@ -1,5 +1,5 @@
 //! VIII PDF chunker (flpdf 0.10.0 backend), selected by ADR-0003.
-//! Copied from experiments/pdf-chunker/flpdf-wasi (kept there as the measured
+//! Copied from experiments/pdf-chunker/workers/flpdf-wasi (kept there as the measured
 //! record). Product defaults: lean extraction route and 2 KiB read buffer
 //! (BATCH-RESULTS.md); FLPDF_EXTRACT=library and CHUNKER_READ_BUF override them.
 //!

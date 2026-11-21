@@ -33,7 +33,7 @@ DEFAULTS = {
 
 def load(path=None):
     """Fitted coefficients from results/batch.json, else the defaults."""
-    path = Path(path or Path(__file__).resolve().parent / "results" / "batch.json")
+    path = Path(path or Path(__file__).resolve().parent.parent / "results" / "batch.json")
     try:
         fitted = json.loads(path.read_text(encoding="utf-8"))["model"]["coefficients"]
         return DEFAULTS | fitted

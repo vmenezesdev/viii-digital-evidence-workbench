@@ -1,6 +1,6 @@
 # ADR-0003: Chunk large PDFs with flpdf in batch mode on Bacalhau + WASI
 
-- **Status:** Accepted — implemented in PR [#17] (pending merge)
+- **Status:** Accepted — implemented (PR [#17], in `trunk` through PR [#12] on 2026-11-21)
 - **Date:** 2026-11-20
 - **Accepted:** 2026-11-21 — project maintainer decision, on the experimental evidence.
 - **Decision scope:** how VIII prepares very large PDFs (up to the validated 30,000 pages) before OCR
@@ -10,7 +10,7 @@
 
 Implementation: issue [#16], PR [#17]
 ([product integration](../poc/pdf/chunking.md#product-integration)).
-Until it is merged the MVP of PR [#12] keeps processing the original in place.
+Documents whose preparation fails twice fall back to processing the original in place.
 
 ## Context
 

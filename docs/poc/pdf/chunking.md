@@ -2,7 +2,7 @@
 
 **Status (2026-11-21):** [ADR-0003](../../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) accepted;
 **integrated into VIII** in PR [#17] (issue [#16]), which builds on PR [#13] (experiments,
-including PR [#15]) and PR [#12] (MVP). Full-size acceptance runs: see
+including PR [#15]) and PR [#12] (MVP), all in `trunk` since 2026-11-21. Full-size acceptance runs: see
 [Product integration](#product-integration).
 
 This page is the entry point. Details and every number's source are in the linked

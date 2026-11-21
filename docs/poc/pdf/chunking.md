@@ -177,7 +177,10 @@ served in 2 s; Chrome's PDF viewer needs 30–90 s to render page 29,999 of a 1.
 each (`4c10a35`); Docker page jobs reserved 2 GB, so Bacalhau rejected the fifth job and
 the first Docker run paused at the start of OCR, kept as
 [`docker-30000-failed-01`](results/chunked/docker-30000-failed-01) (`8be1d82`); finished
-Docker jobs left their staging in the Docker volume (`54fc169`).
+Docker jobs left their staging in the Docker volume (`54fc169`); cleaning it after every scheduler
+pass kept the volume at ≤ 61 MiB in a 30k Docker rerun but made that run 17% slower
+(175.6 vs 149.9 min, [`docker-30000-rerun`](results/chunked/docker-30000-rerun/summary.json)),
+so cleanup is batched (`76213db`; not re-measured at 30k).
 
 **Package audit** ([`package-identity.json`](results/chunked/package-identity.json)): every
 bundled file matches the manifest, chunker linear memory is exactly 128 MiB, Bacalhau

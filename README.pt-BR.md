@@ -1,12 +1,5 @@
 # VIII: Digital Evidence Workbench
 
-O MVP local de PDF está disponível para avaliação com documentos sintéticos ou
-públicos. Consulte [execução, pré-requisitos e validações](docs/poc/pdf/product.md)
-para usar o pacote Windows, pesquisar durante o OCR e habilitar a aceleração com
-Docker. A validação de 30 mil páginas ainda está em andamento.
-O [controle por CLI](docs/poc/pdf/experiment-cli.md) permite executar o experimento em
-segundo plano, pausar, retomar e consultar resultados sem manter uma sessão de IA aberta.
-
 **Idioma:** [English](README.md) · Português (Brasil) · [Français](README.fr.md)
 
 **Uma plataforma de código aberto em desenvolvimento para explorar evidências digitais, compreender o que elas mostram e rastrear os achados até suas fontes.**
@@ -16,13 +9,22 @@ Evidências digitais raramente chegam em um formato conveniente. Um único caso 
 O VIII (Digital Evidence Workbench) é uma iniciativa em estágio inicial para tornar esse trabalho mais acessível a equipes jurídicas, mais reproduzível para profissionais de perícia e mais extensível para quem desenvolve software.
 
 > [!IMPORTANT]
-> **Situação do projeto: concepção / pré-alfa.** O VIII é uma proposta de projeto em fase de definição, ainda sem um produto pericial utilizável. Não há versões estáveis, fluxos de trabalho validados ou garantias de segurança para uso em produção. **Não envie nem processe materiais de casos reais com este projeto nesta fase.**
+> **Situação do projeto: pré-alfa.** O VIII está em fase de definição, com duas frentes experimentais que funcionam com dados sintéticos. Ainda não é um produto pericial utilizável: não há versões estáveis, fluxos periciais validados ou garantias de segurança para uso em produção. **Não envie nem processe materiais de casos reais com este projeto nesta fase.**
+
+## O que já existe
+
+Duas frentes experimentais, testadas em uma estação de trabalho Windows **somente com dados sintéticos**:
+
+- **PDFs grandes (experimental).** Importe um PDF de até 30 mil páginas, pesquise as páginas à medida que são processadas, faça OCR em português das páginas digitalizadas e pergunte a um modelo local (llama.cpp) cujas citações abrem a página física do original. As tarefas rodam pelo Bacalhau com módulos WASI por padrão, sem exigir Docker; o Docker é uma aceleração opcional. PDFs grandes são divididos em partes verificadas de 40 páginas, e todo resultado aponta para o original, que permanece imutável. Em um arquivo sintético de 30 mil páginas e 1,25 GB, com 3.001 páginas digitalizadas, o fluxo completo levou 6 h 04 min com WASI e 2 h 30 min com Docker, sem páginas com falha. Comece pela [documentação do PDF](docs/poc/pdf/README.md) (em inglês).
+- **Mensagens UFDR (prova de conceito).** Um módulo WASI, sem Docker, normaliza um arquivo sintético de mensagens UFDR com referências às fontes, e uma versão de desenvolvimento do aplicativo de desktop exibe o resultado. Consulte o [relatório de validação](docs/poc/issue-9-validation.md) e a [issue #9](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/9).
+
+Nenhuma das frentes foi avaliada com evidências reais, instalada por usuários finais em uma máquina limpa ou revisada por profissionais de perícia.
 
 ## O que você poderá fazer com o VIII?
 
 O objetivo é ajudar a passar de *um conjunto de arquivos* para *uma investigação que possa ser explicada e verificada*.
 
-Estes são alguns **exemplos de fluxos de trabalho que pretendemos oferecer**, não funcionalidades disponíveis hoje:
+Estes são alguns **exemplos de fluxos de trabalho que pretendemos oferecer**. Somente o fluxo de documentos digitalizados existe, como a frente experimental de PDF descrita acima:
 
 | Ponto de partida | Perguntas a investigar | Resultado pretendido |
 | --- | --- | --- |
@@ -64,7 +66,7 @@ Marcos iniciais propostos:
 4. Explorar uma interface de desktop e uma instalação que dispense Docker.
 5. Avaliar a execução remota opcional e fluxos mais exigentes de processamento de documentos e áudio.
 
-A ordem pode mudar conforme os profissionais validarem os fluxos de trabalho.
+A prova de conceito de UFDR cobre versões iniciais dos marcos 1 a 3 e uma versão de desenvolvimento do aplicativo de desktop; a frente de PDF antecipou o OCR e foi validada sem Docker. A instalação em uma máquina limpa, as atualizações, a execução entre máquinas e a validação por profissionais continuam pendentes ([issue #9](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/9), [issue #11](https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/11)). A ordem pode mudar conforme os profissionais validarem os fluxos de trabalho.
 
 ## Onde o processamento acontece
 
@@ -78,25 +80,24 @@ O objetivo de longo prazo é **uma única plataforma com três modos de execuç�
 
 **O isolamento de rede é uma propriedade de segurança a ser verificada, não uma opção de marketing.** Essa capacidade só será anunciada quando for possível testar a instalação e o comportamento sem conexão.
 
-### Direção técnica (em avaliação)
+### Direção técnica
 
-A arquitetura proposta separa a lógica pericial de *onde* uma tarefa é executada:
+A arquitetura separa a lógica pericial de *onde* uma tarefa é executada. As decisões atuais estão registradas em [registros de decisão de arquitetura](docs/adr) (em inglês):
 
 ```text
-Aplicativo de desktop
-  ├── Espaço de trabalho para casos e evidências
-  ├── Achados, busca e proveniência
-  └── Interface de processamento
-       ├── Módulos nativos locais         (sem exigir Docker)
-       └── Execução distribuída de tarefas (quando autorizada)
-            └── Bacalhau — ambiente de execução em avaliação
-                 ├── Tarefas portáveis, quando viável
-                 └── Módulos em contêineres para tarefas mais exigentes
+Aplicativo de desktop                   Go + Wails v3 (ADR-0002, proposta)
+  ├── Casos e evidências                originais imutáveis, identidade SHA-256
+  ├── Achados, busca e proveniência     índice local; todo resultado aponta para a fonte
+  └── Processamento                     Bacalhau como único orquestrador (ADR-0001, aceita)
+       ├── Módulos WASI                 padrão portável, sem exigir Docker
+       └── Módulos Docker               opcionais, para desempenho ou dependências nativas
 ```
 
-O [Bacalhau](https://github.com/bacalhau-project/bacalhau) está sendo avaliado para execução distribuída. Rust/Tauri, Go, ferramentas de processamento baseadas em Python, WASM e fluxos de OCR são **opções de implementação**, não dependências definitivas ou integrações já disponíveis.
+- **Um único ciclo de vida das tarefas, local ou remoto.** O [Bacalhau](https://github.com/bacalhau-project/bacalhau) executa todas as tarefas de processamento, hoje na estação de trabalho e, depois, em nós remotos autorizados. Tarefas nativas executadas fora do Bacalhau ficam fora do produto; a frente de PDF já segue essa regra, mas a versão de desenvolvimento de UFDR ainda oferece a execução nativa como padrão e precisa ser alinhada. Até agora, a execução entre máquinas só foi exercitada em uma única máquina física.
+- **Documentos grandes são processados em partes verificadas.** Os PDFs são divididos por um módulo WASI antes do OCR; as partes são cópias operacionais vinculadas ao original e nunca são tratadas como evidência ([ADR-0003](docs/adr/0003-chunk-large-pdfs-with-flpdf-wasi.md)).
+- **A inferência é local e opcional.** As perguntas usam um modelo local instalado à parte; a busca e o OCR funcionam sem ele.
 
-Manter os módulos de processamento por trás de uma interface estável deve permitir a execução local das tarefas adequadas sem instalar Docker, além do uso de contêineres em nós de processamento remoto quando fizer sentido.
+A operação isolada da rede continua sendo um objetivo: o primeiro uso com rede restrita passou na estação de desenvolvimento, mas a instalação e as atualizações sem conexão ainda não foram verificadas.
 
 ## Ajude a definir o VIII
 
@@ -124,7 +125,7 @@ O VIII **não** é uma certificação pericial, um exame pericial oficial, um pa
 
 ## Licença e gestão do projeto
 
-**A MPL 2.0 é a licença planejada para o núcleo do projeto.** Os arquivos de licença, os avisos de terceiros e as orientações de contribuição serão adicionados antes da primeira versão do código-fonte. Até lá, não presuma autorização para reutilizar código não publicado ou sem licença.
+**O núcleo do projeto é licenciado sob a MPL 2.0** ([LICENSE](LICENSE)). Os avisos de terceiros referentes às ferramentas e aos modelos usados pelos módulos de processamento (por exemplo, Bacalhau, Tesseract e seu modelo de português, e flpdf) ainda precisam ser reunidos antes de qualquer versão.
 
 O projeto começa sob a responsabilidade de [`vmenezesdev`](https://github.com/vmenezesdev). A intenção é manter o núcleo aberto à inspeção e utilizável tanto em atividades não comerciais quanto comerciais, incentivando que melhorias distribuídas nos arquivos de código-fonte cobertos pela MPL permaneçam abertas nos termos da licença.
 

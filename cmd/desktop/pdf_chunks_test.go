@@ -23,6 +23,7 @@ type fakeBacalhau struct {
 	submitted []map[string]any
 	stopped   []string
 	state     map[string]string // job ID -> job state
+	rejected  map[string]bool   // job ID -> failed by the scheduler, no execution
 }
 
 func (f *fakeBacalhau) server(t *testing.T) *httptest.Server {
@@ -57,6 +58,10 @@ func (f *fakeBacalhau) server(t *testing.T) *httptest.Server {
 			compute := 6
 			if state != "Running" {
 				compute = 11
+			}
+			if f.rejected[id] {
+				json.NewEncoder(w).Encode(map[string]any{"Job": map[string]any{"ID": id, "Name": "viii-" + strings.TrimPrefix(id, "j-"), "State": map[string]string{"StateType": "Failed", "Message": "not enough nodes to run job"}}, "Executions": map[string]any{"Items": []any{}}})
+				return
 			}
 			json.NewEncoder(w).Encode(map[string]any{"Job": map[string]any{"ID": id, "Name": "viii-" + strings.TrimPrefix(id, "j-"), "State": map[string]string{"StateType": state}}, "Executions": map[string]any{"Items": []any{map[string]any{"ID": "e-" + strings.TrimPrefix(id, "j-"), "NodeID": "test-wasi", "ComputeState": map[string]int{"StateType": compute}}}}})
 		}
@@ -413,5 +418,48 @@ func TestPDFViewerReusesVerificationOnlyWhileOriginalIsUnchanged(t *testing.T) {
 	os.Chtimes(path, later, later)
 	if p.verifiedOriginal(path, want) {
 		t.Fatal("expired verification was trusted")
+	}
+}
+
+func TestPDFCapacityRejectionLowersConcurrencyInsteadOfPausing(t *testing.T) {
+	fake := &fakeBacalhau{rejected: map[string]bool{}}
+	api := fake.server(t)
+	p, d := chunkTestService(t, api.URL)
+	ctx := context.Background()
+	p.advance(ctx, d)
+	a, _ := p.s.load(d.EvidenceID, d.Prepare)
+	a.ExecutionID = "e-" + d.Prepare
+	out, _ := p.runtime.outputs(ctx, "wasi", a)
+	writeChunk(t, out, d.EvidenceID, 1, 4, 8, 4, "first")
+	writeChunk(t, out, d.EvidenceID, 5, 8, 8, 4, "second")
+	if err := p.advance(ctx, d); err != nil || len(d.Jobs) != 2 {
+		t.Fatal("expected two chunk jobs", err, d.Jobs)
+	}
+	for _, job := range fake.submitted[1:] {
+		resources := job["Tasks"].([]any)[0].(map[string]any)["Resources"].(map[string]any)
+		if resources["Memory"] != "1gb" {
+			t.Fatal("chunk job reserves more memory than measured", resources)
+		}
+	}
+	rejected := d.Jobs[1].Attempt
+	fake.mu.Lock()
+	fake.rejected["j-"+rejected] = true
+	fake.mu.Unlock()
+	if err := p.advance(ctx, d); err != nil {
+		t.Fatal(err)
+	}
+	if d.Paused || d.JobLimit != 1 || p.concurrency(d) != 1 || len(d.Jobs) != 1 || !strings.Contains(d.ChunkDiagnostic, "capacidade") {
+		t.Fatalf("capacity rejection not absorbed: %+v", d)
+	}
+	record, _ := p.s.load(d.EvidenceID, rejected)
+	if record.Status != "rejected" || record.Finished == nil || !strings.Contains(record.Error, "not enough nodes") {
+		t.Fatalf("rejection not recorded: %+v", record)
+	}
+	// With one job left a rejection is a real failure and pauses visibly.
+	fake.mu.Lock()
+	fake.rejected["j-"+d.Jobs[0].Attempt] = true
+	fake.mu.Unlock()
+	if err := p.advance(ctx, d); err != nil || !d.Paused {
+		t.Fatal("single-job rejection did not pause", err, d.Paused)
 	}
 }

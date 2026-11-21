@@ -50,6 +50,9 @@ type pdfDocument struct {
 	Complete   bool   `json:"complete"`
 	Diagnostic string `json:"diagnostic,omitempty"`
 
+	// JobLimit caps page-job concurrency after Bacalhau rejected a job for capacity.
+	JobLimit int `json:"job_limit,omitempty"`
+
 	Chunking        string `json:"chunking,omitempty"`
 	ChunkSize       int    `json:"chunk_size,omitempty"`
 	Prepare         string `json:"prepare,omitempty"`
@@ -594,6 +597,12 @@ func (p *pdfService) reconcile(ctx context.Context, d *pdfDocument, r *pdfRange)
 		}
 	} else if a.CancelRequested != nil {
 		a.finish("stopped", nil)
+	} else if len(a.Executions) == 0 && len(d.Jobs) > 1 {
+		// The scheduler rejected the job (no execution ran, e.g. node capacity):
+		// no worker failed, so retry its pages with fewer simultaneous jobs.
+		a.finish("rejected", errors.New("Bacalhau scheduling rejected the job: "+a.JobState.Message))
+		d.JobLimit = len(d.Jobs) - 1
+		d.ChunkDiagnostic = fmt.Sprintf("O Bacalhau recusou um job por capacidade; concorrência limitada a %d", d.JobLimit)
 	} else {
 		a.finish("failed", errors.New("Bacalhau job failed"))
 		d.Paused = true
@@ -606,6 +615,9 @@ func (p *pdfService) concurrency(d *pdfDocument) int {
 	// In place, every job holds the whole original: keep one.
 	if d.Chunking == chunkingUnavailable || p.Jobs < 1 {
 		return 1
+	}
+	if d.JobLimit > 0 {
+		return min(p.Jobs, d.JobLimit)
 	}
 	return p.Jobs
 }

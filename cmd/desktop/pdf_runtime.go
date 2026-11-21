@@ -301,7 +301,13 @@ func localMount(source, target string, writable bool) map[string]any {
 // verified chunk; first and last are pages of that input.
 func (r *pdfRuntime) spec(ctx context.Context, input, control, id, node, phase string, first, last int, chunk bool) (map[string]any, error) {
 	args := []string{"/original.pdf", fmt.Sprint(first), fmt.Sprint(last), "/out", "/control/accepted", phase, "/model"}
-	task := map[string]any{"Name": "main", "Resources": map[string]string{"CPU": "1", "Memory": "2gb"}, "Timeouts": map[string]int{"TotalTimeout": 3600}, "Network": map[string]string{"Type": "none"}}
+	// A job on a 40-page chunk peaked at ~276 MiB; reserving 2 GB each let only
+	// three jobs fit the Docker VM and Bacalhau rejected the rest.
+	memory := "2gb"
+	if chunk {
+		memory = "1gb"
+	}
+	task := map[string]any{"Name": "main", "Resources": map[string]string{"CPU": "1", "Memory": memory}, "Timeouts": map[string]int{"TotalTimeout": 3600}, "Network": map[string]string{"Type": "none"}}
 	if strings.HasSuffix(node, "-wasi") {
 		actual, err := fileDigest(r.Worker)
 		if err != nil || actual != r.WorkerSHA {

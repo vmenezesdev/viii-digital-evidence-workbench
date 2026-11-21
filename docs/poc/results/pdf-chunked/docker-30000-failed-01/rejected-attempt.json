@@ -1,0 +1,31 @@
+{
+  "evidence_id": "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+  "input_sha256": "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+  "attempt": "mmbjbxp7kvquqm64zv2i5kr6ll",
+  "request_id": "mmbjbxp7kvquqm64zv2i5kr6ll",
+  "mode": "pdf-docker",
+  "location": "local-only",
+  "status": "failed",
+  "started": "2026-11-21T11:14:48.5167991Z",
+  "finished": "2026-11-21T11:14:52.0769572Z",
+  "duration_ms": 3560,
+  "worker_version": "pdf-v1",
+  "worker_sha256": "sha256:ec54f4f64b2f8a4f8a4ef9347f5e2f5669c51937429c77ac657c666a7523f496",
+  "worker_url": "viii-pdf-worker:local",
+  "configuration": "ocr:170-200",
+  "authorization": "allow",
+  "requested_node_id": "viii-pdf-c951e36ba2cc-docker",
+  "job_id": "j-ac6e0ac5-690b-4f96-b3b7-f9a0c40d8ec3",
+  "job_state": {
+    "StateType": "Failed",
+    "Message": "not enough nodes to run job. requested: 1, available: 2, suitable: 0.\n• Node viii-pdf-c951e36ba2cc-docker: node busy with available capacity {CPU: 6.60, Memory: 546 MB, Disk: 861 GB, GPU: 0} and queue capacity {CPU: 1.00, Memory: 2.0 GB, Disk: 0 B, GPU: 0}\n• Node viii-pdf-c951e36ba2cc-wasi: labels map[GPU-0:NVIDIA-GeForce-RTX-3050-6GB-Laptop-GPU GPU-0-Memory:6144-MiB name:viii-pdf-c951e36ba2cc-wasi os_arch:amd64 os_type:windows] don't match required selectors [name in viii-pdf-c951e36ba2cc-docker]"
+  },
+  "job_created_unix_ns": 1795259689428974000,
+  "orchestrator": "http://127.0.0.1:54977",
+  "staging_dir": "<workspace>\\viii-pdf-integration\\.poc-runtime\\pdf\\benchmark-chunked-docker-30000\\data\\control\\mmbjbxp7kvquqm64zv2i5kr6ll",
+  "chunk_file": "<workspace>\\viii-pdf-integration\\.poc-runtime\\pdf\\benchmark-chunked-docker-30000\\data\\chunks\\eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699\\chunk-000161-000200.pdf",
+  "chunk_sha256": "e9f36b944ecde8b056e8fe34d95509e2448f49751e844be8e252961208c26b46",
+  "chunk_first": 161,
+  "chunk_last": 200,
+  "error": "Bacalhau job failed"
+}

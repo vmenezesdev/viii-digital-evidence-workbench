@@ -1,6 +1,6 @@
 # Large-PDF chunking: overview and current state
 
-**Status (2026-11-20):** chunker selected by experiment ([ADR-0003](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md),
+**Status (2026-11-21):** chunker selected by experiment ([ADR-0003](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md),
 Proposed). **Not integrated into VIII.** Integration: issue [#16]. Experiment: PR [#13]
 (includes merged PR [#15]), issue [#14]. MVP: PR [#12], issue [#11].
 
@@ -139,8 +139,11 @@ Tools, fixtures and full commands: [experiment README](../../experiments/pdf-chu
 [ALTERNATIVES.md, Reproduction](../../experiments/pdf-chunker/ALTERNATIVES.md#reproduction) and
 [BATCH-RESULTS.md, Reproduction](../../experiments/pdf-chunker/BATCH-RESULTS.md#reproduction). The decisive ones:
 
-1. Build `flpdf-wasi` with `--initial-memory=134217728`; the module sha256 must be
-   `3cf7c9ff…` (rebuilt and matched on 2026-11-20).
+1. Build `flpdf-wasi` with `--initial-memory=134217728`. On the Windows PoC toolchain the
+   module sha256 is `3cf7c9ff…`, the module used for the measurements (rebuilt and matched
+   on 2026-11-21). The Linux CI build differs (`31edd998…`): the module is reproducible per
+   build host, not across hosts, so VIII must record the sha256 of the module it ships.
+   Chunk bytes were identical across every runtime tested.
 2. `batch_bench.py wasi … --fixture s30000=…` for the 750-chunk batch (node peak, first
    chunk, `ready`, all verified).
 3. `e2e_ocr.py --first 29961 --last 30000 --expect-page 29999` for the chunk → OCR →

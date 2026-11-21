@@ -2,7 +2,7 @@
 
 Work in progress. The real OCR technical gate passed; the complete PDF acceptance
 criteria are not yet achieved.
-Only synthetic evidence is used. The original scope is in [MVP-PDF.md](../../MVP-PDF.md).
+Only synthetic evidence is used. The original scope is in [MVP-PDF.md](MVP-PDF.md).
 
 ## Pinned runtime and first gate
 
@@ -29,7 +29,7 @@ workflow. A repeated run needs a fresh `-Results` directory.
 
 ## Failed attempts and diagnoses
 
-Full build logs are in [results/pdf-mvp](results/pdf-mvp).
+Full build logs are in [results/mvp/builds](results/mvp/builds).
 
 1. `build-attempt-1.log`: Leptonica built successfully. CMake 3.25 aborted in
    Tesseract's cross-compilation `try_run` of the TIFF probe. Supplying the
@@ -56,7 +56,7 @@ and the difference between mounting a file and mounting its containing directory
 An ordinary C `_start` return yields exit **-1** in this Bacalhau, so success uses
 an explicit `proc_exit(0)` via `_Exit`.
 
-The [successful OCR evidence](results/pdf-mvp/ocr-proof/summary.json) identifies
+The [successful OCR evidence](results/mvp/ocr/ocr-proof/summary.json) identifies
 job `j-eabda74b-b257-4616-86a8-c5519cd9796c` and execution
 `e-bfc7d7b2-eafc-4231-8456-cef1dabb6159` on `viii-pdf-wasi`. The job took
 3.682 seconds including compilation, OCR and acknowledgement. Tesseract correctly
@@ -102,16 +102,16 @@ OCR mode renders only pages with insufficient text, one raster at a time.
 
 The synthetic fixture has 12 pages, four image-only pages, a blank page 8, and
 `JABUTICABA` with a payment date on scanned page **11**. It is 1,598,418 bytes;
-the [manifest](results/pdf-mvp/fixture-small.json) records its SHA-256. The
-[render of page 11](results/pdf-mvp/pages-render-proof/page-000011.png) was
+the [manifest](results/mvp/fixtures/fixture-small.json) records its SHA-256. The
+[render of page 11](results/mvp/pages/pages-render-proof/page-000011.png) was
 visually inspected for legibility and physical-page identity.
 
 | Technical probe | Elapsed | Observed peak Windows node working set | Evidence |
 | --- | ---: | ---: | --- |
-| WASI extraction + rendering of 12 pages | 17.971 s | 176.6 MiB | [summary](results/pdf-mvp/pages-render-proof/summary.json) |
-| WASI extraction + Portuguese OCR, all 12 pages | 160.602 s | 358.7 MiB | [summary](results/pdf-mvp/pages-wasi-proof/summary.json) |
-| Docker extraction + Portuguese OCR, same PDF | 13.110 s | Not sampled | [summary](results/pdf-mvp/pages-docker-proof/summary.json) |
-| Current WASI module, only physical page 11, job networking disabled | 72.800 s | 296.1 MiB | [summary](results/pdf-mvp/pages-selected-proof/summary.json) |
+| WASI extraction + rendering of 12 pages | 17.971 s | 176.6 MiB | [summary](results/mvp/pages/pages-render-proof/summary.json) |
+| WASI extraction + Portuguese OCR, all 12 pages | 160.602 s | 358.7 MiB | [summary](results/mvp/pages/pages-wasi-proof/summary.json) |
+| Docker extraction + Portuguese OCR, same PDF | 13.110 s | Not sampled | [summary](results/mvp/pages/pages-docker-proof/summary.json) |
+| Current WASI module, only physical page 11, job networking disabled | 72.800 s | 296.1 MiB | [summary](results/mvp/pages/pages-selected-proof/summary.json) |
 
 The isolated-page probe overlapped a Rust/Docker build. These are functional
 probes, **not** a controlled throughput comparison. `first_artifact_ms` measures
@@ -169,16 +169,16 @@ reader alternative rather than silently claiming large-document support.
 The inference adapter uses only **llama.cpp's local chat-completions endpoint**.
 The real-model gate passed with llama.cpp Windows CPU `b12453` and
 Qwen2.5-0.5B-Instruct Q4_K_M (491,400,032 bytes), running on loopback port 48081.
-The [answer](results/pdf-mvp/answer-proof/answer.json),
-[identity record](results/pdf-mvp/answer-proof/summary.json), pinned public model
-revision and [test log](results/pdf-mvp/answer-attempt-1.log) are retained.
+The [answer](results/mvp/product-gates/answer-proof/answer.json),
+[identity record](results/mvp/product-gates/answer-proof/summary.json), pinned public model
+revision and [test log](results/mvp/product-gates/answer-attempt-1.log) are retained.
 `TestPDFRealLocalAnswer` took 1.28 seconds and returned the correct payment date,
 with retrieved physical-page reference 11 and an explicit partial-index flag.
 This verifies the inference adapter over real worker artifacts; the product UI
 and PDF-open route remain outstanding. The temporary inference server was stopped.
 
 Repeat this gate after downloading the CPU runtime/model identified in
-`results/pdf-mvp/answer-proof/source.json`:
+`results/mvp/product-gates/answer-proof/source.json`:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/prove-pdf-answer.ps1
@@ -189,13 +189,13 @@ separate prerequisite. The proof script records its loopback-only launch command
 owns/stops its process and does not require Ollama or any cloud API. The model
 and binary stay under the ignored `.poc-runtime/pdf/inference` directory.
 
-The additional [Docker control](results/pdf-mvp/pages-docker-offline-job/summary.json)
+The additional [Docker control](results/mvp/pages/pages-docker-offline-job/summary.json)
 completed in 12.838 seconds with task networking disabled and both the Windows
 original and the mounted/staged copy's hashes checked. A job's disabled networking
 does not establish offline first use of an installed VIII package.
 
 The small **product** workflow, native UI, real inference, live restart/engine
 switching and first-use offline gates have since passed. The current product
-results, packaging and reproduction commands are in [pdf-product.md](pdf-product.md).
+results, packaging and reproduction commands are in [product.md](product.md).
 Earlier statements above describing these routes as outstanding refer to the
 technical-probe stage. The 30,000-page measurements remain pending.

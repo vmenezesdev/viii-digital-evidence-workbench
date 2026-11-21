@@ -28,7 +28,7 @@ const (
 	maxPrepareFailures  = 2
 	flpdfVersion        = "0.10.0"
 	// defaultPDFJobs: 4 simultaneous chunk jobs gave 3.4x the OCR throughput of 1
-	// with unchanged UI latency (docs/poc/pdf-chunking.md, 1/2/4 measurement).
+	// with unchanged UI latency (docs/poc/pdf/chunking.md, 1/2/4 measurement).
 	defaultPDFJobs = 4
 )
 

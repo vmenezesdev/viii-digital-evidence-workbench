@@ -6,10 +6,10 @@
 - **Decision scope:** how VIII prepares very large PDFs (up to the validated 30,000 pages) before OCR
 - **Project:** VIII — Digital Evidence Workbench
 - **Depends on:** [ADR-0001](0001-adopt-go-wails-v3-bacalhau.md) (Bacalhau as sole orchestrator; WASI portable, Docker optional)
-- **Evidence:** [PDF chunking overview](../poc/pdf-chunking.md) · PR [#13] (including merged PR [#15]) · issue [#14]
+- **Evidence:** [PDF chunking overview](../poc/pdf/chunking.md) · PR [#13] (including merged PR [#15]) · issue [#14]
 
 Implementation: issue [#16], PR [#17]
-([product integration](../poc/pdf-chunking.md#product-integration)).
+([product integration](../poc/pdf/chunking.md#product-integration)).
 Until it is merged the MVP of PR [#12] keeps processing the original in place.
 
 ## Context

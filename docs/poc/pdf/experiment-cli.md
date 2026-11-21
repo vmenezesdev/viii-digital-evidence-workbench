@@ -52,12 +52,12 @@ runtime. Commands and lifecycle outcomes are retained in `commands.jsonl`;
 
 The former ignored `finish-benchmarks.ps1` queue was retired during adoption.
 This CLI controls one experiment. Docker and concurrency measurements remain
-explicit follow-up commands from [the product report](pdf-product.md).
+explicit follow-up commands from [the product report](product.md).
 
 ## Start a fresh experiment
 
 Build the runtime bundle and generate the synthetic fixture using the existing
-[reproduction instructions](pdf-product.md), then choose a fresh results directory:
+[reproduction instructions](product.md), then choose a fresh results directory:
 
 ```powershell
 ./scripts/pdf-experiment.ps1 start -Package bin/pdf-mvp `
@@ -98,11 +98,11 @@ and accepted page hashes, and waits for a validated final summary and shutdown.
 It uses a fresh results path containing a space, exercising detached argument
 quoting as well. Its `cli-test.json` records the result.
 
-Windows validation on 18 November passed the [12-page lifecycle](results/pdf-mvp/cli-lifecycle-01/cli-test.json)
-with eight accepted page hashes preserved, and the [final two-page check](results/pdf-mvp/cli-lifecycle-final/cli-test.json)
+Windows validation on 18 November passed the [12-page lifecycle](results/mvp/cli/cli-lifecycle-01/cli-test.json)
+with eight accepted page hashes preserved, and the [final two-page check](results/mvp/cli/cli-lifecycle-final/cli-test.json)
 with a real OCR job, partial export, exactly-once pause accounting, duplicate
 resume and automatic process cleanup. These are functional checks, not OCR
-throughput comparisons. A [stale-status regression](results/pdf-mvp/cli-stale-status-check.json)
+throughput comparisons. A [stale-status regression](results/mvp/cli/cli-stale-status-check.json)
 also resumed the large profile despite a deliberately simulated old failure
 record; the calling command returned in about 1.45 seconds. No OCR failure was
 induced in that check. Live CLI lifecycle validation covers WASI; Docker lifecycle

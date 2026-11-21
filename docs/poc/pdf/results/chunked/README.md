@@ -5,7 +5,7 @@ Absolute workspace paths are redacted to `<workspace>`.
 Produced by the scripts in `scripts/` on the Windows PoC workstation
 (Windows 11 10.0.26300, 12 logical / 8 physical cores, 15.7 GiB RAM shared
 with desktop applications), pinned Bacalhau v1.9.5, unchanged OCR worker
-`ed7b4f04…`. Summarised in [the chunking overview](../../pdf-chunking.md).
+`ed7b4f04…`. Summarised in [the chunking overview](../../chunking.md).
 
 | Directory | What | Status |
 | --- | --- | --- |

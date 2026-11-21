@@ -1,6 +1,6 @@
 # Large-PDF chunking: overview and current state
 
-**Status (2026-11-21):** [ADR-0003](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) accepted;
+**Status (2026-11-21):** [ADR-0003](../../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) accepted;
 **integrated into VIII** in PR [#17] (issue [#16]), which builds on PR [#13] (experiments,
 including PR [#15]) and PR [#12] (MVP). Full-size acceptance runs: see
 [Product integration](#product-integration).
@@ -12,7 +12,7 @@ reports; nothing here needs the historical discussion to be read first.
 
 VIII must let a lawyer import a PDF of up to 30,000 pages, search it while it is
 processed and get answers that cite the original's physical pages, running on
-Bacalhau + WASI without Docker ([MVP-PDF.md](../../MVP-PDF.md)). The MVP's OCR worker
+Bacalhau + WASI without Docker ([MVP-PDF.md](MVP-PDF.md)). The MVP's OCR worker
 (Hayro + Tesseract, WASI) loads the **whole PDF** into linear memory on every job:
 2,890 MiB node peak for one 40-page job on the 1.19 GiB fixture, and wasm32 memory
 stops at 4 GiB. Chunking splits the original into small page-range derivatives so
@@ -20,8 +20,8 @@ that OCR memory follows the chunk, not the document.
 
 ## What VIII could do before chunking (PR [#12])
 
-Demonstrated on the Windows workstation with Bacalhau 1.9.5 ([product report](pdf-product.md),
-[acceptance matrix](pdf-acceptance.md)):
+Demonstrated on the Windows workstation with Bacalhau 1.9.5 ([product report](product.md),
+[acceptance matrix](acceptance.md)):
 
 - Real Portuguese OCR in WASI on the pinned Bacalhau executor.
 - Import with SHA-256 identity, authorized read-only placement, incremental text
@@ -32,7 +32,7 @@ Demonstrated on the Windows workstation with Bacalhau 1.9.5 ([product report](pd
 
 **Not demonstrated:** the full 30,000-page run on either engine, the 1/2/4-job
 comparison and the final package audit. The last committed snapshot of the 30k WASI
-run has 27,198 pages searchable and 2,802 pending ([snapshot](results/pdf-mvp/intermediate-20261118.json)).
+run has 27,198 pages searchable and 2,802 pending ([snapshot](results/mvp/large-run/intermediate-20261118.json)).
 That MVP processes the original in place; [Product integration](#product-integration) replaces it for large PDFs.
 
 ## What the experiments demonstrated
@@ -48,7 +48,7 @@ module). Fixtures are synthetic; the decisive one is `mixed-30000.pdf` (30,000 p
 The three measurements below are **different operations**; do not compare their
 numbers across tables.
 
-**1. Single range, late 40 pages of the 30k fixture** ([ALTERNATIVES.md](../../experiments/pdf-chunker/ALTERNATIVES.md))
+**1. Single range, late 40 pages of the 30k fixture** ([ALTERNATIVES.md](../../../experiments/pdf-chunker/reports/ALTERNATIVES.md))
 
 | Chunker | Node peak | Until `ready` |
 | --- | ---: | ---: |
@@ -60,7 +60,7 @@ numbers across tables.
 30k file; two modules; two repeats)
 completed and verified; chunks have the same sha256 natively, on Wasmtime and on Bacalhau.
 
-**2. Whole-document batch, 750 chunks of 40 pages** ([BATCH-RESULTS.md](../../experiments/pdf-chunker/BATCH-RESULTS.md))
+**2. Whole-document batch, 750 chunks of 40 pages** ([BATCH-RESULTS.md](../../../experiments/pdf-chunker/reports/BATCH-RESULTS.md))
 
 | 30k fixture | pdq WASI (historical, PR [#13]) | **flpdf WASI, lean, 128 MiB** |
 | --- | ---: | ---: |
@@ -76,14 +76,14 @@ less memory only on many light pages (19 MiB text-only 30k file: 195 vs 248 MiB)
 
 | Input | OCR job peak | OCR wall | Source |
 | --- | ---: | ---: | --- |
-| original, pages 29,961–30,000 | 2,890 MiB | 142.0 s | [RESULTS.md](../../experiments/pdf-chunker/RESULTS.md) |
+| original, pages 29,961–30,000 | 2,890 MiB | 142.0 s | [RESULTS.md](../../../experiments/pdf-chunker/reports/RESULTS.md) |
 | pdq chunk of the same pages | 270 MiB | 129.5 s | RESULTS.md |
 | flpdf batch chunk of the same pages | 276 MiB | 124 s | BATCH-RESULTS.md |
 
 On both chunks `JABUTICABA` was found on chunk-local page 39 and cited as **physical
 page 29,999 of the original**; 40/40 pages completed.
 
-**Integrity** ([BATCH-RESULTS.md, Forensic integrity](../../experiments/pdf-chunker/BATCH-RESULTS.md#forensic-integrity-f)):
+**Integrity** ([BATCH-RESULTS.md, Forensic integrity](../../../experiments/pdf-chunker/reports/BATCH-RESULTS.md#forensic-integrity-f)):
 original sha256 unchanged after all runs; one set digest per scenario across 154 batch
 runs; `qpdf --check` passed on 3,550 chunks; Poppler text and 30-dpi raster identical to
 the original's physical pages (all 1,000 pages of s1000, sampled boundaries at 10k/30k);
@@ -94,7 +94,7 @@ no fixture text in job logs.
 Reads the original on demand (`Read + Seek`), so memory follows page count rather than
 bytes; runs unmodified on the real executor; one portable module; byte-reproducible,
 pruned chunks with repair diagnostics; and it hands over chunks progressively, so OCR
-can start seconds after import. Full rationale: [ADR-0003](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md#rationale).
+can start seconds after import. Full rationale: [ADR-0003](../../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md#rationale).
 
 ## Why not pdq
 
@@ -104,7 +104,7 @@ refused it with 0.6–3.1 GiB available). It also silently decrypts owner-passwo
 loses repair warnings in Bacalhau and copied every image into every chunk on one fixture.
 Its speed advantage (≤ 55 s per 30k document) is under 0.3% of that document's OCR time.
 Keeping it as a second, adaptively selected strategy was measured and rejected.
-pdfcpu, qpdf, otf-pdf and native pdq: see the [alternatives table](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md#alternatives).
+pdfcpu, qpdf, otf-pdf and native pdq: see the [alternatives table](../../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md#alternatives).
 
 ## Architecture (implemented in PR [#17])
 
@@ -128,7 +128,7 @@ page count and original sha256), `cmd/desktop/pdf_chunks.go`, `pdf_document.go`,
 `pdf_runtime.go`. Package `bin/pdf-chunked` (built by `scripts/package-pdf.ps1`):
 chunker `19e96848…` (128 MiB pre-sized), OCR worker `ed7b4f04…` (unchanged), pinned Bacalhau.
 
-**Concurrency, 1/2/4 jobs** ([raw](results/pdf-chunked/README.md)): the same 8 verified chunks
+**Concurrency, 1/2/4 jobs** ([raw](results/chunked/README.md)): the same 8 verified chunks
 of the 30k fixture (pages 29,681–30,000, 33 scanned), one whole chunk per WASI job.
 
 | Jobs | Total | OCR pages/h | Speed-up | Mean job wall | Node peak | UI search p95 / max |
@@ -146,9 +146,9 @@ WASI 72.5 s, Docker 27.0 s, live restart then WASI→Docker switch 32.6 s; all 1
 overwritten.
 
 **30,000-page runs:** the same 1.19 GiB fixture (30,000 pages, 3,001 scanned), 4 page jobs, fresh
-profiles, detached CLI collector ([raw](results/pdf-chunked/README.md)).
+profiles, detached CLI collector ([raw](results/chunked/README.md)).
 
-| | WASI ([`wasi-30000`](results/pdf-chunked/wasi-30000/summary.json)) | Docker ([`docker-30000`](results/pdf-chunked/docker-30000/summary.json)) |
+| | WASI ([`wasi-30000`](results/chunked/wasi-30000/summary.json)) | Docker ([`docker-30000`](results/chunked/docker-30000/summary.json)) |
 | --- | ---: | ---: |
 | Result | passed: 30,000 searchable, 0 failed | passed: 30,000 searchable, 0 failed |
 | Upload of the original | ~95 s (cold cache) | 4 s (warm cache) |
@@ -167,7 +167,7 @@ private and, at its last snapshot, still had 2,548 pages pending with an estimat
 ~15 h of serial OCR left. The WASI node grew to 1.8–2.25 GiB during OCR and stayed there
 (Go heap retained under `GOMEMLIMIT=3GiB` across ~1,500 executions), not a leak.
 
-**Product UI on the completed WASI profile** ([`ui-29999`](results/pdf-chunked/ui-29999/browser-ui.json)):
+**Product UI on the completed WASI profile** ([`ui-29999`](results/chunked/ui-29999/browser-ui.json)):
 search, a real local-model answer ("pagamento previsto para 15 de março", physical page
 29,999) and the citation opening the original at page 29,999 / 30,000. The original is
 served in 2 s; Chrome's PDF viewer needs 30–90 s to render page 29,999 of a 1.2 GB file.
@@ -176,13 +176,13 @@ served in 2 s; Chrome's PDF viewer needs 30–90 s to render page 29,999 of a 1.
 `ready` (`5f70ad5`); the viewer re-hashed the 1.2 GB original on every range request, ~0.9 s
 each (`4c10a35`); Docker page jobs reserved 2 GB, so Bacalhau rejected the fifth job and
 the first Docker run paused at the start of OCR, kept as
-[`docker-30000-failed-01`](results/pdf-chunked/docker-30000-failed-01) (`8be1d82`); finished
+[`docker-30000-failed-01`](results/chunked/docker-30000-failed-01) (`8be1d82`); finished
 Docker jobs left their staging in the Docker volume (`54fc169`).
 
-**Package audit** ([`package-identity.json`](results/pdf-chunked/package-identity.json)): every
+**Package audit** ([`package-identity.json`](results/chunked/package-identity.json)): every
 bundled file matches the manifest, chunker linear memory is exactly 128 MiB, Bacalhau
 v1.9.5 / `3a6a73aa`. Restricted-network first use (Windows-only PATH, no Docker or Go, dead
-proxies) passed ([`gates`](results/pdf-chunked/gates)).
+proxies) passed ([`gates`](results/chunked/gates)).
 
 ## Limitations
 
@@ -206,9 +206,9 @@ another workstation and > 30,000 pages. MVP acceptance: [#11].
 
 ## Reproduce the decisive results
 
-Tools, fixtures and full commands: [experiment README](../../experiments/pdf-chunker/README.md#reproduction-windows-poc-machine),
-[ALTERNATIVES.md, Reproduction](../../experiments/pdf-chunker/ALTERNATIVES.md#reproduction) and
-[BATCH-RESULTS.md, Reproduction](../../experiments/pdf-chunker/BATCH-RESULTS.md#reproduction). The decisive ones:
+Tools, fixtures and full commands: [experiment README](../../../experiments/pdf-chunker/README.md#reproduction-windows-poc-machine),
+[ALTERNATIVES.md, Reproduction](../../../experiments/pdf-chunker/reports/ALTERNATIVES.md#reproduction) and
+[BATCH-RESULTS.md, Reproduction](../../../experiments/pdf-chunker/reports/BATCH-RESULTS.md#reproduction). The decisive ones:
 
 1. Build `flpdf-wasi` with `--initial-memory=134217728`. On the Windows PoC toolchain the
    module sha256 is `3cf7c9ff…`, the module used for the measurements (rebuilt and matched
@@ -227,13 +227,13 @@ smoke runs of the single-range and batch modes.
 
 | Document | Responsibility |
 | --- | --- |
-| [ADR-0003](../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) | The decision, rationale and alternatives |
+| [ADR-0003](../../adr/0003-chunk-large-pdfs-with-flpdf-wasi.md) | The decision, rationale and alternatives |
 | This page | Current state and entry point |
-| [RESULTS.md](../../experiments/pdf-chunker/RESULTS.md) | Round 1: pdfcpu, pdq, qpdf; Bacalhau WASI quirks; OCR-on-chunk and concurrency (its pdq recommendation is superseded) |
-| [ALTERNATIVES.md](../../experiments/pdf-chunker/ALTERNATIVES.md) | Round 2: on-demand I/O; flpdf, otf-pdf; wazero growth explained (its "batch not implemented" point is resolved) |
-| [BATCH-RESULTS.md](../../experiments/pdf-chunker/BATCH-RESULTS.md) | Round 3: batch pdq vs flpdf, lean route, adaptive selection, integrity |
-| [`results/*.json`](../../experiments/pdf-chunker/results/) | Structured results each report is built from (`summarize.py`, `alt_summarize.py`, `batch_summarize.py`) |
-| [pdf-product.md](pdf-product.md), [pdf-acceptance.md](pdf-acceptance.md) | MVP product results and acceptance (PR [#12]) |
+| [RESULTS.md](../../../experiments/pdf-chunker/reports/RESULTS.md) | Round 1: pdfcpu, pdq, qpdf; Bacalhau WASI quirks; OCR-on-chunk and concurrency (its pdq recommendation is superseded) |
+| [ALTERNATIVES.md](../../../experiments/pdf-chunker/reports/ALTERNATIVES.md) | Round 2: on-demand I/O; flpdf, otf-pdf; wazero growth explained (its "batch not implemented" point is resolved) |
+| [BATCH-RESULTS.md](../../../experiments/pdf-chunker/reports/BATCH-RESULTS.md) | Round 3: batch pdq vs flpdf, lean route, adaptive selection, integrity |
+| [`results/*.json`](../../../experiments/pdf-chunker/results/) | Structured results each report is built from (`summarize.py`, `alt_summarize.py`, `batch_summarize.py`) |
+| [product.md](product.md), [acceptance.md](acceptance.md) | MVP product results and acceptance (PR [#12]) |
 
 Raw run directories (`.poc-runtime/`) are not committed and exist only on the PoC
 workstation; the committed JSON files are the preserved record.
@@ -246,12 +246,12 @@ delivers the first chunk in 5.6 s; pdq is faster overall but memory-bound; one s
 is enough.
 
 **Incidents kept as evidence.** A runner memory-guard defect let two 30k WASI runs drive
-host available RAM to ~6–7 MiB (fixed, regression-tested; [RESULTS.md, Incidents](../../experiments/pdf-chunker/RESULTS.md#incidents)).
+host available RAM to ~6–7 MiB (fixed, regression-tested; [RESULTS.md, Incidents](../../../experiments/pdf-chunker/reports/RESULTS.md#incidents)).
 In the batch round the guard killed three native 30k runs, admission refused every pdq
 WASI 30k run, and the first OCR-on-chunk attempt was killed when other applications left
-1.0 GiB available; none was retried with a weaker guard ([BATCH-RESULTS.md, Method](../../experiments/pdf-chunker/BATCH-RESULTS.md#method)).
+1.0 GiB available; none was retried with a weaker guard ([BATCH-RESULTS.md, Method](../../../experiments/pdf-chunker/reports/BATCH-RESULTS.md#method)).
 The MVP's own run history (I/O error, invalid first-search timestamp, pauses, relocation)
-is in [pdf-product.md](pdf-product.md).
+is in [product.md](product.md).
 
 [#11]: https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/11
 [#14]: https://github.com/vmenezesdev/viii-digital-evidence-workbench/issues/14

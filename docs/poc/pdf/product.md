@@ -3,8 +3,8 @@
 ## Current build: chunked processing (PR #17)
 
 Large PDFs are split into verified 40-page chunks before extraction and OCR
-([overview and results](pdf-chunking.md#product-integration),
-[acceptance](pdf-acceptance.md)). Build the chunker, then package it with the OCR worker:
+([overview and results](chunking.md#product-integration),
+[acceptance](acceptance.md)). Build the chunker, then package it with the OCR worker:
 
 ```powershell
 cd workers/pdf-chunker
@@ -31,7 +31,7 @@ process's directory. The sections below record the earlier in-place MVP (PR #12)
 
 
 For detached operation, pause/resume, inspection and persisted reports without an
-AI session, see [the experiment CLI](pdf-experiment.md).
+AI session, see [the experiment CLI](experiment-cli.md).
 
 The small product workflow passed with Bacalhau Windows v1.9.5, revision
 `3a6a73aa6529755ac2c9d96a771f0566ff3ee5da`. The packaged app imports an immutable
@@ -47,7 +47,7 @@ and exposes incremental FTS5 search. WASI is the default; Docker is optional.
 | Packaged SIMD WASI worker | 8.043 s | 87.220 s | Same 11 searchable / 1 unreadable pages, original SHA and real local answer |
 
 These are functional gates, not controlled throughput comparisons. Evidence is in
-[`results/pdf-mvp`](results/pdf-mvp), under the corresponding `product-*-01`
+[`results/mvp`](results/mvp/README.md), under `product-gates/`, in the corresponding `product-*-01`
 directories. The original small PDF is 1,598,418 bytes, SHA-256
 `504a6a9fa2b76f3c826a50c767c9c0abf7bc498a7537d2760f909b8f73f55dfe`.
 
@@ -68,7 +68,7 @@ claimed as a successful native GUI test. Failed attempt logs remain available.
 
 ## Build and use
 
-Build the WASI worker using the commands in [the technical journal](pdf-mvp.md),
+Build the WASI worker using the commands in [the technical journal](journal.md),
 then package it with the Portuguese OCR model and pinned Bacalhau:
 
 ```powershell
@@ -89,7 +89,7 @@ llama-server.exe -m qwen.gguf --host 127.0.0.1 --port 48081 --alias local --ctx-
 ```
 
 The validated model/runtime identities are in
-`results/pdf-mvp/answer-proof/source.json`. Only a loopback chat-completions endpoint
+`results/mvp/product-gates/answer-proof/source.json`. Only a loopback chat-completions endpoint
 is accepted; searching and OCR do not require inference. Missing passages and a
 partial index are explicitly reported, and citations come from retrieved pages.
 
@@ -142,7 +142,7 @@ or concurrency result is claimed yet. Hayro currently owns the compressed PDF
 byte buffer; the full run must establish its memory and throughput limits.
 
 The earlier scalar run was stopped after 27,478 accepted pages, including 479 OCR
-pages. Its [terminal cancellation record](results/pdf-mvp/scalar-partial-superseded.json)
+pages. Its [terminal cancellation record](results/mvp/large-run/scalar-partial-superseded.json)
 confirms the job/execution resolved before the owned processes were stopped.
 Its accepted files, original and logs remain intact; its sampled 8.69 GB working
 set peak is a **partial scalar-run** result, not the final SIMD result.
@@ -150,7 +150,7 @@ set peak is a **partial scalar-run** result, not the final SIMD result.
 SIMD128 was adopted after two real, reverse-order paired Bacalhau Windows probes
 of the same dense scanned page: 52.870 → 22.627 s and 67.296 → 22.500 s, with
 identical OCR text, physical reference and Portuguese model. See
-[calibration and small product gate](results/pdf-mvp/simd-adoption.json). These
+[calibration and small product gate](results/mvp/large-run/simd-adoption.json). These
 probes overlapped the existing scalar workstation run and are calibration data,
 not isolated machine-wide throughput estimates. Only compiler vectorization
 changed; default concurrency remains one. The full 30,000-page workload is being
@@ -159,8 +159,8 @@ probe as large-document acceptance.
 
 The first WASI timestamp of 113.763 s is **invalid**: Windows PowerShell wrapped
 an empty JSON response array as one item, and that event has no physical page.
-The [correction record](results/pdf-mvp/benchmark-first-query-correction.json) and
-[real empty/nonempty-response regression](results/pdf-mvp/collector-array-regression.log)
+The [correction record](results/mvp/large-run/benchmark-first-query-correction.json) and
+[real empty/nonempty-response regression](results/mvp/large-run/collector-array-regression.log)
 preserve the diagnosis. The collector now expands the returned array and requires
 a real page/citation. Both new full runs use that corrected collector; no separate
 prefix trial is needed. Historical raw events remain intact. The first SIMD
@@ -170,7 +170,7 @@ hidden-process checks; attempt `-02` started afterward in a fresh directory.
 
 That full SIMD run directly recorded a real first hit on physical page 1 while
 29,999 pages were pending: **55.168 s from import**, or 58.611 s including monitor
-startup. See [the actual query references](results/pdf-mvp/simd-first-useful-search.json).
+startup. See [the actual query references](results/mvp/large-run/simd-first-useful-search.json).
 
 At extraction range 1,154–1,281, the worker returned generic `I/O error` before
 publishing metadata/pages. The app paused with 1,038 searchable pages and 1,153
@@ -188,8 +188,8 @@ heaps between ranges. The same target applies to each 1/2/4-job comparison.
 Rust byte-integrity/bounded-read/range regressions, Go regressions and the rebuilt
 small real-model product gate passed. The original full document was reopened
 and resumed at physical page **1,154**; all **2,191** accepted/observed artifact
-hashes remained unchanged. See [diagnosis](results/pdf-mvp/simd-io-diagnosis.json)
-and [actual restart/resume](results/pdf-mvp/simd-io-resumed.json).
+hashes remained unchanged. See [diagnosis](results/mvp/large-run/simd-io-diagnosis.json)
+and [actual restart/resume](results/mvp/large-run/simd-io-resumed.json).
 
 The full-run wall clock and prior peaks remain intact, including the diagnosis
 pause and runtime configuration change. Final performance reporting must retain
@@ -205,7 +205,7 @@ API/NATS ports had become excluded Windows ports, so this stopped profile was
 assigned free loopback ports without changing system reservations. Both the
 source fixture and imported original SHA were rechecked. The same document
 resumed at missing OCR page 50. See
-[resume evidence](results/pdf-mvp/user-resume-relocated-20261118.json).
+[resume evidence](results/mvp/large-run/user-resume-relocated-20261118.json).
 
 The collector preserves raw wall time and additionally reports active elapsed
 and OCR durations excluding the recorded explicit user pause. Diagnostic pauses
@@ -237,8 +237,8 @@ The job reached `Stopped` with execution state 11 before its owned runtime was
 closed. On explicit `Continue`, both PDF hashes were verified and the same
 document resumed at physical page 1,140, preserving the searchable count. This
 second pause is separately added to the excluded user-pause duration. See
-[resume evidence](results/pdf-mvp/user-resume-20261118-134135.json) and
-[current package hashes](results/pdf-mvp/package-identity-continue-20261118.json).
+[resume evidence](results/mvp/large-run/user-resume-20261118-134135.json) and
+[current package hashes](results/mvp/large-run/package-identity-continue-20261118.json).
 The initial machine/package record remains historical; the rebuilt desktop
 preserves node identity after the move, with unchanged bounded-I/O worker,
 Portuguese OCR model and pinned Bacalhau runtime.

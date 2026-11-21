@@ -344,6 +344,24 @@ func (r *pdfRuntime) spec(ctx context.Context, input, control, id, node, phase s
 	return map[string]any{"Name": "viii-" + id, "Type": "batch", "Count": 1, "Constraints": []any{map[string]any{"Key": "name", "Operator": "in", "Values": []string{node}}}, "Tasks": []any{task}}, nil
 }
 
+// cleanDocker removes finished chunk jobs' staged inputs and outputs from the
+// Docker volume; each job otherwise left ~1.6 MB behind (2.66 GB after the 30k
+// run). Results were already copied and acknowledged.
+func (r *pdfRuntime) cleanDocker(ctx context.Context, attempts []string) error {
+	if r.volume == "" {
+		return errors.New("Docker volume not initialised")
+	}
+	args := []string{"run", "--rm", "--mount", "type=volume,source=" + r.volume + ",target=/data", "alpine:3", "rm", "-rf"}
+	for _, id := range attempts {
+		if !validAttempt(id) {
+			return errors.New("invalid attempt identifier")
+		}
+		args = append(args, "/data/control/"+id, "/data/out/"+id)
+	}
+	_, err := dockerCommand(ctx, args...)
+	return err
+}
+
 // prepareSpec builds the flpdf batch job that splits the original into chunks
 // (from physical page first; last == 0 means the whole document).
 func (r *pdfRuntime) prepareSpec(original, control, id, node, sha string, size, first, last int) (map[string]any, error) {

@@ -84,6 +84,9 @@ type pdfService struct {
 	// viewer remembers the last full verification of the served original.
 	viewerMu sync.Mutex
 	viewer   originalCheck
+	// dockerDone lists finished Docker attempts whose staged chunk and outputs
+	// can be removed from the Docker volume (best effort, batched).
+	dockerDone []string
 }
 
 // originalCheck is a full sha256 verification of a file at a given size and
@@ -608,6 +611,9 @@ func (p *pdfService) reconcile(ctx context.Context, d *pdfDocument, r *pdfRange)
 		d.Paused = true
 		d.Diagnostic = "O lote falhou. Os resultados confirmados foram preservados; use Retomar para tentar as páginas restantes."
 	}
+	if a.Mode == "pdf-docker" && a.ChunkFile != "" {
+		p.dockerDone = append(p.dockerDone, a.Attempt)
+	}
 	return true, p.s.save(a)
 }
 
@@ -643,6 +649,9 @@ func (p *pdfService) advance(ctx context.Context, d *pdfDocument) error {
 		}
 	}
 	d.Jobs = active
+	if len(p.dockerDone) > 0 && p.runtime.cleanDocker(ctx, p.dockerDone) == nil {
+		p.dockerDone = nil
+	}
 	if d.Paused || len(d.Jobs) > 0 && d.Engine != d.DesiredEngine {
 		return nil
 	}

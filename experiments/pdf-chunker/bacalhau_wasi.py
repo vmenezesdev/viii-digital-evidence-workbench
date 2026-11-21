@@ -107,7 +107,7 @@ def local_input(source, target):
     return {"Source": {"Type": "local", "Params": {"SourcePath": slash(source), "ReadWrite": False}}, "Target": target}
 
 
-def job_spec(name, node, module, mounts, control, args, memory, cpu, timeout_s):
+def job_spec(name, node, module, mounts, control, args, memory, cpu, timeout_s, env=None):
     inputs = [local_input(module, "/worker")]
     inputs += [local_input(src, target) for target, src in sorted(mounts.items())]
     inputs.append(local_input(control, "/control"))
@@ -117,6 +117,8 @@ def job_spec(name, node, module, mounts, control, args, memory, cpu, timeout_s):
         "Tasks": [{
             "Name": "main",
             "Engine": {"Type": "wasm", "Params": {"EntryModule": "/worker", "Entrypoint": "_start", "Parameters": list(args)}},
+            # Bacalhau v1.9.5 stores but ignores Engine.Params.EnvironmentVariables (observed); Task.Env is used.
+            **({"Env": dict(env)} if env else {}),
             "InputSources": inputs,
             # v1.9.5 validates Path with Windows filepath.IsAbs; WASI mounts Name at /out.
             "ResultPaths": [{"Name": "out", "Path": "C:/out"}],
@@ -190,6 +192,35 @@ def verify_chunkset_dir(out_dir, expect_first, expect_last):
         return False, "chunks do not cover the requested range", manifest
     return True, "ok", {k: v for k, v in manifest.items() if k != "chunks"} | {"chunk_count": len(manifest["chunks"]),
         "chunk_bytes_total": sum(c["chunk_bytes"] for c in manifest["chunks"])}
+
+
+def progressive_first_chunk(out_dir, dest):
+    """Batch workers that write a sidecar `chunk-A-B.json` after each verified
+    chunk (flpdf-wasi) let the host use a chunk before `ready`. Copy the first
+    chunk whose sidecar is complete, verify its hash and exact page map, and
+    return a record; None while no complete sidecar exists. The host reads the
+    real mount (normal file system); only guests see /out's stat quirk."""
+    out_dir, dest = Path(out_dir), Path(dest)
+    try:
+        sidecars = sorted(n for n in os.listdir(out_dir) if n.startswith("chunk-") and n.endswith(".json"))
+    except OSError:
+        return None
+    for name in sidecars[:1]:
+        try:
+            side = json.loads((out_dir / name).read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None  # still being written; retry on the next poll
+        pdf = out_dir / side.get("file", "")
+        if pdf.parent != out_dir or not pdf.is_file():
+            return None
+        dest.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(pdf, dest / pdf.name)
+        want = [{"local": i + 1, "physical": p} for i, p in
+                enumerate(range(side.get("physical_first", 0), side.get("physical_last", -1) + 1))]
+        ok = (sha256(dest / pdf.name) == side.get("chunk_sha256") and side.get("pages") == want
+              and side.get("chunk_page_count") == len(want))
+        return {"file": pdf.name, "verified": ok, "sidecars_visible": len(sidecars)}
+    return None
 
 
 def verify_pages_dir(out_dir, first, last):
@@ -395,7 +426,8 @@ def _run(plan, results, bacalhau, poll=0.1):
         t0 = time.perf_counter()
         for j in jobs:
             spec = job_spec(f"viii-chunk-{j['id']}-{secrets.token_hex(3)}", node_name, module, mounts, control,
-                            j["args"], plan.get("memory", "3gb"), plan.get("cpu", "1"), plan.get("timeout_s", 900))
+                            j["args"], plan.get("memory", "3gb"), plan.get("cpu", "1"), plan.get("timeout_s", 900),
+                            env=j.get("env") or plan.get("env"))
             (results / f"job-{j['id']}.json").write_text(json.dumps(spec, indent=2), encoding="utf-8")
             submitted = api.call("PUT", "/jobs", spec, timeout=30)
             records[j["id"]].update(job_id=submitted["JobID"], submitted_s=round(time.perf_counter() - t0, 3))
@@ -407,7 +439,14 @@ def _run(plan, results, bacalhau, poll=0.1):
                 try:
                     desc = api.call("GET", f"/jobs/{rec['job_id']}?include=executions")
                 except (urllib.error.URLError, OSError, ValueError):
-                    if node.poll() is not None:  # node killed (memory guard) or crashed
+                    # node killed (memory guard) or crashed. The guard's kill is
+                    # asynchronous: the API can reset before poll() sees the exit.
+                    if sampler.guard_tripped:
+                        try:
+                            node.wait(10)
+                        except subprocess.TimeoutExpired:
+                            pass
+                    if node.poll() is not None:
                         break
                     raise
                 items = (desc.get("Executions") or {}).get("Items") or []
@@ -418,6 +457,12 @@ def _run(plan, results, bacalhau, poll=0.1):
                     if not item.get("ID"):
                         continue
                     out = results / "node" / "compute" / "executions" / "output" / item["ID"] / "results" / "out"
+                    if plan.get("progressive") and "first_chunk" not in rec:
+                        seen_s = round(time.perf_counter() - t0, 3)
+                        first_chunk = progressive_first_chunk(out, artifacts / f"{jid}-first-chunk")
+                        if first_chunk:
+                            rec["first_chunk"] = first_chunk | {"visible_s": seen_s,
+                                                                "usable_s": round(time.perf_counter() - t0, 3)}
                     if plan.get("ready_protocol") and not rec["acknowledged"] and ready_marker(out):
                         rec["execution_id"] = item["ID"]
                         rec["ready_s"] = round(time.perf_counter() - t0, 3)
@@ -439,6 +484,8 @@ def _run(plan, results, bacalhau, poll=0.1):
                             tmp.write_text("accepted", encoding="utf-8")
                             os.replace(tmp, ack)
                             rec["acknowledged"] = True
+                        # Host copy + verification of every output, ready -> ack (or reject).
+                        rec["copy_verify_s"] = round(time.perf_counter() - t0 - rec["ready_s"], 3)
                 state = desc["Job"]["State"]["StateType"]
                 if state in TERMINAL:
                     rec["terminal_s"] = round(time.perf_counter() - t0, 3)

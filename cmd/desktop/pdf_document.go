@@ -78,6 +78,46 @@ type pdfService struct {
 	Jobs    int
 	mu      sync.Mutex
 	stateMu sync.RWMutex
+	// viewer remembers the last full verification of the served original.
+	viewerMu sync.Mutex
+	viewer   originalCheck
+}
+
+// originalCheck is a full sha256 verification of a file at a given size and
+// modification time. The viewer issues many range requests on large PDFs;
+// re-hashing 1.2 GB for each took ~0.9 s, so a verification is reused while
+// the file is unchanged and repeated at least every originalRecheck.
+type originalCheck struct {
+	path    string
+	size    int64
+	modTime time.Time
+	at      time.Time
+}
+
+const originalRecheck = 10 * time.Minute
+
+func (p *pdfService) verifiedOriginal(path, want string) bool {
+	info, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	p.viewerMu.Lock()
+	defer p.viewerMu.Unlock()
+	c := p.viewer
+	if c.path == path && c.size == info.Size() && c.modTime.Equal(info.ModTime()) && time.Since(c.at) < originalRecheck {
+		return true
+	}
+	actual, err := fileDigest(path)
+	if err != nil || actual != want {
+		p.viewer = originalCheck{}
+		return false
+	}
+	after, err := os.Stat(path)
+	if err != nil || after.Size() != info.Size() || !after.ModTime().Equal(info.ModTime()) {
+		return false
+	}
+	p.viewer = originalCheck{path: path, size: info.Size(), modTime: info.ModTime(), at: time.Now()}
+	return true
 }
 
 func fileDigest(path string) (string, error) {
@@ -309,8 +349,7 @@ func (s *workbench) servePDF(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		path := p.original(d.EvidenceID)
-		actual, err := fileDigest(path)
-		if err != nil || actual != d.SHA256 {
+		if !p.verifiedOriginal(path, d.SHA256) {
 			http.Error(w, "Original PDF integrity failure", 500)
 			return
 		}

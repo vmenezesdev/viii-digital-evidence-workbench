@@ -374,5 +374,44 @@ func TestPDFLegacySingleAttemptStateStillLoads(t *testing.T) {
 	if mirrored["attempt"] != attempt || mirrored["first"].(float64) != 4510 {
 		t.Fatal("older readers lost the active attempt", string(data))
 	}
-	_ = time.Now
+}
+
+func TestPDFViewerReusesVerificationOnlyWhileOriginalIsUnchanged(t *testing.T) {
+	s := &workbench{root: t.TempDir()}
+	p := &pdfService{s: s}
+	path := filepath.Join(s.root, "original.pdf")
+	data := []byte("%PDF-1.7 viewer integrity fixture")
+	if err := os.WriteFile(path, data, 0600); err != nil {
+		t.Fatal(err)
+	}
+	want := digest(data)
+	if !p.verifiedOriginal(path, want) || p.viewer.at.IsZero() {
+		t.Fatal("unchanged original rejected")
+	}
+	first := p.viewer.at
+	if !p.verifiedOriginal(path, want) || !p.viewer.at.Equal(first) {
+		t.Fatal("verification not reused for an unchanged original")
+	}
+	// Same size, new content and modification time: re-hashed and rejected.
+	mutated := []byte("%PDF-1.7 viewer integrity fixturE")
+	if err := os.WriteFile(path, mutated, 0600); err != nil {
+		t.Fatal(err)
+	}
+	later := time.Now().Add(2 * time.Second)
+	os.Chtimes(path, later, later)
+	if p.verifiedOriginal(path, want) {
+		t.Fatal("mutated original served")
+	}
+	// An expired verification is repeated even if size and time look unchanged.
+	os.WriteFile(path, data, 0600)
+	os.Chtimes(path, later, later)
+	if !p.verifiedOriginal(path, want) {
+		t.Fatal("restored original rejected")
+	}
+	p.viewer.at = time.Now().Add(-originalRecheck - time.Second)
+	os.WriteFile(path, mutated, 0600)
+	os.Chtimes(path, later, later)
+	if p.verifiedOriginal(path, want) {
+		t.Fatal("expired verification was trusted")
+	}
 }

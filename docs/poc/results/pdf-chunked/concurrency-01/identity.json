@@ -1,0 +1,43 @@
+{
+    "chunks":  [
+                   {
+                       "last":  29880,
+                       "sha256":  "c27f79d7f8dbea8885d3db0f70d32416464764fa215090bdfa49c0dc6e562367",
+                       "name":  "chunk-029841-029880",
+                       "file":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29841-30000\\chunk-029841-029880.pdf",
+                       "first":  29841
+                   },
+                   {
+                       "last":  29920,
+                       "sha256":  "7a8d3e7da7fa6c3c437ccaf290a77770ff9827b4b0e7c2d2dc3ad8ebfb8e49a4",
+                       "name":  "chunk-029881-029920",
+                       "file":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29841-30000\\chunk-029881-029920.pdf",
+                       "first":  29881
+                   },
+                   {
+                       "last":  29960,
+                       "sha256":  "4a4800c5c96003eb5b4465ada8b4922af44c8c596129f872250f3771e627df06",
+                       "name":  "chunk-029921-029960",
+                       "file":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29841-30000\\chunk-029921-029960.pdf",
+                       "first":  29921
+                   },
+                   {
+                       "last":  30000,
+                       "sha256":  "29f0418ead75682d14aa86588fbdbf5424c362cca3ddabd380c7d2b8e8f87a48",
+                       "name":  "chunk-029961-030000",
+                       "file":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\chunks-29841-30000\\chunk-029961-030000.pdf",
+                       "first":  29961
+                   }
+               ],
+    "machine":  {
+                    "logical_cpus":  12,
+                    "physical_cores":  8,
+                    "build":  "10.0.26300.0",
+                    "os":  "Microsoft Windows 11 Home Single Language",
+                    "ram_bytes":  16890322944
+                },
+    "worker_sha256":  "ed7b4f04aaeaf9280f83b44e8036dca2677f29953e5fd43f9c4da17ae0bba680",
+    "model_sha256":  "c4932b937207a9514b7514d518b931a99938c02a28a5a5a553f8599ed58b7deb",
+    "bacalhau_sha256":  "6ee846f8352246be157bb6e502185277438c22781201f3635a50354dd0228964",
+    "job_memory":  "1gb"
+}

@@ -1,0 +1,7 @@
+{
+  "jobs": 4,
+  "engine": "wasi",
+  "pdf": "<workspace>\\viii-pdf-integration\\.poc-runtime\\pdf\\fixtures\\mixed-30000.pdf",
+  "port": 49181,
+  "package": "<workspace>\\viii-pdf-integration\\bin\\pdf-chunked"
+}

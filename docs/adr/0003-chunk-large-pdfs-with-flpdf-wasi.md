@@ -1,6 +1,6 @@
 # ADR-0003: Chunk large PDFs with flpdf in batch mode on Bacalhau + WASI
 
-- **Status:** Accepted — **not yet integrated into the product**
+- **Status:** Accepted — implemented in PR [#17] (pending merge)
 - **Date:** 2026-11-20
 - **Accepted:** 2026-11-21 — project maintainer decision, on the experimental evidence.
 - **Decision scope:** how VIII prepares very large PDFs (up to the validated 30,000 pages) before OCR
@@ -8,10 +8,9 @@
 - **Depends on:** [ADR-0001](0001-adopt-go-wails-v3-bacalhau.md) (Bacalhau as sole orchestrator; WASI portable, Docker optional)
 - **Evidence:** [PDF chunking overview](../poc/pdf-chunking.md) · PR [#13] (including merged PR [#15]) · issue [#14]
 
-Accepting the decision does not integrate it. Implementation is tracked in
-issue [#16]
-([summary](../poc/pdf-chunking.md#what-is-left-for-the-product)).
-Until it is done the MVP of PR [#12] keeps processing the original in place.
+Implementation: issue [#16], PR [#17]
+([product integration](../poc/pdf-chunking.md#product-integration)).
+Until it is merged the MVP of PR [#12] keeps processing the original in place.
 
 ## Context
 
@@ -106,24 +105,23 @@ the gap is off the critical path **[inference]**.
   and a chunk-set record per document. The original stays immutable and remains
   the only citation target.
 - OCR job memory becomes independent of document size, which makes concurrent OCR
-  jobs feasible on a workstation; the default concurrency is still a separate,
-  measured decision (issue [#11]).
+  jobs feasible on a workstation. Measured on the same chunks, 4 simultaneous jobs
+  gave 3.4× the throughput of 1 with unchanged UI search latency, so the default is
+  4 jobs on chunks (1 in place).
 - flpdf is 0.x with essentially one author. Pin the version and checksum
   (`38cd9b8e…`) and use the adversarial suite plus the lean-route byte-identity
   check as the upgrade gate.
-- Experimental code (`experiments/pdf-chunker/flpdf-wasi`) is not production code;
-  integration must move it into a supported worker location with tests.
+- The supported worker is `workers/pdf-chunker`, a copy of the measured
+  experiment with product defaults; the experiment directory stays as the record.
 
 ## Open questions and limits
 
-- Integration with the VIII host (progressive consumption, storage, OCR on chunks,
-  recovery, cancellation) is not implemented.
 - Encrypted-PDF policy; silent repair of a lying xref is not detectable through
   flpdf diagnostics.
 - Not measured: cold OS cache (flpdf requests 2.5–4× the file through the page
   cache), documents above 30,000 pages (~450 MiB linear memory at 100,000 pages
   is an extrapolation), the ~160 MiB node jump right after `ready` on large
-  results, UI responsiveness during preparation, any other workstation.
+  results, concurrency above 4 jobs, any other workstation.
 - All fixtures are synthetic.
 
 ## Reconsider if
@@ -141,3 +139,4 @@ the gap is off the critical path **[inference]**.
 [#12]: https://github.com/vmenezesdev/viii-digital-evidence-workbench/pull/12
 [#13]: https://github.com/vmenezesdev/viii-digital-evidence-workbench/pull/13
 [#15]: https://github.com/vmenezesdev/viii-digital-evidence-workbench/pull/15
+[#17]: https://github.com/vmenezesdev/viii-digital-evidence-workbench/pull/17

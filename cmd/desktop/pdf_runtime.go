@@ -25,10 +25,12 @@ type pdfRuntime struct {
 	Root, Bundle, Inference                     string
 	Client                                      wasijob.Client
 	Worker, WorkerSHA, ModelDir, Image, ImageID string
-	apiPort, natsPort                           int
-	name, token, volume, volumeRoot, container  string
-	verified                                    bool
-	stagedOriginal                              string
+	// Chunker is the bundled flpdf WASI module (ADR-0003); empty in older bundles.
+	Chunker, ChunkerSHA                        string
+	apiPort, natsPort                          int
+	name, token, volume, volumeRoot, container string
+	verified                                   bool
+	stagedOriginal                             string
 }
 
 func (r *pdfRuntime) node(engine string) string {
@@ -64,7 +66,7 @@ func (r *pdfRuntime) ensure(ctx context.Context) error {
 		if err != nil {
 			return errors.New("Instalação incompleta: pacote runtime/manifest.json não encontrado")
 		}
-		var manifest struct{ WorkerSHA256, ModelSHA256, BacalhauSHA256, DockerImage string }
+		var manifest struct{ WorkerSHA256, ModelSHA256, BacalhauSHA256, DockerImage, ChunkerSHA256 string }
 		if err := json.Unmarshal(data, &manifest); err != nil {
 			return err
 		}
@@ -90,6 +92,14 @@ func (r *pdfRuntime) ensure(ctx context.Context) error {
 			return errors.New("Bacalhau must be pinned to v1.9.5 / " + bacalhauRevision)
 		}
 		r.WorkerSHA = strings.ToLower(manifest.WorkerSHA256)
+		if manifest.ChunkerSHA256 != "" {
+			chunker := filepath.Join(r.Bundle, "pdf-chunker.wasm")
+			got, err := fileDigest(chunker)
+			if err != nil || !strings.EqualFold(got, manifest.ChunkerSHA256) {
+				return errors.New("Bundled artifact integrity failure: pdf-chunker.wasm")
+			}
+			r.Chunker, r.ChunkerSHA = chunker, strings.ToLower(manifest.ChunkerSHA256)
+		}
 		r.Image = manifest.DockerImage
 		if r.Image == "" {
 			r.Image = "viii-pdf-worker:local"
@@ -147,7 +157,10 @@ func (r *pdfRuntime) ensure(ctx context.Context) error {
 		l.Close()
 	}
 	dir := filepath.Join(r.Root, "runtime")
-	allow := []string{filepath.ToSlash(r.Worker) + ":ro", filepath.ToSlash(r.ModelDir) + ":ro", filepath.ToSlash(filepath.Join(r.Root, "originals")) + "/**:ro", filepath.ToSlash(filepath.Join(r.Root, "control")) + "/**:ro"}
+	allow := []string{filepath.ToSlash(r.Worker) + ":ro", filepath.ToSlash(r.ModelDir) + ":ro", filepath.ToSlash(filepath.Join(r.Root, "originals")) + "/**:ro", filepath.ToSlash(filepath.Join(r.Root, "control")) + "/**:ro", filepath.ToSlash(filepath.Join(r.Root, "chunks")) + "/**:ro"}
+	if r.Chunker != "" {
+		allow = append(allow, filepath.ToSlash(r.Chunker)+":ro")
+	}
 	config := map[string]any{"DisableAnalytics": true, "API": map[string]any{"Host": "127.0.0.1", "Port": r.apiPort}, "Orchestrator": map[string]any{"Enabled": true, "Host": "127.0.0.1", "Port": r.natsPort, "Auth": map[string]string{"Token": r.token}, "NodeManager": map[string]bool{"ManualApproval": true}}, "Compute": map[string]any{"Enabled": true, "Orchestrators": []string{fmt.Sprintf("nats://127.0.0.1:%d", r.natsPort)}, "Auth": map[string]string{"Token": r.token}, "AllowListedLocalPaths": allow}, "Engines": map[string]any{"Disabled": []string{"docker"}}, "Publishers": map[string]any{"Disabled": []string{"local"}}}
 	data, _ := json.MarshalIndent(config, "", "  ")
 	if err := atomicWrite(filepath.Join(dir, "node.yaml"), data); err != nil {
@@ -284,34 +297,87 @@ func localMount(source, target string, writable bool) map[string]any {
 	return map[string]any{"Source": map[string]any{"Type": "local", "Params": map[string]any{"SourcePath": filepath.ToSlash(source), "ReadWrite": writable}}, "Target": target}
 }
 
-func (r *pdfRuntime) spec(ctx context.Context, original, control, id, node, phase string, first, last int) (map[string]any, error) {
+// spec builds a page job. input is the original or, when chunk is set, one
+// verified chunk; first and last are pages of that input.
+func (r *pdfRuntime) spec(ctx context.Context, input, control, id, node, phase string, first, last int, chunk bool) (map[string]any, error) {
 	args := []string{"/original.pdf", fmt.Sprint(first), fmt.Sprint(last), "/out", "/control/accepted", phase, "/model"}
-	task := map[string]any{"Name": "main", "Resources": map[string]string{"CPU": "1", "Memory": "2gb"}, "Timeouts": map[string]int{"TotalTimeout": 3600}, "Network": map[string]string{"Type": "none"}}
+	// A job on a 40-page chunk peaked at ~276 MiB; reserving 2 GB each let only
+	// three jobs fit the Docker VM and Bacalhau rejected the rest.
+	memory := "2gb"
+	if chunk {
+		memory = "1gb"
+	}
+	task := map[string]any{"Name": "main", "Resources": map[string]string{"CPU": "1", "Memory": memory}, "Timeouts": map[string]int{"TotalTimeout": 3600}, "Network": map[string]string{"Type": "none"}}
 	if strings.HasSuffix(node, "-wasi") {
 		actual, err := fileDigest(r.Worker)
 		if err != nil || actual != r.WorkerSHA {
 			return nil, errors.New("Worker integrity failure")
 		}
 		task["Engine"] = map[string]any{"Type": "wasm", "Params": map[string]any{"EntryModule": "/worker", "Entrypoint": "_start", "Parameters": args}}
-		task["InputSources"] = []any{localMount(r.Worker, "/worker", false), localMount(original, "/original.pdf", false), localMount(r.ModelDir, "/model", false), localMount(control, "/control", false)}
+		task["InputSources"] = []any{localMount(r.Worker, "/worker", false), localMount(input, "/original.pdf", false), localMount(r.ModelDir, "/model", false), localMount(control, "/control", false)}
 		task["ResultPaths"] = []any{map[string]string{"Name": "out", "Path": "C:/out"}}
 		task["Publisher"] = map[string]string{"Type": "noop"}
 	} else {
 		if _, err := dockerCommand(ctx, "run", "--rm", "--mount", "type=volume,source="+r.volume+",target=/data", "alpine:3", "mkdir", "-p", "/data/control/"+id, "/data/out/"+id); err != nil {
 			return nil, err
 		}
-		if r.stagedOriginal != original {
-			if _, err := dockerCommand(ctx, "cp", original, r.container+":"+r.volumeRoot+"/original.pdf"); err != nil {
+		staged := r.volumeRoot + "/original.pdf"
+		if !chunk && r.stagedOriginal != input {
+			if _, err := dockerCommand(ctx, "cp", input, r.container+":"+staged); err != nil {
 				return nil, err
 			}
-			r.stagedOriginal = original
+			r.stagedOriginal = input
 		}
 		if _, err := dockerCommand(ctx, "cp", control+string(os.PathSeparator)+".", r.container+":"+r.volumeRoot+"/control/"+id); err != nil {
 			return nil, err
 		}
+		if chunk {
+			// Each chunk job gets its own staged copy, so concurrent jobs never share an input path.
+			staged = r.volumeRoot + "/control/" + id + "/input.pdf"
+			if _, err := dockerCommand(ctx, "cp", input, r.container+":"+staged); err != nil {
+				return nil, err
+			}
+		}
 		task["Engine"] = map[string]any{"Type": "docker", "Params": map[string]any{"Image": r.ImageID, "Entrypoint": []string{"/pdf-worker"}, "Parameters": args, "SkipImagePull": true}}
-		task["InputSources"] = []any{localMount(r.volumeRoot+"/original.pdf", "/original.pdf", false), localMount(r.volumeRoot+"/models", "/model", false), localMount(r.volumeRoot+"/control/"+id, "/control", false), localMount(r.volumeRoot+"/out/"+id, "/out", true)}
+		task["InputSources"] = []any{localMount(staged, "/original.pdf", false), localMount(r.volumeRoot+"/models", "/model", false), localMount(r.volumeRoot+"/control/"+id, "/control", false), localMount(r.volumeRoot+"/out/"+id, "/out", true)}
 	}
+	return map[string]any{"Name": "viii-" + id, "Type": "batch", "Count": 1, "Constraints": []any{map[string]any{"Key": "name", "Operator": "in", "Values": []string{node}}}, "Tasks": []any{task}}, nil
+}
+
+// cleanDocker removes finished chunk jobs' staged inputs and outputs from the
+// Docker volume; each job otherwise left ~1.6 MB behind (2.66 GB after the 30k
+// run). Results were already copied and acknowledged.
+func (r *pdfRuntime) cleanDocker(ctx context.Context, attempts []string) error {
+	if r.volume == "" {
+		return errors.New("Docker volume not initialised")
+	}
+	args := []string{"run", "--rm", "--mount", "type=volume,source=" + r.volume + ",target=/data", "alpine:3", "rm", "-rf"}
+	for _, id := range attempts {
+		if !validAttempt(id) {
+			return errors.New("invalid attempt identifier")
+		}
+		args = append(args, "/data/control/"+id, "/data/out/"+id)
+	}
+	_, err := dockerCommand(ctx, args...)
+	return err
+}
+
+// prepareSpec builds the flpdf batch job that splits the original into chunks
+// (from physical page first; last == 0 means the whole document).
+func (r *pdfRuntime) prepareSpec(original, control, id, node, sha string, size, first, last int) (map[string]any, error) {
+	actual, err := fileDigest(r.Chunker)
+	if err != nil || actual != r.ChunkerSHA {
+		return nil, errors.New("Chunker integrity failure")
+	}
+	args := []string{"/original.pdf", "--chunk-size", fmt.Sprint(size), "--out-dir", "/out", "--ack", "/control/accepted", "--source-sha256", sha}
+	if last > 0 {
+		args = append(args, "--range", fmt.Sprintf("%d-%d", first, last))
+	}
+	task := map[string]any{"Name": "main", "Resources": map[string]string{"CPU": "1", "Memory": "1gb"}, "Timeouts": map[string]int{"TotalTimeout": 3600}, "Network": map[string]string{"Type": "none"},
+		"Engine":       map[string]any{"Type": "wasm", "Params": map[string]any{"EntryModule": "/worker", "Entrypoint": "_start", "Parameters": args}},
+		"InputSources": []any{localMount(r.Chunker, "/worker", false), localMount(original, "/original.pdf", false), localMount(control, "/control", false)},
+		"ResultPaths":  []any{map[string]string{"Name": "out", "Path": "C:/out"}},
+		"Publisher":    map[string]string{"Type": "noop"}}
 	return map[string]any{"Name": "viii-" + id, "Type": "batch", "Count": 1, "Constraints": []any{map[string]any{"Key": "name", "Operator": "in", "Values": []string{node}}}, "Tasks": []any{task}}, nil
 }
 

@@ -1,0 +1,21 @@
+{
+  "evidence_id": "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+  "sha256": "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+  "name": "mixed-30000.pdf",
+  "bytes": 1250617698,
+  "pages": 30000,
+  "engine": "docker",
+  "desired_engine": "docker",
+  "phase": "ocr",
+  "first": 250,
+  "last": 280,
+  "authorized_nodes": {
+    "viii-pdf-c951e36ba2cc-docker": true,
+    "viii-pdf-c951e36ba2cc-wasi": true
+  },
+  "paused": true,
+  "cancel_requested": true,
+  "complete": false,
+  "chunking": "ready",
+  "chunk_size": 40
+}

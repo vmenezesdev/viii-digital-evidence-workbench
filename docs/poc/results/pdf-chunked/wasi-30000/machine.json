@@ -1,0 +1,17 @@
+{
+    "package_sha256":  "CB41823C5B3CE119971EED4DFB05B0024FACD6937BEBC3AC48D2EFACC026F765",
+    "cpu":  {
+                "Name":  "12th Gen Intel(R) Core(TM) i5-12450HX",
+                "NumberOfCores":  8,
+                "NumberOfLogicalProcessors":  12
+            },
+    "disk":  {
+                 "Size":  509722226688,
+                 "FreeSpace":  64410570752
+             },
+    "os":  {
+               "Caption":  "Microsoft Windows 11 Home Single Language",
+               "Version":  "10.0.26300",
+               "TotalVisibleMemorySize":  16494456
+           }
+}

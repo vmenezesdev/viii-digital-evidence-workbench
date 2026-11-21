@@ -1,0 +1,8 @@
+OCR failed: inspect C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\.poc-runtime\pdf\ocr-proof-06/description.json
+No C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\prove-pdf-ocr.ps1:84 caractere:176
++ ... -pdf-wasi') { throw "OCR failed: inspect $Results/description.json" }
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (OCR failed: ins...escription.json:String) [], RuntimeException
+    + FullyQualifiedErrorId : OCR failed: inspect C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\.poc-runtime\pdf\ocr 
+   -proof-06/description.json
+ 

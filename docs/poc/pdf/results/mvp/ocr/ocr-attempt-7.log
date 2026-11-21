@@ -1,0 +1,14 @@
+{
+    "model_sha256":  "C4932B937207A9514B7514D518B931A99938C02A28A5A5A553F8599ED58B7DEB",
+    "job":  "j-564ad250-7471-49af-b1ea-d62b05cae456",
+    "version":  "5.5.0",
+    "tool":  "tesseract",
+    "execution":  "e-9ebba862-156d-4dcc-a6a4-2642b9f45e90",
+    "passed":  true,
+    "input_sha256":  "DA5D13ADEEF121994AE8ADCA3472077A2342C8F17599E4BF7FB693970EBCFF0B",
+    "node":  "viii-pdf-wasi",
+    "elapsed_ms":  3696.7985000000003,
+    "worker_sha256":  "09934889594120EFDC76A63F6EAB0904B8A43D3907369660129E639714512278",
+    "bacalhau_revision":  "3a6a73aa6529755ac2c9d96a771f0566ff3ee5da",
+    "docker_disabled":  true
+}

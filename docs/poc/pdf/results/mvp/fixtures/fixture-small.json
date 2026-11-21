@@ -1,0 +1,15 @@
+{
+  "pages": 12,
+  "scanned": [
+    4,
+    8,
+    11,
+    12
+  ],
+  "ocr_ratio": 0.3333333333333333,
+  "target_page": 11,
+  "target_term": "JABUTICABA",
+  "blank_page": 8,
+  "bytes": 1598418,
+  "sha256": "504a6a9fa2b76f3c826a50c767c9c0abf7bc498a7537d2760f909b8f73f55dfe"
+}

@@ -1,0 +1,10 @@
+{
+    "input_sha256":  "504A6A9FA2B76F3C826A50C767C9C0ABF7BC498A7537D2760F909B8F73F55DFE",
+    "passed":  true,
+    "execution":  "e-4b572595-707c-4f5c-a762-5f3c3790bccc",
+    "image":  "viii-pdf-worker:local",
+    "elapsed_ms":  13110.1298,
+    "job":  "j-10392bc6-1d88-4417-83e2-b8256fe3d41b",
+    "engine":  "docker",
+    "tool_version":  "5.3.0"
+}

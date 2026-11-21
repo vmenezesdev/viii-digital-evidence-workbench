@@ -1,0 +1,13 @@
+{
+    "at":  "2026-11-17T13:40:11.7788650Z",
+    "scope":  "Same Tesseract 5.5.0 and Portuguese OCR model, separate artifact and nodes; current full scalar run is unchanged",
+    "activity":  "Experimental SIMD128 compilation and paired page-level OCR probes",
+    "logs":  [
+                 "simd-base-build.log",
+                 "simd-libraries-build.log",
+                 "simd-rust-build.log"
+             ],
+    "compiler_flags":  "C++ -msimd128; Rust -C target-feature=+simd128",
+    "note":  "Development activity overlaps the existing workstation run and must be disclosed in its performance report",
+    "reason":  "Observed scalar OCR about 1-2 minutes per dense scanned page"
+}

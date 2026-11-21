@@ -1,0 +1,17 @@
+=== RUN   TestPDFMixedArtifacts
+--- PASS: TestPDFMixedArtifacts (0.34s)
+PASS
+ok  	github.com/vmenezesdev/viii-digital-evidence-workbench/cmd/desktop	0.685s
+=== RUN   TestPDFRealLocalAnswer
+--- PASS: TestPDFRealLocalAnswer (1.28s)
+PASS
+ok  	github.com/vmenezesdev/viii-digital-evidence-workbench/cmd/desktop	1.607s
+{
+    "passed":  true,
+    "source_proof":  "C:\\Users\\vinic\\Documents\\Code\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\pages-ocr-proof-01",
+    "backend":  "llama.cpp",
+    "server_sha256":  "022D39B8BEE02455BC5AECBBB71D4514CA60509CD319B6582BB4453FB0C64DF9",
+    "physical_page":  11,
+    "model_sha256":  "74A4DA8C9FDBCD15BD1F6D01D621410D31C6FC00986F5EB687824E7B93D7A9DB",
+    "model_file":  "qwen.gguf"
+}

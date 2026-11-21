@@ -1,0 +1,68 @@
+{
+    "go_heap_soft_limit":  "3GiB",
+    "historical_clock_and_peaks_preserved":  true,
+    "at":  "2026-11-17T14:35:56.2354907Z",
+    "resumed_status":  {
+                           "document":  {
+                                            "evidence_id":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+                                            "sha256":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+                                            "name":  "mixed-30000.pdf",
+                                            "bytes":  1250617698,
+                                            "pages":  30000,
+                                            "engine":  "wasi",
+                                            "desired_engine":  "wasi",
+                                            "phase":  "extract",
+                                            "attempt":  "2s4tuledj4jepfoztnzhx6d7vq",
+                                            "first":  1154,
+                                            "last":  1281,
+                                            "authorized_nodes":  {
+                                                                     "viii-pdf-85f6a0ce188d-wasi":  true
+                                                                 },
+                                            "paused":  false,
+                                            "complete":  false
+                                        },
+                           "failed":  0,
+                           "failures":  [
+
+                                        ],
+                           "ocr_processed":  0,
+                           "pending":  28962,
+                           "searchable":  1038
+                       },
+    "before":  {
+                   "document":  {
+                                    "evidence_id":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+                                    "sha256":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+                                    "name":  "mixed-30000.pdf",
+                                    "bytes":  1250617698,
+                                    "pages":  30000,
+                                    "engine":  "wasi",
+                                    "desired_engine":  "wasi",
+                                    "phase":  "extract",
+                                    "first":  1154,
+                                    "last":  1281,
+                                    "authorized_nodes":  {
+                                                             "viii-pdf-85f6a0ce188d-wasi":  true
+                                                         },
+                                    "paused":  true,
+                                    "complete":  false,
+                                    "diagnostic":  "worker exit 1 (stdout truncated: false):  I/O error"
+                                },
+                   "failed":  0,
+                   "failures":  [
+
+                                ],
+                   "ocr_processed":  0,
+                   "pending":  28962,
+                   "searchable":  1038
+               },
+    "new_worker_sha256":  "ED7B4F04AAEAF9280F83B44E8036DCA2677F29953E5FD43F9C4DA17AE0BBA680",
+    "reason":  "Resolved I/O failure before page publication, read in 64 KiB blocks and limit retained Bacalhau Go heap to 3GiB",
+    "resumed_at":  "2026-11-17T14:36:11.0466223Z",
+    "original_sha256":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+    "confirmed_artifacts_unchanged":  2191,
+    "new_app_sha256":  "C145287400F04ACBB555338AD8D3BD65B7F1C207860C5DAB5573E5E1E7A4AD43",
+    "new_package":  "C:\\Users\\vinic\\Documents\\Code\\viii\\viii-pdf-mvp\\bin\\pdf-mvp-simd-io",
+    "old_package":  "C:\\Users\\vinic\\Documents\\Code\\viii\\viii-pdf-mvp\\bin\\pdf-mvp-simd",
+    "whole_compressed_pdf_still_in_memory":  true
+}

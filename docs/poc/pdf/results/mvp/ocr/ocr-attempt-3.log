@@ -1,0 +1,8 @@
+Invoke-RestMethod : {"Status":400,"Message":"task main validation failed: publisher must be set if result paths are 
+set","RequestID":"","Code":"BadRequest","Component":"JobStore"}
+No C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\prove-pdf-ocr.ps1:60 caractere:13
++     $job = (Invoke-RestMethod "$api/jobs" -Method Put -ContentType 'a ...
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand

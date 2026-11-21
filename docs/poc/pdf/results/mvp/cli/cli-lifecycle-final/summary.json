@@ -1,0 +1,56 @@
+{
+    "elapsed_ms":  114307.947,
+    "peak_windows_temporary_bytes":  812137,
+    "ocr_pages":  1,
+    "ocr_ratio":  0.5,
+    "bytes":  418191,
+    "first_useful_search_ms":  24693.9579,
+    "user_pause_ms":  4122.1567000000005,
+    "sha256":  "643bea8ac24978c6060fff7d3bf1ffa304be64bda8e4d08a5772f31cf22e877b",
+    "ocr_phase_wall_seconds":  76.79510239999999,
+    "final_status":  {
+                         "document":  {
+                                          "evidence_id":  "643bea8ac24978c6060fff7d3bf1ffa304be64bda8e4d08a5772f31cf22e877b",
+                                          "sha256":  "643bea8ac24978c6060fff7d3bf1ffa304be64bda8e4d08a5772f31cf22e877b",
+                                          "name":  "cli-two.pdf",
+                                          "bytes":  418191,
+                                          "pages":  2,
+                                          "engine":  "wasi",
+                                          "desired_engine":  "wasi",
+                                          "phase":  "ocr",
+                                          "first":  1,
+                                          "last":  2,
+                                          "skip":  [
+                                                       2
+                                                   ],
+                                          "authorized_nodes":  {
+                                                                   "viii-pdf-26be1c26dfcc-wasi":  true
+                                                               },
+                                          "paused":  false,
+                                          "complete":  true
+                                      },
+                         "failed":  0,
+                         "failures":  [
+
+                                      ],
+                         "ocr_processed":  1,
+                         "pending":  0,
+                         "searchable":  2
+                     },
+    "engine":  "wasi",
+    "peak_windows_working_set_sum":  348942336,
+    "target_hits":  [
+                        {
+                            "page":  1,
+                            "text":  " ... confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\n\nJABUTICABA: pagamento previsto para 15 de marÃ§o.\n",
+                            "url":  "/api/pdf/original?evidence=643bea8ac24978c6060fff7d3bf1ffa304be64bda8e4d08a5772f31cf22e877b#page=1"
+                        }
+                    ],
+    "passed":  true,
+    "peak_windows_private_sum":  393854976,
+    "pages":  2,
+    "active_elapsed_ms":  110185.7903,
+    "ocr_pages_per_second":  0.013021663735681146,
+    "ocr_phase_seconds":  76.79510239999999,
+    "sampling":  "RAM 5s, disk/docker 30s. Sampled peaks are lower bounds; Windows processes exclude Docker VM. Docker stats and volume samples retained separately in events.jsonl. Active times exclude only explicitly recorded user pauses."
+}

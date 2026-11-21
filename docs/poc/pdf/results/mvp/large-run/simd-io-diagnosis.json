@@ -1,0 +1,22 @@
+{
+    "next":  "Validate rebuilt worker/package, then restart only the paused owned app/runtime and resume the same document; preserve original and accepted-page hashes.",
+    "free_physical_memory_kib_before_failure":  800276,
+    "digital_observations":  1153,
+    "windows_working_set_sum_before_failure":  5905612800,
+    "mitigations":  [
+                        "Read the same complete PDF through explicit 64 KiB requests, preserving exact bytes and rejecting short/changed input",
+                        "Include operation and I/O error details without extracted text in failures",
+                        "Start the owned Bacalhau process with GOMEMLIMIT=3GiB to reduce retained heaps between ranges"
+                    ],
+    "limits":  "Hayro still owns the full compressed PDF byte buffer. This is bounded host I/O, not a streaming PDF parser.",
+    "cause":  "Not proven: no operation context or native Windows errno was logged. Large host read buffers and retained Wasm heaps under memory pressure are a working hypothesis, consistent with failure before metadata/page publication.",
+    "windows_private_sum_before_failure":  6434467840,
+    "range_artifacts_observed":  0,
+    "at":  "2026-11-17T14:33:02.7716633Z",
+    "stderr":  "I/O error",
+    "primary_reference":  "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile",
+    "worker_exit":  1,
+    "range":  "extract 1154-1281",
+    "failure_job":  "j-d7f4c359-1eae-48e6-a037-54ce90501d59",
+    "accepted_searchable":  1038
+}

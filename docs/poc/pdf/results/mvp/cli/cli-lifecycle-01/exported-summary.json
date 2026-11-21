@@ -1,0 +1,64 @@
+{
+    "elapsed_ms":  235097.4585,
+    "peak_windows_temporary_bytes":  834956,
+    "ocr_pages":  4,
+    "ocr_ratio":  0.3333333333333333,
+    "bytes":  1277599,
+    "first_useful_search_ms":  18942.7127,
+    "user_pause_ms":  3766.2097,
+    "sha256":  "04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869",
+    "ocr_phase_wall_seconds":  199.1870749,
+    "final_status":  {
+                         "document":  {
+                                          "evidence_id":  "04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869",
+                                          "sha256":  "04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869",
+                                          "name":  "stream-small.pdf",
+                                          "bytes":  1277599,
+                                          "pages":  12,
+                                          "engine":  "wasi",
+                                          "desired_engine":  "wasi",
+                                          "phase":  "ocr",
+                                          "first":  4,
+                                          "last":  12,
+                                          "skip":  [
+                                                       5,
+                                                       6,
+                                                       7,
+                                                       9,
+                                                       10
+                                                   ],
+                                          "authorized_nodes":  {
+                                                                   "viii-pdf-19c84ea7eaff-wasi":  true
+                                                               },
+                                          "paused":  false,
+                                          "complete":  true
+                                      },
+                         "failed":  1,
+                         "failures":  [
+                                          {
+                                              "page":  8,
+                                              "status":  "unreadable",
+                                              "url":  "/api/pdf/original?evidence=04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869#page=8"
+                                          }
+                                      ],
+                         "ocr_processed":  4,
+                         "pending":  0,
+                         "searchable":  11
+                     },
+    "engine":  "wasi",
+    "peak_windows_working_set_sum":  345964544,
+    "target_hits":  [
+                        {
+                            "page":  11,
+                            "text":  " ... confirma a obrigaÃƒÂ§ÃƒÂ£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃƒÂ§ÃƒÂ£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃƒÂ§ÃƒÂ£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃƒÂ§ÃƒÂ£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃƒÂ§ÃƒÂ£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃƒÂ§ÃƒÂ£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃƒÂ§ÃƒÂ£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃƒÂ§ÃƒÂ£o de pagamento e o prazo contratual.\n\nJABUTICABA: pagamento previsto para 15 de marÃƒÂ§o.\n",
+                            "url":  "/api/pdf/original?evidence=04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869#page=11"
+                        }
+                    ],
+    "passed":  true,
+    "peak_windows_private_sum":  391811072,
+    "pages":  12,
+    "active_elapsed_ms":  231331.2488,
+    "ocr_pages_per_second":  0.0200816242821386,
+    "ocr_phase_seconds":  199.1870749,
+    "sampling":  "RAM 5s, disk/docker 30s. Sampled peaks are lower bounds; Windows processes exclude Docker VM. Docker stats and volume samples retained separately in events.jsonl. Active times exclude only explicitly recorded user pauses."
+}

@@ -1,0 +1,31 @@
+{
+    "host_cpu_max_percent":  100,
+    "note":  "Same verified chunks, one whole chunk per job, CPU=1 per job, warm cache, sampled every ~1 s (peaks are lower bounds); UI is a completed local index in headless Chrome; no inference.",
+    "job_wall_seconds":  [
+                             98.984643299999988,
+                             84.556140199999987,
+                             81.172915099999983,
+                             100.84047859999998
+                         ],
+    "ocr_pages_per_hour":  165.69410732499759,
+    "concurrency":  1,
+    "chunks":  4,
+    "min_host_free_bytes":  1654321152,
+    "ui_search_p95_ms":  105,
+    "host_cpu_mean_percent":  25.797534238652851,
+    "ui_samples":  343,
+    "ui_search_max_ms":  180,
+    "pages_per_second":  0.43318720869280414,
+    "scheduler_delay_max_ms":  16,
+    "sampled_peak_node_private":  420421632,
+    "target_page":  29999,
+    "ui_search_median_ms":  56,
+    "passed":  true,
+    "peak_active":  1,
+    "ocr_pages":  17,
+    "elapsed_seconds":  369.35531979999996,
+    "job_wall_mean":  91.388544299999978,
+    "sampled_peak_node_working_set":  408596480,
+    "idle_node_working_set":  58822656,
+    "pages":  160
+}

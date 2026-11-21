@@ -1,0 +1,8 @@
+Invoke-RestMethod : {"Status":400,"Message":"task main validation failed: invalid output: result path `/out` must be 
+absolute","RequestID":"","Code":"InternalError","Component":"APIServer"}
+No C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\prove-pdf-ocr.ps1:59 caractere:13
++     $job = (Invoke-RestMethod "$api/jobs" -Method Put -ContentType 'a ...
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand

@@ -1,0 +1,7 @@
+Imported wrong evidence
+No C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\benchmark-pdf.ps1:61 caractere:47
++ ... s.document.sha256 -ne $state.sha256){throw 'Imported wrong evidence'}
++                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Imported wrong evidence:String) [], RuntimeException
+    + FullyQualifiedErrorId : Imported wrong evidence
+ 

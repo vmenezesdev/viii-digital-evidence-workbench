@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"sync"
@@ -31,6 +32,7 @@ type workbench struct {
 	root      string
 	mu        sync.Mutex
 	placement *wasijob.Placement
+	pdf       *pdfService
 }
 
 type attemptRecord struct {
@@ -60,12 +62,18 @@ type attemptRecord struct {
 	Executions      []executionRecord     `json:"executions,omitempty"`
 	Orchestrator    string                `json:"orchestrator,omitempty"`
 	StagingDir      string                `json:"staging_dir,omitempty"`
-	CancelRequested *time.Time            `json:"cancel_requested,omitempty"`
-	Diagnostic      string                `json:"diagnostic,omitempty"`
-	Error           string                `json:"error,omitempty"`
-	Result          *ufdr.Result          `json:"result,omitempty"`
-	ResultSHA256    string                `json:"result_sha256,omitempty"`
-	OriginalXML     string                `json:"original_xml,omitempty"`
+	// PDF chunk jobs: the operational derivative mounted instead of the original
+	// and its physical page range; local page n maps to ChunkFirst+n-1.
+	ChunkFile       string       `json:"chunk_file,omitempty"`
+	ChunkSHA256     string       `json:"chunk_sha256,omitempty"`
+	ChunkFirst      int          `json:"chunk_first,omitempty"`
+	ChunkLast       int          `json:"chunk_last,omitempty"`
+	CancelRequested *time.Time   `json:"cancel_requested,omitempty"`
+	Diagnostic      string       `json:"diagnostic,omitempty"`
+	Error           string       `json:"error,omitempty"`
+	Result          *ufdr.Result `json:"result,omitempty"`
+	ResultSHA256    string       `json:"result_sha256,omitempty"`
+	OriginalXML     string       `json:"original_xml,omitempty"`
 }
 
 type executionRecord struct {
@@ -84,6 +92,10 @@ func (a *attemptRecord) finish(status string, err error) {
 }
 
 func (s *workbench) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if strings.HasPrefix(r.URL.Path, "/api/pdf/") {
+		s.servePDF(w, r)
+		return
+	}
 	if r.URL.Path != "/api/process" && r.URL.Path != "/api/attempt" {
 		f, _ := fs.Sub(assets, "assets")
 		http.FileServer(http.FS(f)).ServeHTTP(w, r)
@@ -471,7 +483,13 @@ func atomicWrite(path string, data []byte) error {
 	if err != nil {
 		return err
 	}
-	return os.Rename(f.Name(), path)
+	err = os.Rename(f.Name(), path)
+	// Windows readers can briefly deny replacement while holding the old file.
+	for attempt := 0; err != nil && runtime.GOOS == "windows" && attempt < 5; attempt++ {
+		time.Sleep(10 * time.Millisecond << attempt)
+		err = os.Rename(f.Name(), path)
+	}
+	return err
 }
 
 func (s *workbench) saveAndReply(w http.ResponseWriter, a *attemptRecord, input []byte) {

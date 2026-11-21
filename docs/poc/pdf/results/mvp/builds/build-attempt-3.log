@@ -1,0 +1,212 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from pdf-worker.Dockerfile
+#1 transferring dockerfile: 2.10kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/11] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#4 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.0s done
+#4 DONE 0.0s
+
+#5 [ 6/11] RUN cmake -S leptonica-1.85.0 -B lept -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/lept     -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DBUILD_SHARED_LIBS=OFF -DBUILD_PROG=OFF -DENABLE_ZLIB=OFF -DENABLE_PNG=OFF -DENABLE_JPEG=OFF     -DENABLE_TIFF=OFF -DENABLE_WEBP=OFF -DENABLE_OPENJPEG=OFF -DENABLE_GIF=OFF     -DCMAKE_C_FLAGS='-D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -Wno-implicit-function-declaration'     && cmake --build lept -j4 && cmake --install lept
+#5 CACHED
+
+#6 [ 4/11] RUN curl -fL https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sdk-25.0-x86_64-linux.tar.gz | tar xz && mv wasi-sdk-25.0-x86_64-linux /opt/wasi-sdk
+#6 CACHED
+
+#7 [ 3/11] WORKDIR /build
+#7 CACHED
+
+#8 [ 2/11] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl cmake ninja-build make python3 xz-utils && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [ 5/11] RUN curl -fL https://github.com/DanBloomberg/leptonica/releases/download/1.85.0/leptonica-1.85.0.tar.gz | tar xz
+#9 CACHED
+
+#10 [ 7/11] RUN curl -fL https://github.com/tesseract-ocr/tesseract/archive/refs/tags/5.5.0.tar.gz | tar xz
+#10 CACHED
+
+#11 [internal] load build context
+#11 transferring context: 1.43kB done
+#11 DONE 0.0s
+
+#12 [ 8/11] COPY scripts/pdf-wasi-threads.h tesseract-5.5.0/src/pdf-wasi-threads.h
+#12 DONE 0.1s
+
+#13 [ 9/11] COPY scripts/patch-pdf-tesseract.py /build/patch-pdf-tesseract.py
+#13 DONE 0.1s
+
+#14 [10/11] RUN python3 patch-pdf-tesseract.py tesseract-5.5.0
+#14 0.305 Single threaded WASI adaptation:
+#14 0.305 tesseract-5.5.0/src/viewer/scrollview.cpp
+#14 0.305 tesseract-5.5.0/src/viewer/svutil.h
+#14 0.305 tesseract-5.5.0/src/viewer/svutil.cpp
+#14 0.305 tesseract-5.5.0/src/viewer/scrollview.h
+#14 0.305 tesseract-5.5.0/src/ccutil/object_cache.h
+#14 0.305 tesseract-5.5.0/src/lstm/networkscratch.h
+#14 0.305 tesseract-5.5.0/src/ccstruct/imagedata.cpp
+#14 0.305 tesseract-5.5.0/src/ccstruct/imagedata.h
+#14 0.305 tesseract-5.5.0/src/classify/intfx.cpp
+#14 0.305 tesseract-5.5.0/src/training/unicharset/lstmtester.cpp
+#14 0.305 tesseract-5.5.0/src/training/unicharset/lstmtester.h
+#14 DONE 0.3s
+
+#15 [11/11] RUN cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess -j4 && cmake --install tess
+#15 0.283 -- The C compiler identification is Clang 19.1.5
+#15 0.306 -- The CXX compiler identification is Clang 19.1.5
+#15 0.311 -- Detecting C compiler ABI info
+#15 0.355 -- Detecting C compiler ABI info - done
+#15 0.357 -- Check for working C compiler: /opt/wasi-sdk/share/cmake/../..//bin/clang - skipped
+#15 0.357 -- Detecting C compile features
+#15 0.358 -- Detecting C compile features - done
+#15 0.361 -- Detecting CXX compiler ABI info
+#15 0.405 -- Detecting CXX compiler ABI info - done
+#15 0.407 -- Check for working CXX compiler: /opt/wasi-sdk/share/cmake/../..//bin/clang++ - skipped
+#15 0.407 -- Detecting CXX compile features
+#15 0.408 -- Detecting CXX compile features - done
+#15 0.408 -- Configuring tesseract version 5.5.0...
+#15 1.886 -- IPO / LTO supported
+#15 1.886 -- CMAKE_SYSTEM_PROCESSOR=<wasm32>
+#15 1.888 -- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) 
+#15 1.889 -- Found leptonica version: 1.85.0
+#15 2.045 Leptonica was build without TIFF support! Disabling TIFF support...
+#15 2.045 -- TIFF support disabled.
+#15 2.045 -- LibArchive support disabled.
+#15 2.045 -- CURL support disabled.
+#15 2.047 ScrollView debugging disabled.
+#15 2.050 -- Looking for feenableexcept
+#15 2.091 -- Looking for feenableexcept - found
+#15 2.094 -- 
+#15 2.094 -- General configuration for Tesseract 5.5.0
+#15 2.094 -- --------------------------------------------------------
+#15 2.094 -- Build type: Release 32 bits
+#15 2.094 -- Compiler: Clang
+#15 2.094 -- Used standard: C++20
+#15 2.094 -- CXX compiler options: -fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -O3 -DNDEBUG -Wno-unused-command-line-argument
+#15 2.094 -- Compile definitions = CMAKE_BUILD;HAVE_CONFIG_H
+#15 2.094 -- Linker options:  
+#15 2.094 -- Install directory: /opt/tess
+#15 2.094 -- HAVE_AVX: FALSE
+#15 2.094 -- HAVE_AVX2: FALSE
+#15 2.094 -- HAVE_AVX512F: FALSE
+#15 2.094 -- HAVE_FMA: FALSE
+#15 2.094 -- HAVE_SSE4_1: FALSE
+#15 2.094 -- MARCH_NATIVE_OPT: OFF
+#15 2.094 -- HAVE_NEON: FALSE
+#15 2.094 -- Link-time optimization: FALSE
+#15 2.094 -- --------------------------------------------------------
+#15 2.094 -- Build with sw [SW_BUILD]: OFF
+#15 2.094 -- Build with openmp support [OPENMP_BUILD]: OFF
+#15 2.094 -- Build with libarchive support [HAVE_LIBARCHIVE]: OFF
+#15 2.094 -- Build with libcurl support [HAVE_LIBCURL]: OFF
+#15 2.094 -- Enable float for LSTM [FAST_FLOAT]: ON
+#15 2.094 -- Enable optimization for host CPU (could break HW compatibility) [ENABLE_NATIVE]: OFF
+#15 2.094 -- Disable disable graphics (ScrollView) [GRAPHICS_DISABLED]: ON
+#15 2.094 -- Disable the legacy OCR engine [DISABLED_LEGACY_ENGINE]: ON
+#15 2.094 -- Build training tools [BUILD_TRAINING_TOOLS]: OFF
+#15 2.094 -- Build tests [BUILD_TESTS]: OFF
+#15 2.094 -- Use system ICU Library [USE_SYSTEM_ICU]: OFF
+#15 2.094 -- Install tesseract configs [INSTALL_CONFIGS]: ON
+#15 2.094 -- --------------------------------------------------------
+#15 2.094 -- 
+#15 2.112 -- Configuring done
+#15 2.126 -- Generating done
+#15 2.129 CMake Warning:
+#15 2.129   Manually-specified variables were not used by the project:
+#15 2.129 
+#15 2.129     BUILD_TESSERACT_BINARY
+#15 2.129     LEPT_TIFF_RESULT__TRYRUN_OUTPUT
+#15 2.129 
+#15 2.129 
+#15 2.129 -- Build files have been written to: /build/tess
+#15 5.102 [1/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/applybox.cpp.obj
+#15 5.119 [2/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/ltrresultiterator.cpp.obj
+#15 5.463 [3/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/linerec.cpp.obj
+#15 6.182 [4/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/control.cpp.obj
+#15 6.694 [5/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/mutableiterator.cpp.obj
+#15 7.833 [6/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/output.cpp.obj
+#15 8.205 [7/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/pageiterator.cpp.obj
+#15 8.221 [8/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/paramsd.cpp.obj
+#15 8.977 [9/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/pagesegmain.cpp.obj
+#15 9.351 [10/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/pagewalk.cpp.obj
+#15 11.32 [11/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/pgedit.cpp.obj
+#15 11.68 [12/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/reject.cpp.obj
+#15 12.55 [13/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/resultiterator.cpp.obj
+#15 12.58 [14/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/tessvars.cpp.obj
+#15 13.16 [15/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/paragraphs.cpp.obj
+#15 14.58 [16/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/tessedit.cpp.obj
+#15 14.63 [17/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/thresholder.cpp.obj
+#15 15.57 [18/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/werdit.cpp.obj
+#15 15.83 [19/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccmain/tesseractclass.cpp.obj
+#15 17.15 [20/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/blobbox.cpp.obj
+#15 17.31 [21/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/blamer.cpp.obj
+#15 17.70 [22/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/blread.cpp.obj
+#15 18.25 [23/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/blobs.cpp.obj
+#15 19.65 [24/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/ccstruct.cpp.obj
+#15 19.85 [25/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/boxword.cpp.obj
+#15 20.07 [26/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/boxread.cpp.obj
+#15 20.17 [27/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/image.cpp.obj
+#15 20.88 [28/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/coutln.cpp.obj
+#15 21.66 [29/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/dppoint.cpp.obj
+#15 22.44 [30/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/detlinefit.cpp.obj
+#15 22.75 [31/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/linlsq.cpp.obj
+#15 22.96 [32/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/imagedata.cpp.obj
+#15 22.96 FAILED: CMakeFiles/libtesseract.dir/src/ccstruct/imagedata.cpp.obj 
+#15 22.96 /opt/wasi-sdk/share/cmake/../..//bin/clang++ --target=wasm32-wasi -DCMAKE_BUILD -DHAVE_CONFIG_H -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS=1 -I/build/tesseract-5.5.0/include -I/build/tesseract-5.5.0/src/arch -I/build/tesseract-5.5.0/src/ccmain -I/build/tesseract-5.5.0/src/ccstruct -I/build/tesseract-5.5.0/src/ccutil -I/build/tesseract-5.5.0/src/classify -I/build/tesseract-5.5.0/src/cutil -I/build/tesseract-5.5.0/src/dict -I/build/tesseract-5.5.0/src/lstm -I/build/tesseract-5.5.0/src/textord -I/build/tesseract-5.5.0/src/viewer -I/build/tesseract-5.5.0/src/wordrec -I/build/tesseract-5.5.0/src/training -I/build/tesseract-5.5.0/src -I/opt/lept/include -I/opt/lept/include/leptonica -I/build/tess -I/build/tess/include -fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -O3 -DNDEBUG -Wno-unused-command-line-argument -std=c++20 -MD -MT CMakeFiles/libtesseract.dir/src/ccstruct/imagedata.cpp.obj -MF CMakeFiles/libtesseract.dir/src/ccstruct/imagedata.cpp.obj.d -o CMakeFiles/libtesseract.dir/src/ccstruct/imagedata.cpp.obj -c /build/tesseract-5.5.0/src/ccstruct/imagedata.cpp
+#15 22.96 /build/tesseract-5.5.0/src/ccstruct/imagedata.cpp:383:15: error: constructor for 'tesseract::DocumentData' must explicitly initialize the member 'thread' which does not have a default constructor
+#15 22.96   383 | DocumentData::DocumentData(const std::string &name)
+#15 22.96       |               ^
+#15 22.96 /build/tesseract-5.5.0/src/ccstruct/imagedata.h:280:23: note: member is declared here
+#15 22.96   280 |   viii_serial::thread thread;
+#15 22.96       |                       ^
+#15 22.96 /build/tesseract-5.5.0/src/pdf-wasi-threads.h:11:8: note: 'viii_serial::thread' declared here
+#15 22.96    11 | struct thread {
+#15 22.96       |        ^
+#15 22.96 /build/tesseract-5.5.0/src/ccstruct/imagedata.cpp:392:14: error: no member named 'joinable' in 'viii_serial::thread'
+#15 22.96   392 |   if (thread.joinable()) {
+#15 22.96       |       ~~~~~~ ^
+#15 22.96 /build/tesseract-5.5.0/src/ccstruct/imagedata.cpp:459:14: error: no member named 'joinable' in 'viii_serial::thread'
+#15 22.96   459 |   if (thread.joinable()) {
+#15 22.96       |       ~~~~~~ ^
+#15 22.96 3 errors generated.
+#15 24.01 [33/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/matrix.cpp.obj
+#15 24.05 [34/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/mod128.cpp.obj
+#15 24.89 [35/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/normalis.cpp.obj
+#15 24.89 ninja: build stopped: subcommand failed.
+#15 ERROR: process "/bin/sh -c cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess -j4 && cmake --install tess" did not complete successfully: exit code: 1
+------
+ > [11/11] RUN cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess -j4 && cmake --install tess:
+22.96   392 |   if (thread.joinable()) {
+22.96       |       ~~~~~~ ^
+22.96 /build/tesseract-5.5.0/src/ccstruct/imagedata.cpp:459:14: error: no member named 'joinable' in 'viii_serial::thread'
+22.96   459 |   if (thread.joinable()) {
+22.96       |       ~~~~~~ ^
+22.96 3 errors generated.
+24.01 [33/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/matrix.cpp.obj
+24.05 [34/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/mod128.cpp.obj
+24.89 [35/153] Building CXX object CMakeFiles/libtesseract.dir/src/ccstruct/normalis.cpp.obj
+24.89 ninja: build stopped: subcommand failed.
+------
+pdf-worker.Dockerfile:17
+--------------------
+  16 |     RUN python3 patch-pdf-tesseract.py tesseract-5.5.0
+  17 | >>> RUN cmake -S tesseract-5.5.0 -B tess -G Ninja \
+  18 | >>>     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess \
+  19 | >>>     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY \
+  20 | >>>     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT= \
+  21 | >>>     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF \
+  22 | >>>     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF \
+  23 | >>>     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL' \
+  24 | >>>     && cmake --build tess -j4 && cmake --install tess
+  25 |     
+--------------------
+ERROR: failed to solve: process "/bin/sh -c cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess -j4 && cmake --install tess" did not complete successfully: exit code: 1
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/t3aixymr3skco85n0evpilypj

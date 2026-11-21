@@ -1,0 +1,16 @@
+{
+    "kind":  "first-useful-search",
+    "value":  {
+                  "query_ms":  12.0088,
+                  "hits":  [
+                               {
+                                   "page":  1,
+                                   "url":  "/api/pdf/original?evidence=eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699#page=1"
+                               }
+                           ],
+                  "pending":  29999,
+                  "from_import_ms":  55167.904200000004,
+                  "elapsed_ms":  58610.693900000006
+              },
+    "at":  "2026-11-17T14:04:00.2344143Z"
+}

@@ -1,0 +1,50 @@
+{
+    "results":  ".poc-runtime/pdf/benchmark-wasi-simd-30000-02",
+    "queue":  {
+                  "pid":  27200,
+                  "stage":  "waiting-existing-wasi",
+                  "at":  "2026-11-17T14:41:20.7419878Z"
+              },
+    "measurements":  {
+                         "started":  "2026-11-17T14:03:01.5921062Z",
+                         "first_search_ms":  58610.693900000006,
+                         "ocr_started":  null,
+                         "peak_windows_working_set":  5940703232,
+                         "peak_windows_private_bytes":  7340552192,
+                         "peak_temporary_bytes":  8690800
+                     },
+    "classification":  "progress",
+    "scalar_partial":  "scalar-partial-superseded.json",
+    "at":  "2026-11-17T14:47:33.5020367Z",
+    "package":  "bin/pdf-mvp-simd-io",
+    "first_query_metric_valid":  true,
+    "first_query_evidence":  "simd-first-useful-search.json",
+    "wasi":  {
+                 "document":  {
+                                  "evidence_id":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+                                  "sha256":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+                                  "name":  "mixed-30000.pdf",
+                                  "bytes":  1250617698,
+                                  "pages":  30000,
+                                  "engine":  "wasi",
+                                  "desired_engine":  "wasi",
+                                  "phase":  "extract",
+                                  "attempt":  "d73ejn3vj5afg3eeeqfvzmu333",
+                                  "first":  8322,
+                                  "last":  8449,
+                                  "authorized_nodes":  {
+                                                           "viii-pdf-85f6a0ce188d-wasi":  true
+                                                       },
+                                  "paused":  false,
+                                  "complete":  false
+                              },
+                 "failed":  0,
+                 "failures":  [
+
+                              ],
+                 "ocr_processed":  0,
+                 "pending":  22511,
+                 "searchable":  7489
+             },
+    "configuration_change":  "simd-io-resumed.json"
+}

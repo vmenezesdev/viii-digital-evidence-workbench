@@ -1,0 +1,12 @@
+{
+    "invalid_event_at":  "2026-11-17T06:23:59.6671604Z",
+    "regression_log":  "docs/poc/results/pdf-mvp/collector-array-regression.log",
+    "full_run_processing_affected":  false,
+    "metric":  "first_useful_search_ms",
+    "at":  "2026-11-17T13:13:34.1988254Z",
+    "raw_events_preserved":  true,
+    "reason":  "Windows PowerShell wraps an empty JSON array when captured around Invoke-RestMethod. The recorded event had first_page=null and is not a useful search.",
+    "invalid_value_ms":  113762.6524,
+    "replacement":  "Fresh full SIMD run of the same original directly recorded page 1 at 55.168s from import while 29999 pages were pending. The scalar run was later superseded as partial after measured SIMD improvement; no separate prefix trial is needed.",
+    "replacement_evidence":  "simd-first-useful-search.json"
+}

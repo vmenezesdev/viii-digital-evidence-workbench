@@ -1,0 +1,100 @@
+{
+ "note": "Same pdq-chunker-v3.wasm (64 KiB reads) under Wasmtime 51 (process exact peaks) vs pinned Bacalhau/wazero (node peak minus idle baseline), late40 range.",
+ "wasmtime": [
+  {
+   "fixture": "s1000",
+   "file_mb": 40.1,
+   "rc": 0,
+   "guard": false,
+   "s": 0.257,
+   "peak_wset_mb": 71.6,
+   "peak_private_mb": 68.6,
+   "read_mb": 45.4,
+   "chunk_sha256": "1e096ee8c3849a5d67e7f1d0ec305ed10257ada9bb3a4655598e74cf04f62e03"
+  },
+  {
+   "fixture": "s1000",
+   "file_mb": 40.1,
+   "rc": 0,
+   "guard": false,
+   "s": 0.091,
+   "peak_wset_mb": 59.6,
+   "peak_private_mb": 49.8,
+   "read_mb": 46.5,
+   "chunk_sha256": "1e096ee8c3849a5d67e7f1d0ec305ed10257ada9bb3a4655598e74cf04f62e03"
+  },
+  {
+   "fixture": "s10000",
+   "file_mb": 397.6,
+   "rc": 0,
+   "guard": false,
+   "s": 1.595,
+   "peak_wset_mb": 418.5,
+   "peak_private_mb": 409.4,
+   "read_mb": 404.1,
+   "chunk_sha256": "307388fddab30d396aa74eed42aedec662a316157191cd6e864956b69de42c06"
+  },
+  {
+   "fixture": "s10000",
+   "file_mb": 397.6,
+   "rc": 0,
+   "guard": false,
+   "s": 0.411,
+   "peak_wset_mb": 418.4,
+   "peak_private_mb": 409.3,
+   "read_mb": 404.1,
+   "chunk_sha256": "307388fddab30d396aa74eed42aedec662a316157191cd6e864956b69de42c06"
+  },
+  {
+   "fixture": "mixed-30000",
+   "file_mb": 1192.7,
+   "rc": 0,
+   "guard": false,
+   "s": 4.237,
+   "peak_wset_mb": 1214.9,
+   "peak_private_mb": 1208.3,
+   "read_mb": 1199.1,
+   "chunk_sha256": "5ade5f8b7962d20301239763c9d1bfd4e25b3eeae755395ae6c1ba37b79708b2"
+  },
+  {
+   "fixture": "mixed-30000",
+   "file_mb": 1192.7,
+   "rc": 0,
+   "guard": false,
+   "s": 0.981,
+   "peak_wset_mb": 1215.9,
+   "peak_private_mb": 1208.2,
+   "read_mb": 1199.2,
+   "chunk_sha256": "5ade5f8b7962d20301239763c9d1bfd4e25b3eeae755395ae6c1ba37b79708b2"
+  }
+ ],
+ "bacalhau": {
+  "s12": {
+   "passed": true,
+   "exit_code": 0,
+   "ready_s": 0.828,
+   "node_peak_wset_minus_baseline_mb": 38.6,
+   "node_peak_private_minus_baseline_mb": 36.8,
+   "chunk_sha256": "82ef0481b8bb40bbac81788050ccb0da7c983618e5d94ded31d3dc71a8ad8bca",
+   "module_sha256": "1799189bd9043e2c68b622381fd8f4356ea6645cc35be2e941c7a16bd81ec63e"
+  },
+  "s10000": {
+   "passed": true,
+   "exit_code": 0,
+   "ready_s": 1.979,
+   "node_peak_wset_minus_baseline_mb": 928.1,
+   "node_peak_private_minus_baseline_mb": 927.8,
+   "chunk_sha256": "307388fddab30d396aa74eed42aedec662a316157191cd6e864956b69de42c06",
+   "module_sha256": "1799189bd9043e2c68b622381fd8f4356ea6645cc35be2e941c7a16bd81ec63e"
+  },
+  "s30000": {
+   "passed": true,
+   "exit_code": 0,
+   "ready_s": 5.173,
+   "node_peak_wset_minus_baseline_mb": 2719.3,
+   "node_peak_private_minus_baseline_mb": 2721.4,
+   "chunk_sha256": "5ade5f8b7962d20301239763c9d1bfd4e25b3eeae755395ae6c1ba37b79708b2",
+   "module_sha256": "1799189bd9043e2c68b622381fd8f4356ea6645cc35be2e941c7a16bd81ec63e"
+  }
+ }
+}

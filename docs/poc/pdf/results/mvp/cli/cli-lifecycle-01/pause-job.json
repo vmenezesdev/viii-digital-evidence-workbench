@@ -1,0 +1,282 @@
+{
+    "Job":  {
+                "ID":  "j-eebbf185-3a19-406d-b905-1a524f52a47b",
+                "Name":  "viii-iiw746hmxq4suea7pwzy3yqkqv",
+                "Namespace":  "default",
+                "Type":  "batch",
+                "Priority":  0,
+                "Count":  1,
+                "Constraints":  [
+                                    {
+                                        "Key":  "name",
+                                        "Operator":  "in",
+                                        "Values":  [
+                                                       "viii-pdf-19c84ea7eaff-wasi"
+                                                   ]
+                                    }
+                                ],
+                "Meta":  {
+                             "bacalhau.org/orchestrator.id":  "viii-pdf-19c84ea7eaff-wasi",
+                             "bacalhau.org/requester.id":  "viii-pdf-19c84ea7eaff-wasi",
+                             "bacalhau.org/server.instance.id":  "bf58b5297d764f8d3dc97c79bb79d7e32760d80b0773cca19f80bb5aaad01f02"
+                         },
+                "Labels":  {
+
+                           },
+                "Tasks":  [
+                              {
+                                  "Name":  "main",
+                                  "Engine":  {
+                                                 "Type":  "wasm",
+                                                 "Params":  {
+                                                                "EntryModule":  "/worker",
+                                                                "Entrypoint":  "_start",
+                                                                "Parameters":  [
+                                                                                   "/original.pdf",
+                                                                                   "4",
+                                                                                   "12",
+                                                                                   "/out",
+                                                                                   "/control/accepted",
+                                                                                   "ocr",
+                                                                                   "/model"
+                                                                               ]
+                                                            }
+                                             },
+                                  "Publisher":  {
+                                                    "Type":  "noop"
+                                                },
+                                  "InputSources":  [
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  false,
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/vmenezesdev/viii/viii-pdf-mvp/bin/pdf-mvp-resume/runtime/pdf-worker.wasm"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/worker"
+                                                       },
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  false,
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/vmenezesdev/viii/viii-pdf-mvp/.poc-runtime/pdf/cli lifecycle-20261118-150038/data/originals/04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869.pdf"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/original.pdf"
+                                                       },
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  false,
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/vmenezesdev/viii/viii-pdf-mvp/bin/pdf-mvp-resume/runtime/models"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/model"
+                                                       },
+                                                       {
+                                                           "Source":  {
+                                                                          "Type":  "local",
+                                                                          "Params":  {
+                                                                                         "ReadWrite":  false,
+                                                                                         "SourcePath":  "C:/Users/vinic/Documents/Code/vmenezesdev/viii/viii-pdf-mvp/.poc-runtime/pdf/cli lifecycle-20261118-150038/data/control/iiw746hmxq4suea7pwzy3yqkqv"
+                                                                                     }
+                                                                      },
+                                                           "Alias":  "",
+                                                           "Target":  "/control"
+                                                       }
+                                                   ],
+                                  "ResultPaths":  [
+                                                      {
+                                                          "Name":  "out",
+                                                          "Path":  "C:/out"
+                                                      }
+                                                  ],
+                                  "Resources":  {
+                                                    "CPU":  "1",
+                                                    "Memory":  "2gb"
+                                                },
+                                  "Network":  {
+                                                  "Type":  "None"
+                                              },
+                                  "Timeouts":  {
+                                                   "TotalTimeout":  3600
+                                               }
+                              }
+                          ],
+                "State":  {
+                              "StateType":  "Stopped"
+                          },
+                "Version":  1,
+                "Revision":  3,
+                "CreateTime":  1795014068390915000,
+                "ModifyTime":  1795014070047563000
+            },
+    "Executions":  {
+                       "NextToken":  "",
+                       "Items":  [
+                                     {
+                                         "ID":  "e-a19cd0ca-2aee-4bd9-95ca-ce1894405182",
+                                         "Namespace":  "default",
+                                         "EvalID":  "7640dd50-00de-434e-9503-d1436f37cd15",
+                                         "Name":  "",
+                                         "NodeID":  "viii-pdf-19c84ea7eaff-wasi",
+                                         "JobID":  "j-eebbf185-3a19-406d-b905-1a524f52a47b",
+                                         "Job":  {
+                                                     "ID":  "j-eebbf185-3a19-406d-b905-1a524f52a47b",
+                                                     "Name":  "viii-iiw746hmxq4suea7pwzy3yqkqv",
+                                                     "Namespace":  "default",
+                                                     "Type":  "batch",
+                                                     "Priority":  0,
+                                                     "Count":  1,
+                                                     "Constraints":  [
+                                                                         {
+                                                                             "Key":  "name",
+                                                                             "Operator":  "in",
+                                                                             "Values":  [
+                                                                                            "viii-pdf-19c84ea7eaff-wasi"
+                                                                                        ]
+                                                                         }
+                                                                     ],
+                                                     "Meta":  {
+                                                                  "bacalhau.org/orchestrator.id":  "viii-pdf-19c84ea7eaff-wasi",
+                                                                  "bacalhau.org/requester.id":  "viii-pdf-19c84ea7eaff-wasi",
+                                                                  "bacalhau.org/server.instance.id":  "bf58b5297d764f8d3dc97c79bb79d7e32760d80b0773cca19f80bb5aaad01f02"
+                                                              },
+                                                     "Labels":  {
+
+                                                                },
+                                                     "Tasks":  [
+                                                                   {
+                                                                       "Name":  "main",
+                                                                       "Engine":  {
+                                                                                      "Type":  "wasm",
+                                                                                      "Params":  {
+                                                                                                     "EntryModule":  "/worker",
+                                                                                                     "Entrypoint":  "_start",
+                                                                                                     "Parameters":  [
+                                                                                                                        "/original.pdf",
+                                                                                                                        "4",
+                                                                                                                        "12",
+                                                                                                                        "/out",
+                                                                                                                        "/control/accepted",
+                                                                                                                        "ocr",
+                                                                                                                        "/model"
+                                                                                                                    ]
+                                                                                                 }
+                                                                                  },
+                                                                       "Publisher":  {
+                                                                                         "Type":  "noop"
+                                                                                     },
+                                                                       "InputSources":  [
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  false,
+                                                                                                                              "SourcePath":  "C:/Users/vinic/Documents/Code/vmenezesdev/viii/viii-pdf-mvp/bin/pdf-mvp-resume/runtime/pdf-worker.wasm"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/worker"
+                                                                                            },
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  false,
+                                                                                                                              "SourcePath":  "C:/Users/vinic/Documents/Code/vmenezesdev/viii/viii-pdf-mvp/.poc-runtime/pdf/cli lifecycle-20261118-150038/data/originals/04bbd55ff3e8dfa0981574f3ff65bf487dba80f9f03b9a814f9c31760fe5a869.pdf"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/original.pdf"
+                                                                                            },
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  false,
+                                                                                                                              "SourcePath":  "C:/Users/vinic/Documents/Code/vmenezesdev/viii/viii-pdf-mvp/bin/pdf-mvp-resume/runtime/models"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/model"
+                                                                                            },
+                                                                                            {
+                                                                                                "Source":  {
+                                                                                                               "Type":  "local",
+                                                                                                               "Params":  {
+                                                                                                                              "ReadWrite":  false,
+                                                                                                                              "SourcePath":  "C:/Users/vinic/Documents/Code/vmenezesdev/viii/viii-pdf-mvp/.poc-runtime/pdf/cli lifecycle-20261118-150038/data/control/iiw746hmxq4suea7pwzy3yqkqv"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                "Alias":  "",
+                                                                                                "Target":  "/control"
+                                                                                            }
+                                                                                        ],
+                                                                       "ResultPaths":  [
+                                                                                           {
+                                                                                               "Name":  "out",
+                                                                                               "Path":  "C:/out"
+                                                                                           }
+                                                                                       ],
+                                                                       "Resources":  {
+                                                                                         "CPU":  "1",
+                                                                                         "Memory":  "2gb"
+                                                                                     },
+                                                                       "Network":  {
+                                                                                       "Type":  "None"
+                                                                                   },
+                                                                       "Timeouts":  {
+                                                                                        "TotalTimeout":  3600
+                                                                                    }
+                                                                   }
+                                                               ],
+                                                     "State":  {
+                                                                   "StateType":  "Pending"
+                                                               },
+                                                     "Version":  1,
+                                                     "Revision":  1,
+                                                     "CreateTime":  1795014068390915000,
+                                                     "ModifyTime":  1795014068390915000
+                                                 },
+                                         "JobVersion":  1,
+                                         "AllocatedResources":  {
+                                                                    "Tasks":  {
+
+                                                                              }
+                                                                },
+                                         "DesiredState":  {
+                                                              "StateType":  2,
+                                                              "Message":  "Execution stop requested because job has been stopped"
+                                                          },
+                                         "ComputeState":  {
+                                                              "StateType":  11,
+                                                              "Message":  "Execution stop requested because job has been stopped"
+                                                          },
+                                         "PublishedResult":  {
+                                                                 "Type":  ""
+                                                             },
+                                         "RunOutput":  {
+                                                           "Stdout":  "",
+                                                           "StdoutTruncated":  false,
+                                                           "stderr":  "",
+                                                           "StderrTruncated":  false,
+                                                           "ExitCode":  0,
+                                                           "ErrorMsg":  ""
+                                                       },
+                                         "PreviousExecution":  "",
+                                         "NextExecution":  "",
+                                         "FollowupEvalID":  "",
+                                         "Revision":  4,
+                                         "CreateTime":  1795014068400571100,
+                                         "ModifyTime":  1795014070053264500
+                                     }
+                                 ]
+                   }
+}

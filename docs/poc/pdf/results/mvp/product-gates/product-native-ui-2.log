@@ -1,0 +1,12 @@
+browserType.connectOverCDP: connect ECONNREFUSED 127.0.0.1:49082
+Call log:
+  - <ws preparing> retrieving websocket url from http://127.0.0.1:49082
+
+    at C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\verify-pdf-ui.cjs:12:22
+    at Object.<anonymous> (C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\scripts\verify-pdf-ui.cjs:37:3) {
+  log: [
+    '  - <ws preparing> retrieving websocket url from http://127.0.0.1:49082'
+  ],
+  name: 'Error',
+  code: 'ECONNREFUSED'
+}

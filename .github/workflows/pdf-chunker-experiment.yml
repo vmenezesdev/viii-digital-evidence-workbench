@@ -1,0 +1,107 @@
+name: PDF chunker experiment checks
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/pdf-chunker/**'
+      - '.github/workflows/pdf-chunker-experiment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Level 1 (compiles to Wasm) and level 2 (runs under a WASI Preview 1 runtime,
+# here Wasmtime) only. Level 3 (pinned Bacalhau v1.9.5 on Windows) is a local
+# gate: see experiments/pdf-chunker/README.md and reports/RESULTS.md.
+jobs:
+  chunker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      WASMTIME_VERSION: v51.0.0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Independent PDF tools (qpdf, Poppler)
+        run: sudo apt-get update && sudo apt-get install -y qpdf poppler-utils
+      - name: Harness unit tests
+        run: |
+          python -m pip install psutil==7.1.3
+          python -m unittest discover -s experiments/pdf-chunker/harness -p 'test_*.py' -v
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: experiments/pdf-chunker/workers/pdfcpu-go/go.mod
+          cache: false
+      - name: pdfcpu worker tests and WASI build
+        working-directory: experiments/pdf-chunker/workers/pdfcpu-go
+        run: |
+          go vet ./...
+          go test -count=1 ./...
+          GOOS=wasip1 GOARCH=wasm go build -trimpath -o ../pdfcpu-chunker.wasm .
+          sha256sum ../pdfcpu-chunker.wasm
+      - name: pdq worker tests and WASI build
+        working-directory: experiments/pdf-chunker/workers/pdq-wasi
+        run: |
+          rustup target add wasm32-wasip1
+          python prepare.py
+          cargo test --release --locked
+          cargo build --release --locked --target wasm32-wasip1
+          cp target/wasm32-wasip1/release/viii-pdq-chunker.wasm ../pdq-chunker.wasm
+          sha256sum ../pdq-chunker.wasm
+          cargo build --release --locked
+      # Selected chunker (ADR-0003): flpdf 0.10.0, linked with a 128 MiB
+      # initial linear memory as measured in reports/BATCH-RESULTS.md.
+      - name: flpdf worker tests, native build and pre-sized WASI build
+        working-directory: experiments/pdf-chunker/workers/flpdf-wasi
+        run: |
+          cargo test --release --locked
+          cargo build --release --locked
+          RUSTFLAGS="-C link-arg=--initial-memory=134217728" \
+            cargo build --release --locked --target wasm32-wasip1 --target-dir target-initmem
+          cp target-initmem/wasm32-wasip1/release/viii-flpdf-chunker.wasm ../flpdf-chunker.wasm
+          sha256sum ../flpdf-chunker.wasm
+      - name: Worker tests on native builds (lean byte identity, pdq/flpdf boundary parity)
+        working-directory: experiments/pdf-chunker/harness
+        env:
+          FLPDF_CHUNKER: ${{ github.workspace }}/experiments/pdf-chunker/workers/flpdf-wasi/target/release/viii-flpdf-chunker
+          PDQ_CHUNKER: ${{ github.workspace }}/experiments/pdf-chunker/workers/pdq-wasi/target/release/viii-pdq-chunker
+        run: python -m unittest test_batch -v
+      - name: Install Wasmtime
+        run: |
+          curl -fsSL -o wt.tar.xz "https://github.com/bytecodealliance/wasmtime/releases/download/${WASMTIME_VERSION}/wasmtime-${WASMTIME_VERSION}-x86_64-linux.tar.xz"
+          tar xf wt.tar.xz
+          echo "$PWD/wasmtime-${WASMTIME_VERSION}-x86_64-linux" >> "$GITHUB_PATH"
+      - name: Level 2 smoke - both chunkers under Wasmtime (WASI Preview 1)
+        working-directory: experiments/pdf-chunker/harness
+        run: |
+          python -c "import test_bench as t, pathlib; pathlib.Path('/tmp/in').mkdir(); t.tiny_pdf('/tmp/in/original.pdf', 9)"
+          for c in pdfcpu pdq flpdf; do
+            mkdir -p /tmp/$c/out /tmp/$c/ctl && touch /tmp/$c/ctl/accepted
+            wasmtime run --dir /tmp/in::/in --dir /tmp/$c/out::/out --dir /tmp/$c/ctl::/ctl \
+              ../workers/$c-chunker.wasm /in/original.pdf 4 7 /out /ctl/accepted
+            test "$(cat /tmp/$c/out/ready)" = ready
+            test "$(qpdf --show-npages /tmp/$c/out/chunk.pdf)" = 4
+            qpdf --check /tmp/$c/out/chunk.pdf
+            python validate.py --original /tmp/in/original.pdf --derived /tmp/$c/out/chunk.pdf --first 4 --last 7
+          done
+      - name: Level 2 smoke - flpdf batch mode, lean route, under Wasmtime
+        working-directory: experiments/pdf-chunker/harness
+        run: |
+          mkdir -p /tmp/batch/out /tmp/batch/ctl && touch /tmp/batch/ctl/accepted
+          wasmtime run --env FLPDF_EXTRACT=lean --dir /tmp/in::/in --dir /tmp/batch/out::/out --dir /tmp/batch/ctl::/ctl \
+            ../workers/flpdf-chunker.wasm /in/original.pdf --chunk-size 4 --out-dir /out --ack /ctl/accepted
+          test "$(cat /tmp/batch/out/ready)" = ready
+          for r in 1-4:000001-000004 5-8:000005-000008 9-9:000009-000009; do
+            pages=${r%%:*}; name=${r#*:}; f=/tmp/batch/out/chunk-$name.pdf
+            test -s /tmp/batch/out/chunk-$name.json
+            qpdf --check "$f"
+            python validate.py --original /tmp/in/original.pdf --derived "$f" --first ${pages%-*} --last ${pages#*-}
+          done
+      - name: Store WASI builds (level 3 unverified in CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-chunker-wasi-builds
+          path: experiments/pdf-chunker/workers/*-chunker.wasm
+          if-no-files-found: error

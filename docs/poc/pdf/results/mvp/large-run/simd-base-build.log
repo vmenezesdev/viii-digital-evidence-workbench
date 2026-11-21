@@ -1,0 +1,74 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from pdf-worker.Dockerfile
+#1 transferring dockerfile: 3.03kB 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#2 DONE 1.6s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [build  1/13] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#5 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.1s done
+#5 DONE 0.1s
+
+#4 [internal] load build context
+#4 transferring context: 3.88kB 0.1s done
+#4 DONE 0.1s
+
+#6 [build 10/13] RUN python3 patch-pdf-tesseract.py tesseract-5.5.0
+#6 CACHED
+
+#7 [build 12/13] COPY scripts/pdf-ocr-proof.cpp /build/ocr-proof.cpp
+#7 CACHED
+
+#8 [build  6/13] RUN cmake -S leptonica-1.85.0 -B lept -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/lept     -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DBUILD_SHARED_LIBS=OFF -DBUILD_PROG=OFF -DENABLE_ZLIB=OFF -DENABLE_PNG=OFF -DENABLE_JPEG=OFF     -DENABLE_TIFF=OFF -DENABLE_WEBP=OFF -DENABLE_OPENJPEG=OFF -DENABLE_GIF=OFF     -DCMAKE_C_FLAGS='-D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL -Wno-implicit-function-declaration'     && cmake --build lept -j4 && cmake --install lept
+#8 CACHED
+
+#9 [build  7/13] RUN curl -fL https://github.com/tesseract-ocr/tesseract/archive/refs/tags/5.5.0.tar.gz | tar xz
+#9 CACHED
+
+#10 [build  9/13] COPY scripts/patch-pdf-tesseract.py /build/patch-pdf-tesseract.py
+#10 CACHED
+
+#11 [build  2/13] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl cmake ninja-build make python3 xz-utils && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [build  3/13] WORKDIR /build
+#12 CACHED
+
+#13 [build  4/13] RUN curl -fL https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sdk-25.0-x86_64-linux.tar.gz | tar xz && mv wasi-sdk-25.0-x86_64-linux /opt/wasi-sdk
+#13 CACHED
+
+#14 [build  5/13] RUN curl -fL https://github.com/DanBloomberg/leptonica/releases/download/1.85.0/leptonica-1.85.0.tar.gz | tar xz
+#14 CACHED
+
+#15 [build  8/13] COPY scripts/pdf-wasi-threads.h tesseract-5.5.0/src/pdf-wasi-threads.h
+#15 CACHED
+
+#16 [build 11/13] RUN cmake -S tesseract-5.5.0 -B tess -G Ninja     -DCMAKE_TOOLCHAIN_FILE=/opt/wasi-sdk/share/cmake/wasi-sdk.cmake -DCMAKE_INSTALL_PREFIX=/opt/tess     -DCMAKE_PREFIX_PATH=/opt/lept -DCMAKE_BUILD_TYPE=Release -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY     -DLEPT_TIFF_RESULT=1 -DLEPT_TIFF_RESULT__TRYRUN_OUTPUT=     -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=OFF -DBUILD_TESTS=OFF -DBUILD_TESSERACT_BINARY=OFF     -DDISABLED_LEGACY_ENGINE=ON -DDISABLE_ARCHIVE=ON -DDISABLE_CURL=ON -DGRAPHICS_DISABLED=ON -DOPENMP_BUILD=OFF     -DCMAKE_CXX_FLAGS='-fno-exceptions -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL'     && cmake --build tess --target libtesseract -j4
+#16 CACHED
+
+#17 [build 13/13] RUN mkdir /out && /opt/wasi-sdk/bin/clang++ -O2 -fno-exceptions     -Itesseract-5.5.0/include -Itess/include -I/opt/lept/include ocr-proof.cpp     /build/tess/libtesseract.a /opt/lept/lib/libleptonica.a     -lwasi-emulated-process-clocks -lwasi-emulated-signal     -Wl,-z,stack-size=16777216 -Wl,--max-memory=1073741824 -o /out/ocr-proof.wasm
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 28.1s done
+#18 exporting manifest sha256:506601da6feb4e5602f5bee72f7696cd7fb625681f3a797af87bbf7366f73b56 0.0s done
+#18 exporting config sha256:8dd191622ce8925e9ab661497850f468faf4c68033bfb5801a67e726809adb9e 0.0s done
+#18 exporting attestation manifest sha256:21d2f6405d40a79e35c0c89ed888d47fb5a7b504dea0a1c550c98168b4a070e1 0.0s done
+#18 exporting manifest list sha256:e3a9e70e9e65a5550ef8712025e9b0ca922ff6a21445626989be50c94cb4a3e6
+#18 exporting manifest list sha256:e3a9e70e9e65a5550ef8712025e9b0ca922ff6a21445626989be50c94cb4a3e6 0.0s done
+#18 naming to docker.io/library/viii-pdf-wasi-builder:local done
+#18 unpacking to docker.io/library/viii-pdf-wasi-builder:local
+#18 unpacking to docker.io/library/viii-pdf-wasi-builder:local 13.2s done
+#18 DONE 41.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/z5953gviab9ta6egebrhbyjqs

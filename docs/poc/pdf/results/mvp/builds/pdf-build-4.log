@@ -1,0 +1,9 @@
+cargo : warn: could not canonicalize path C:\Users\vinic
+No linha:2 caractere:490
++ ... acts/lib'); cargo build --manifest-path workers/pdf/Cargo.toml --rele ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warn: could not... C:\Users\vinic:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling viii-pdf-worker v0.1.0 (C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\workers\pdf)
+    Finished `release` profile [optimized] target(s) in 10.36s

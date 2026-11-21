@@ -1,0 +1,7 @@
+{
+  "model_repo": "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+  "model_revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+  "model_file": "qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "runtime_sha256": "6b85ad825bc6b0e1a7099593c7b2bad3c588dec1a7b1ba1a7a2178cfa9449fe9",
+  "runtime": "llama.cpp b12453"
+}

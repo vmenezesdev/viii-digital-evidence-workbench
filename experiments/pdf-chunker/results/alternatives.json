@@ -1,0 +1,5262 @@
+{
+ "schema": "viii.pdf-chunker-alternatives.v1",
+ "native": [
+  {
+   "candidate": "flpdf",
+   "runtime": "native",
+   "fixture": "s1000",
+   "first": 961,
+   "last": 1000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.059,
+    "min": 0.057,
+    "max": 0.074
+   },
+   "peak_working_set_mib": {
+    "median": 10.8,
+    "min": 10.8,
+    "max": 10.9
+   },
+   "peak_private_mib": {
+    "median": 6.1,
+    "min": 6.1,
+    "max": 6.1
+   },
+   "os_read_mib": {
+    "median": 24.7,
+    "min": 24.7,
+    "max": 24.7
+   },
+   "page_faults": {
+    "median": 4934,
+    "min": 4926,
+    "max": 4936
+   },
+   "guest_source_read_mib": {
+    "median": 22.0,
+    "min": 22.0,
+    "max": 22.0
+   },
+   "guest_read_calls": {
+    "median": 2326,
+    "min": 2326,
+    "max": 2326
+   },
+   "guest_host_seeks": {
+    "median": 3419,
+    "min": 3419,
+    "max": 3419
+   },
+   "guest_linear_memory_mib": null,
+   "guest_open_ms": {
+    "median": 1,
+    "min": 1,
+    "max": 1
+   },
+   "guest_extract_ms": {
+    "median": 23,
+    "min": 22,
+    "max": 24
+   },
+   "guest_write_ms": {
+    "median": 8,
+    "min": 7,
+    "max": 15
+   },
+   "chunk_bytes": 2081653,
+   "chunk_sha256": [
+    "7d24aa5c5256b10b348aca358ad8a80b878f59a81cc5847e62f7d4bd716a4cea"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": null
+  },
+  {
+   "candidate": "flpdf",
+   "runtime": "native",
+   "fixture": "s10000",
+   "first": 9961,
+   "last": 10000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.204,
+    "min": 0.197,
+    "max": 0.212
+   },
+   "peak_working_set_mib": {
+    "median": 43.0,
+    "min": 43.0,
+    "max": 43.0
+   },
+   "peak_private_mib": {
+    "median": 38.9,
+    "min": 38.9,
+    "max": 38.9
+   },
+   "os_read_mib": {
+    "median": 165.8,
+    "min": 165.8,
+    "max": 165.8
+   },
+   "page_faults": {
+    "median": 12628,
+    "min": 12602,
+    "max": 12629
+   },
+   "guest_source_read_mib": {
+    "median": 163.1,
+    "min": 163.1,
+    "max": 163.1
+   },
+   "guest_read_calls": {
+    "median": 20342,
+    "min": 20342,
+    "max": 20342
+   },
+   "guest_host_seeks": {
+    "median": 30419,
+    "min": 30419,
+    "max": 30419
+   },
+   "guest_linear_memory_mib": null,
+   "guest_open_ms": {
+    "median": 14,
+    "min": 14,
+    "max": 15
+   },
+   "guest_extract_ms": {
+    "median": 141,
+    "min": 136,
+    "max": 143
+   },
+   "guest_write_ms": {
+    "median": 6,
+    "min": 6,
+    "max": 6
+   },
+   "chunk_bytes": 2084923,
+   "chunk_sha256": [
+    "f8168ed606155ad5251a215cceb62f18c94fbd48a9c5710997ea225172646ffa"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": null
+  },
+  {
+   "candidate": "flpdf",
+   "runtime": "native",
+   "fixture": "s12",
+   "first": 9,
+   "last": 12,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.029,
+    "min": 0.027,
+    "max": 0.376
+   },
+   "peak_working_set_mib": {
+    "median": 6.6,
+    "min": 6.5,
+    "max": 6.6
+   },
+   "peak_private_mib": {
+    "median": 1.7,
+    "min": 1.7,
+    "max": 1.7
+   },
+   "os_read_mib": {
+    "median": 2.9,
+    "min": 2.9,
+    "max": 2.9
+   },
+   "page_faults": {
+    "median": 1997,
+    "min": 1989,
+    "max": 2000
+   },
+   "guest_source_read_mib": {
+    "median": 2.0,
+    "min": 2.0,
+    "max": 2.0
+   },
+   "guest_read_calls": {
+    "median": 79,
+    "min": 79,
+    "max": 79
+   },
+   "guest_host_seeks": {
+    "median": 103,
+    "min": 103,
+    "max": 103
+   },
+   "guest_linear_memory_mib": null,
+   "guest_open_ms": {
+    "median": 0,
+    "min": 0,
+    "max": 0
+   },
+   "guest_extract_ms": {
+    "median": 1,
+    "min": 1,
+    "max": 1
+   },
+   "guest_write_ms": {
+    "median": 2,
+    "min": 2,
+    "max": 3
+   },
+   "chunk_bytes": 828626,
+   "chunk_sha256": [
+    "ee5f12a92a7580dcfd1ef4ca42a40e8434a126884f6ac9dcaa08c14512661767"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": null
+  },
+  {
+   "candidate": "flpdf",
+   "runtime": "native",
+   "fixture": "s30000",
+   "first": 29961,
+   "last": 30000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.556,
+    "min": 0.547,
+    "max": 0.563
+   },
+   "peak_working_set_mib": {
+    "median": 113.9,
+    "min": 113.9,
+    "max": 113.9
+   },
+   "peak_private_mib": {
+    "median": 112.2,
+    "min": 112.2,
+    "max": 112.2
+   },
+   "os_read_mib": {
+    "median": 479.3,
+    "min": 479.3,
+    "max": 479.3
+   },
+   "page_faults": {
+    "median": 36332,
+    "min": 36328,
+    "max": 36335
+   },
+   "guest_source_read_mib": {
+    "median": 476.6,
+    "min": 476.6,
+    "max": 476.6
+   },
+   "guest_read_calls": {
+    "median": 60379,
+    "min": 60379,
+    "max": 60379
+   },
+   "guest_host_seeks": {
+    "median": 90419,
+    "min": 90419,
+    "max": 90419
+   },
+   "guest_linear_memory_mib": null,
+   "guest_open_ms": {
+    "median": 53,
+    "min": 52,
+    "max": 55
+   },
+   "guest_extract_ms": {
+    "median": 395,
+    "min": 393,
+    "max": 407
+   },
+   "guest_write_ms": {
+    "median": 6,
+    "min": 5,
+    "max": 6
+   },
+   "chunk_bytes": 2085236,
+   "chunk_sha256": [
+    "29f0418ead75682d14aa86588fbdbf5424c362cca3ddabd380c7d2b8e8f87a48"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": null
+  },
+  {
+   "candidate": "flpdf",
+   "runtime": "native",
+   "fixture": "t30000",
+   "first": 29961,
+   "last": 30000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.637,
+    "min": 0.609,
+    "max": 0.729
+   },
+   "peak_working_set_mib": {
+    "median": 111.0,
+    "min": 111.0,
+    "max": 111.0
+   },
+   "peak_private_mib": {
+    "median": 109.0,
+    "min": 109.0,
+    "max": 109.1
+   },
+   "os_read_mib": {
+    "median": 474.3,
+    "min": 474.3,
+    "max": 474.4
+   },
+   "page_faults": {
+    "median": 35479,
+    "min": 35460,
+    "max": 35519
+   },
+   "guest_source_read_mib": {
+    "median": 473.3,
+    "min": 473.3,
+    "max": 473.3
+   },
+   "guest_read_calls": {
+    "median": 60350,
+    "min": 60350,
+    "max": 60350
+   },
+   "guest_host_seeks": {
+    "median": 90383,
+    "min": 90383,
+    "max": 90383
+   },
+   "guest_linear_memory_mib": null,
+   "guest_open_ms": {
+    "median": 50,
+    "min": 49,
+    "max": 61
+   },
+   "guest_extract_ms": {
+    "median": 489,
+    "min": 471,
+    "max": 555
+   },
+   "guest_write_ms": {
+    "median": 2,
+    "min": 2,
+    "max": 6
+   },
+   "chunk_bytes": 444633,
+   "chunk_sha256": [
+    "e74d55b61a6930b70a589240751ce1b6ceb6c7ac6c52679093be6f0dbd07d5ee"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": null
+  },
+  {
+   "candidate": "otfpdf",
+   "runtime": "native",
+   "fixture": "s1000",
+   "first": 961,
+   "last": 1000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.118,
+    "min": 0.112,
+    "max": 0.121
+   },
+   "peak_working_set_mib": {
+    "median": 16.2,
+    "min": 16.2,
+    "max": 16.2
+   },
+   "peak_private_mib": {
+    "median": 13.1,
+    "min": 13.0,
+    "max": 13.7
+   },
+   "os_read_mib": {
+    "median": 48.2,
+    "min": 48.2,
+    "max": 48.2
+   },
+   "page_faults": {
+    "median": 16082,
+    "min": 15927,
+    "max": 16496
+   },
+   "guest_source_read_mib": {
+    "median": 46.2,
+    "min": 46.2,
+    "max": 46.2
+   },
+   "guest_read_calls": {
+    "median": 1186,
+    "min": 1186,
+    "max": 1186
+   },
+   "guest_host_seeks": {
+    "median": 1185,
+    "min": 1185,
+    "max": 1185
+   },
+   "guest_linear_memory_mib": null,
+   "guest_open_ms": {
+    "median": 69,
+    "min": 68,
+    "max": 70
+   },
+   "guest_extract_ms": {
+    "median": 8,
+    "min": 8,
+    "max": 10
+   },
+   "guest_write_ms": {
+    "median": 10,
+    "min": 9,
+    "max": 10
+   },
+   "chunk_bytes": 2074696,
+   "chunk_sha256": [
+    "5d1ad02d65e10cd83459a13001d36dfb04316abb33ce77bfb37970a843e63693"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": null
+  },
+  {
+   "candidate": "otfpdf",
+   "runtime": "native",
+   "fixture": "s10000",
+   "first": 9961,
+   "last": 10000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.821,
+    "min": 0.811,
+    "max": 0.915
+   },
+   "peak_working_set_mib": {
+    "median": 85.3,
+    "min": 85.3,
+    "max": 85.3
+   },
+   "peak_private_mib": {
+    "median": 84.9,
+    "min": 84.9,
+    "max": 84.9
+   },
+   "os_read_mib": {
+    "median": 441.2,
+    "min": 441.2,
+    "max": 441.2
+   },
+   "page_faults": {
+    "median": 127187,
+    "min": 127158,
+    "max": 127223
+   },
+   "guest_source_read_mib": {
+    "median": 439.2,
+    "min": 439.2,
+    "max": 439.2
+   },
+   "guest_read_calls": {
+    "median": 10545,
+    "min": 10545,
+    "max": 10545
+   },
+   "guest_host_seeks": {
+    "median": 10544,
+    "min": 10544,
+    "max": 10544
+   },
+   "guest_linear_memory_mib": null,
+   "guest_open_ms": {
+    "median": 703,
+    "min": 691,
+    "max": 773
+   },
+   "guest_extract_ms": {
+    "median": 66,
+    "min": 66,
+    "max": 66
+   },
+   "guest_write_ms": {
+    "median": 8,
+    "min": 8,
+    "max": 14
+   },
+   "chunk_bytes": 2077968,
+   "chunk_sha256": [
+    "6a641a4ba7e3fcab4a689f7f8e6d8f503d37b483e1312e1b88efe4f10a68c0dd"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": null
+  },
+  {
+   "candidate": "otfpdf",
+   "runtime": "native",
+   "fixture": "s12",
+   "first": 9,
+   "last": 12,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.029,
+    "min": 0.028,
+    "max": 0.122
+   },
+   "peak_working_set_mib": {
+    "median": 6.5,
+    "min": 6.5,
+    "max": 7.0
+   },
+   "peak_private_mib": {
+    "median": 3.2,
+    "min": 3.1,
+    "max": 3.2
+   },
+   "os_read_mib": {
+    "median": 1.7,
+    "min": 1.7,
+    "max": 1.7
+   },
+   "page_faults": {
+    "median": 2645,
+    "min": 2639,
+    "max": 2738
+   },
+   "guest_source_read_mib": {
+    "median": 0.9,
+    "min": 0.9,
+    "max": 0.9
+   },
+   "guest_read_calls": {
+    "median": 38,
+    "min": 38,
+    "max": 38
+   },
+   "guest_host_seeks": {
+    "median": 37,
+    "min": 37,
+    "max": 37
+   },
+   "guest_linear_memory_mib": null,
+   "guest_open_ms": {
+    "median": 0,
+    "min": 0,
+    "max": 0
+   },
+   "guest_extract_ms": {
+    "median": 0,
+    "min": 0,
+    "max": 0
+   },
+   "guest_write_ms": {
+    "median": 4,
+    "min": 4,
+    "max": 5
+   },
+   "chunk_bytes": 827965,
+   "chunk_sha256": [
+    "d49ca7403887d050c444ef73d83f7c041755c1f2b05b33403010311ad8fc2712"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": null
+  }
+ ],
+ "wasmtime": [
+  {
+   "candidate": "flpdf",
+   "runtime": "wasmtime",
+   "fixture": "s1000",
+   "first": 961,
+   "last": 1000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.103,
+    "min": 0.102,
+    "max": 0.105
+   },
+   "peak_working_set_mib": {
+    "median": 38.5,
+    "min": 37.8,
+    "max": 38.6
+   },
+   "peak_private_mib": {
+    "median": 38.3,
+    "min": 37.4,
+    "max": 38.4
+   },
+   "os_read_mib": {
+    "median": 32.8,
+    "min": 32.8,
+    "max": 32.8
+   },
+   "page_faults": {
+    "median": 17228,
+    "min": 17204,
+    "max": 17236
+   },
+   "guest_source_read_mib": {
+    "median": 22.0,
+    "min": 22.0,
+    "max": 22.0
+   },
+   "guest_read_calls": {
+    "median": 2326,
+    "min": 2326,
+    "max": 2326
+   },
+   "guest_host_seeks": {
+    "median": 3419,
+    "min": 3419,
+    "max": 3419
+   },
+   "guest_linear_memory_mib": {
+    "median": 4.9,
+    "min": 4.9,
+    "max": 4.9
+   },
+   "guest_open_ms": {
+    "median": 1,
+    "min": 1,
+    "max": 1
+   },
+   "guest_extract_ms": {
+    "median": 28,
+    "min": 27,
+    "max": 28
+   },
+   "guest_write_ms": {
+    "median": 6,
+    "min": 5,
+    "max": 6
+   },
+   "chunk_bytes": 2081653,
+   "chunk_sha256": [
+    "7d24aa5c5256b10b348aca358ad8a80b878f59a81cc5847e62f7d4bd716a4cea"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": "first run of a module under Wasmtime includes its compilation cache fill"
+  },
+  {
+   "candidate": "flpdf",
+   "runtime": "wasmtime",
+   "fixture": "s10000",
+   "first": 9961,
+   "last": 10000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.302,
+    "min": 0.282,
+    "max": 0.31
+   },
+   "peak_working_set_mib": {
+    "median": 50.2,
+    "min": 50.2,
+    "max": 50.3
+   },
+   "peak_private_mib": {
+    "median": 40.5,
+    "min": 40.5,
+    "max": 40.5
+   },
+   "os_read_mib": {
+    "median": 173.9,
+    "min": 173.9,
+    "max": 173.9
+   },
+   "page_faults": {
+    "median": 22704,
+    "min": 22703,
+    "max": 22706
+   },
+   "guest_source_read_mib": {
+    "median": 163.1,
+    "min": 163.1,
+    "max": 163.1
+   },
+   "guest_read_calls": {
+    "median": 20342,
+    "min": 20342,
+    "max": 20342
+   },
+   "guest_host_seeks": {
+    "median": 30419,
+    "min": 30419,
+    "max": 30419
+   },
+   "guest_linear_memory_mib": {
+    "median": 26.4,
+    "min": 26.4,
+    "max": 26.4
+   },
+   "guest_open_ms": {
+    "median": 17,
+    "min": 16,
+    "max": 17
+   },
+   "guest_extract_ms": {
+    "median": 183,
+    "min": 174,
+    "max": 189
+   },
+   "guest_write_ms": {
+    "median": 6,
+    "min": 5,
+    "max": 7
+   },
+   "chunk_bytes": 2084923,
+   "chunk_sha256": [
+    "f8168ed606155ad5251a215cceb62f18c94fbd48a9c5710997ea225172646ffa"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": "first run of a module under Wasmtime includes its compilation cache fill"
+  },
+  {
+   "candidate": "flpdf",
+   "runtime": "wasmtime",
+   "fixture": "s12",
+   "first": 9,
+   "last": 12,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.083,
+    "min": 0.078,
+    "max": 2.268
+   },
+   "peak_working_set_mib": {
+    "median": 38.5,
+    "min": 38.5,
+    "max": 183.0
+   },
+   "peak_private_mib": {
+    "median": 38.4,
+    "min": 38.3,
+    "max": 207.3
+   },
+   "os_read_mib": {
+    "median": 11.0,
+    "min": 7.7,
+    "max": 11.0
+   },
+   "page_faults": {
+    "median": 16579,
+    "min": 16570,
+    "max": 92522
+   },
+   "guest_source_read_mib": {
+    "median": 2.0,
+    "min": 2.0,
+    "max": 2.0
+   },
+   "guest_read_calls": {
+    "median": 79,
+    "min": 79,
+    "max": 79
+   },
+   "guest_host_seeks": {
+    "median": 103,
+    "min": 103,
+    "max": 103
+   },
+   "guest_linear_memory_mib": {
+    "median": 3.3,
+    "min": 3.3,
+    "max": 3.3
+   },
+   "guest_open_ms": {
+    "median": 0,
+    "min": 0,
+    "max": 0
+   },
+   "guest_extract_ms": {
+    "median": 1,
+    "min": 1,
+    "max": 1
+   },
+   "guest_write_ms": {
+    "median": 3,
+    "min": 2,
+    "max": 3
+   },
+   "chunk_bytes": 828626,
+   "chunk_sha256": [
+    "ee5f12a92a7580dcfd1ef4ca42a40e8434a126884f6ac9dcaa08c14512661767"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": "first run of a module under Wasmtime includes its compilation cache fill"
+  },
+  {
+   "candidate": "flpdf",
+   "runtime": "wasmtime",
+   "fixture": "s30000",
+   "first": 29961,
+   "last": 30000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.706,
+    "min": 0.692,
+    "max": 0.711
+   },
+   "peak_working_set_mib": {
+    "median": 98.0,
+    "min": 97.9,
+    "max": 98.0
+   },
+   "peak_private_mib": {
+    "median": 89.1,
+    "min": 89.1,
+    "max": 90.0
+   },
+   "os_read_mib": {
+    "median": 487.3,
+    "min": 487.3,
+    "max": 487.4
+   },
+   "page_faults": {
+    "median": 34927,
+    "min": 34923,
+    "max": 34945
+   },
+   "guest_source_read_mib": {
+    "median": 476.6,
+    "min": 476.6,
+    "max": 476.6
+   },
+   "guest_read_calls": {
+    "median": 60379,
+    "min": 60379,
+    "max": 60379
+   },
+   "guest_host_seeks": {
+    "median": 90419,
+    "min": 90419,
+    "max": 90419
+   },
+   "guest_linear_memory_mib": {
+    "median": 74.9,
+    "min": 74.9,
+    "max": 74.9
+   },
+   "guest_open_ms": {
+    "median": 61,
+    "min": 60,
+    "max": 62
+   },
+   "guest_extract_ms": {
+    "median": 504,
+    "min": 496,
+    "max": 510
+   },
+   "guest_write_ms": {
+    "median": 6,
+    "min": 6,
+    "max": 21
+   },
+   "chunk_bytes": 2085236,
+   "chunk_sha256": [
+    "29f0418ead75682d14aa86588fbdbf5424c362cca3ddabd380c7d2b8e8f87a48"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": "first run of a module under Wasmtime includes its compilation cache fill"
+  },
+  {
+   "candidate": "flpdf",
+   "runtime": "wasmtime",
+   "fixture": "t30000",
+   "first": 29961,
+   "last": 30000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.76,
+    "min": 0.757,
+    "max": 0.839
+   },
+   "peak_working_set_mib": {
+    "median": 96.3,
+    "min": 96.3,
+    "max": 96.4
+   },
+   "peak_private_mib": {
+    "median": 87.4,
+    "min": 87.4,
+    "max": 88.3
+   },
+   "os_read_mib": {
+    "median": 482.4,
+    "min": 482.4,
+    "max": 482.5
+   },
+   "page_faults": {
+    "median": 34508,
+    "min": 34506,
+    "max": 34532
+   },
+   "guest_source_read_mib": {
+    "median": 473.3,
+    "min": 473.3,
+    "max": 473.3
+   },
+   "guest_read_calls": {
+    "median": 60350,
+    "min": 60350,
+    "max": 60350
+   },
+   "guest_host_seeks": {
+    "median": 90383,
+    "min": 90383,
+    "max": 90383
+   },
+   "guest_linear_memory_mib": {
+    "median": 73.2,
+    "min": 73.2,
+    "max": 73.2
+   },
+   "guest_open_ms": {
+    "median": 59,
+    "min": 58,
+    "max": 61
+   },
+   "guest_extract_ms": {
+    "median": 584,
+    "min": 577,
+    "max": 591
+   },
+   "guest_write_ms": {
+    "median": 9,
+    "min": 3,
+    "max": 27
+   },
+   "chunk_bytes": 444633,
+   "chunk_sha256": [
+    "e74d55b61a6930b70a589240751ce1b6ceb6c7ac6c52679093be6f0dbd07d5ee"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": "first run of a module under Wasmtime includes its compilation cache fill"
+  },
+  {
+   "candidate": "otfpdf",
+   "runtime": "wasmtime",
+   "fixture": "s1000",
+   "first": 961,
+   "last": 1000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.17,
+    "min": 0.168,
+    "max": 0.249
+   },
+   "peak_working_set_mib": {
+    "median": 24.1,
+    "min": 24.0,
+    "max": 24.1
+   },
+   "peak_private_mib": {
+    "median": 14.3,
+    "min": 14.3,
+    "max": 14.8
+   },
+   "os_read_mib": {
+    "median": 49.5,
+    "min": 49.5,
+    "max": 49.5
+   },
+   "page_faults": {
+    "median": 8157,
+    "min": 8151,
+    "max": 8162
+   },
+   "guest_source_read_mib": {
+    "median": 46.2,
+    "min": 46.2,
+    "max": 46.2
+   },
+   "guest_read_calls": {
+    "median": 1186,
+    "min": 1186,
+    "max": 1186
+   },
+   "guest_host_seeks": {
+    "median": 1185,
+    "min": 1185,
+    "max": 1185
+   },
+   "guest_linear_memory_mib": {
+    "median": 9.8,
+    "min": 9.8,
+    "max": 9.8
+   },
+   "guest_open_ms": {
+    "median": 103,
+    "min": 101,
+    "max": 104
+   },
+   "guest_extract_ms": {
+    "median": 8,
+    "min": 8,
+    "max": 8
+   },
+   "guest_write_ms": {
+    "median": 8,
+    "min": 8,
+    "max": 8
+   },
+   "chunk_bytes": 2074696,
+   "chunk_sha256": [
+    "5d1ad02d65e10cd83459a13001d36dfb04316abb33ce77bfb37970a843e63693"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": "first run of a module under Wasmtime includes its compilation cache fill"
+  },
+  {
+   "candidate": "otfpdf",
+   "runtime": "wasmtime",
+   "fixture": "s10000",
+   "first": 9961,
+   "last": 10000,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 1.204,
+    "min": 1.18,
+    "max": 1.205
+   },
+   "peak_working_set_mib": {
+    "median": 61.3,
+    "min": 61.3,
+    "max": 61.3
+   },
+   "peak_private_mib": {
+    "median": 52.8,
+    "min": 52.4,
+    "max": 53.3
+   },
+   "os_read_mib": {
+    "median": 442.6,
+    "min": 442.6,
+    "max": 442.6
+   },
+   "page_faults": {
+    "median": 17690,
+    "min": 17672,
+    "max": 17694
+   },
+   "guest_source_read_mib": {
+    "median": 439.2,
+    "min": 439.2,
+    "max": 439.2
+   },
+   "guest_read_calls": {
+    "median": 10545,
+    "min": 10545,
+    "max": 10545
+   },
+   "guest_host_seeks": {
+    "median": 10544,
+    "min": 10544,
+    "max": 10544
+   },
+   "guest_linear_memory_mib": {
+    "median": 47.7,
+    "min": 47.7,
+    "max": 47.7
+   },
+   "guest_open_ms": {
+    "median": 1052,
+    "min": 1051,
+    "max": 1066
+   },
+   "guest_extract_ms": {
+    "median": 68,
+    "min": 66,
+    "max": 75
+   },
+   "guest_write_ms": {
+    "median": 8,
+    "min": 7,
+    "max": 8
+   },
+   "chunk_bytes": 2077968,
+   "chunk_sha256": [
+    "6a641a4ba7e3fcab4a689f7f8e6d8f503d37b483e1312e1b88efe4f10a68c0dd"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": "first run of a module under Wasmtime includes its compilation cache fill"
+  },
+  {
+   "candidate": "otfpdf",
+   "runtime": "wasmtime",
+   "fixture": "s12",
+   "first": 9,
+   "last": 12,
+   "runs": 3,
+   "ok": 3,
+   "elapsed_s": {
+    "median": 0.047,
+    "min": 0.047,
+    "max": 0.258
+   },
+   "peak_working_set_mib": {
+    "median": 18.3,
+    "min": 18.2,
+    "max": 61.6
+   },
+   "peak_private_mib": {
+    "median": 9.5,
+    "min": 9.5,
+    "max": 59.5
+   },
+   "os_read_mib": {
+    "median": 3.0,
+    "min": 2.4,
+    "max": 3.0
+   },
+   "page_faults": {
+    "median": 6665,
+    "min": 6642,
+    "max": 23650
+   },
+   "guest_source_read_mib": {
+    "median": 0.9,
+    "min": 0.9,
+    "max": 0.9
+   },
+   "guest_read_calls": {
+    "median": 38,
+    "min": 38,
+    "max": 38
+   },
+   "guest_host_seeks": {
+    "median": 37,
+    "min": 37,
+    "max": 37
+   },
+   "guest_linear_memory_mib": {
+    "median": 3.9,
+    "min": 3.9,
+    "max": 3.9
+   },
+   "guest_open_ms": {
+    "median": 0,
+    "min": 0,
+    "max": 0
+   },
+   "guest_extract_ms": {
+    "median": 0,
+    "min": 0,
+    "max": 0
+   },
+   "guest_write_ms": {
+    "median": 3,
+    "min": 3,
+    "max": 6
+   },
+   "chunk_bytes": 827965,
+   "chunk_sha256": [
+    "d49ca7403887d050c444ef73d83f7c041755c1f2b05b33403010311ad8fc2712"
+   ],
+   "original_unchanged": true,
+   "killed_by_memory_guard": false,
+   "note": "first run of a module under Wasmtime includes its compilation cache fill"
+  }
+ ],
+ "bacalhau": [
+  {
+   "run": "wasi-flpdf-im96-s1000-late40",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 90.65,
+    "min": 88.6,
+    "max": 92.7
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 180.5,
+    "min": 178.5,
+    "max": 182.5
+   },
+   "ready_s": {
+    "median": 2.658,
+    "min": 2.642,
+    "max": 2.674
+   },
+   "node_read_mib": {
+    "median": 29.4,
+    "min": 29.4,
+    "max": 29.4
+   },
+   "guest_source_read_mib": {
+    "median": 22.0,
+    "min": 22.0,
+    "max": 22.0
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 195.0,
+    "min": 189,
+    "max": 201
+   },
+   "chunk_bytes": 2081653,
+   "chunk_sha256": [
+    "7d24aa5c5256b10b348aca358ad8a80b878f59a81cc5847e62f7d4bd716a4cea"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-s1000-p1",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 91.55,
+    "min": 90.9,
+    "max": 92.2
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 181.45,
+    "min": 180.9,
+    "max": 182.0
+   },
+   "ready_s": {
+    "median": 2.12,
+    "min": 1.789,
+    "max": 2.452
+   },
+   "node_read_mib": {
+    "median": 21.8,
+    "min": 21.8,
+    "max": 21.8
+   },
+   "guest_source_read_mib": {
+    "median": 16.6,
+    "min": 16.6,
+    "max": 16.6
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 123.5,
+    "min": 115,
+    "max": 132
+   },
+   "chunk_bytes": 417926,
+   "chunk_sha256": [
+    "ed80df0a2aa302b1598a13741e26588d07429dfeef8589a67c0b114941094bfe"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-s1000-p32",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 94.1,
+    "min": 93.6,
+    "max": 94.6
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 184.55,
+    "min": 183.7,
+    "max": 185.4
+   },
+   "ready_s": {
+    "median": 2.579,
+    "min": 2.452,
+    "max": 2.706
+   },
+   "node_read_mib": {
+    "median": 26.4,
+    "min": 26.4,
+    "max": 26.4
+   },
+   "guest_source_read_mib": {
+    "median": 19.9,
+    "min": 19.9,
+    "max": 19.9
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 171.0,
+    "min": 167,
+    "max": 175
+   },
+   "chunk_bytes": 1249915,
+   "chunk_sha256": [
+    "7baa6900f93d4652906634c92e6e0aaf8c178fbb5138dbe8f48ce76509907d81"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-s10000-late40",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 113.35,
+    "min": 111.5,
+    "max": 115.2
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 181.5,
+    "min": 179.5,
+    "max": 183.5
+   },
+   "ready_s": {
+    "median": 4.048,
+    "min": 3.929,
+    "max": 4.168
+   },
+   "node_read_mib": {
+    "median": 170.5,
+    "min": 170.5,
+    "max": 170.5
+   },
+   "guest_source_read_mib": {
+    "median": 163.1,
+    "min": 163.1,
+    "max": 163.1
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 1407.0,
+    "min": 1379,
+    "max": 1435
+   },
+   "chunk_bytes": 2084923,
+   "chunk_sha256": [
+    "f8168ed606155ad5251a215cceb62f18c94fbd48a9c5710997ea225172646ffa"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-s10000-p1",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 115.0,
+    "min": 113.9,
+    "max": 116.1
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 183.4,
+    "min": 182.6,
+    "max": 184.2
+   },
+   "ready_s": {
+    "median": 3.845,
+    "min": 3.751,
+    "max": 3.938
+   },
+   "node_read_mib": {
+    "median": 162.9,
+    "min": 162.9,
+    "max": 162.9
+   },
+   "guest_source_read_mib": {
+    "median": 157.7,
+    "min": 157.7,
+    "max": 157.7
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 1254.5,
+    "min": 1245,
+    "max": 1264
+   },
+   "chunk_bytes": 418533,
+   "chunk_sha256": [
+    "ed193d79da444eee1c305169ca46f098cdc212648fd0e8b62805b45ea6dc18de"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-s10000-p32",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 115.05,
+    "min": 114.9,
+    "max": 115.2
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 183.55,
+    "min": 183.4,
+    "max": 183.7
+   },
+   "ready_s": {
+    "median": 3.509,
+    "min": 2.928,
+    "max": 4.09
+   },
+   "node_read_mib": {
+    "median": 167.5,
+    "min": 167.5,
+    "max": 167.5
+   },
+   "guest_source_read_mib": {
+    "median": 161.0,
+    "min": 161.0,
+    "max": 161.0
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 1090.5,
+    "min": 814,
+    "max": 1367
+   },
+   "chunk_bytes": 1251193,
+   "chunk_sha256": [
+    "f7e6492bc0565f286bd78c18b57472310de4550fcc9c69db9b3aae3b4b21e3cc"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-s12-p1",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 90.35,
+    "min": 90.1,
+    "max": 90.6
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 183.05,
+    "min": 183.0,
+    "max": 183.1
+   },
+   "ready_s": {
+    "median": 2.359,
+    "min": 2.31,
+    "max": 2.409
+   },
+   "node_read_mib": {
+    "median": 6.3,
+    "min": 6.3,
+    "max": 6.3
+   },
+   "guest_source_read_mib": {
+    "median": 1.1,
+    "min": 1.1,
+    "max": 1.1
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 22.5,
+    "min": 21,
+    "max": 24
+   },
+   "chunk_bytes": 418088,
+   "chunk_sha256": [
+    "dc9e6cf1f73829e68f6e778d6dda26abf79878932b61de3d7c8d3f05004ce340"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-s12-p32",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 93.25,
+    "min": 92.9,
+    "max": 93.6
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 185.6,
+    "min": 185.5,
+    "max": 185.7
+   },
+   "ready_s": {
+    "median": 2.473,
+    "min": 2.458,
+    "max": 2.487
+   },
+   "node_read_mib": {
+    "median": 9.6,
+    "min": 9.6,
+    "max": 9.6
+   },
+   "guest_source_read_mib": {
+    "median": 3.4,
+    "min": 3.4,
+    "max": 3.4
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 46.0,
+    "min": 46,
+    "max": 46
+   },
+   "chunk_bytes": 1277651,
+   "chunk_sha256": [
+    "dc35db44c88b6545faad05f45f55d9d8aef45037e726b34e600a980522172215"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-s30000-late40",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 161.3,
+    "min": 159.7,
+    "max": 162.9
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 182.2,
+    "min": 180.3,
+    "max": 184.1
+   },
+   "ready_s": {
+    "median": 5.306,
+    "min": 4.251,
+    "max": 6.361
+   },
+   "node_read_mib": {
+    "median": 484.0,
+    "min": 484.0,
+    "max": 484.0
+   },
+   "guest_source_read_mib": {
+    "median": 476.6,
+    "min": 476.6,
+    "max": 476.6
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 3273.5,
+    "min": 2638,
+    "max": 3909
+   },
+   "chunk_bytes": 2085236,
+   "chunk_sha256": [
+    "29f0418ead75682d14aa86588fbdbf5424c362cca3ddabd380c7d2b8e8f87a48"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-s30000-p1",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 165.0,
+    "min": 163.6,
+    "max": 166.4
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 186.15,
+    "min": 184.5,
+    "max": 187.8
+   },
+   "ready_s": {
+    "median": 6.38,
+    "min": 5.516,
+    "max": 7.245
+   },
+   "node_read_mib": {
+    "median": 476.4,
+    "min": 476.4,
+    "max": 476.4
+   },
+   "guest_source_read_mib": {
+    "median": 471.2,
+    "min": 471.2,
+    "max": 471.2
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 3828.5,
+    "min": 3203,
+    "max": 4454
+   },
+   "chunk_bytes": 418937,
+   "chunk_sha256": [
+    "aafe99919cd065ac8729c3cc0b22a97c999949eab2fb326cecbf16056f06ff80"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-s30000-p32",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 162.8,
+    "min": 161.8,
+    "max": 163.8
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 183.3,
+    "min": 182.0,
+    "max": 184.6
+   },
+   "ready_s": {
+    "median": 5.927,
+    "min": 5.876,
+    "max": 5.977
+   },
+   "node_read_mib": {
+    "median": 481.0,
+    "min": 481.0,
+    "max": 481.0
+   },
+   "guest_source_read_mib": {
+    "median": 474.5,
+    "min": 474.5,
+    "max": 474.5
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 3622.5,
+    "min": 3542,
+    "max": 3703
+   },
+   "chunk_bytes": 1251896,
+   "chunk_sha256": [
+    "1b280587529dcdf58b1765f9c2e9fd81b244e6706377ef4aa0a3ea1e51ca8665"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-im96-t30000-late40",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 161.05,
+    "min": 160.4,
+    "max": 161.7
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 183.5,
+    "min": 183.0,
+    "max": 184.0
+   },
+   "ready_s": {
+    "median": 5.65,
+    "min": 5.437,
+    "max": 5.863
+   },
+   "node_read_mib": {
+    "median": 479.1,
+    "min": 479.1,
+    "max": 479.1
+   },
+   "guest_source_read_mib": {
+    "median": 473.3,
+    "min": 473.3,
+    "max": 473.3
+   },
+   "guest_linear_memory_mib": {
+    "median": 96.0,
+    "min": 96.0,
+    "max": 96.0
+   },
+   "guest_elapsed_ms": {
+    "median": 3550.0,
+    "min": 3430,
+    "max": 3670
+   },
+   "chunk_bytes": 444633,
+   "chunk_sha256": [
+    "e74d55b61a6930b70a589240751ce1b6ceb6c7ac6c52679093be6f0dbd07d5ee"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s1000-late40",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 103.35,
+    "min": 97.7,
+    "max": 109.0
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 102.05,
+    "min": 97.8,
+    "max": 106.3
+   },
+   "ready_s": {
+    "median": 2.63,
+    "min": 2.576,
+    "max": 2.684
+   },
+   "node_read_mib": {
+    "median": 29.4,
+    "min": 29.4,
+    "max": 29.4
+   },
+   "guest_source_read_mib": {
+    "median": 22.0,
+    "min": 22.0,
+    "max": 22.0
+   },
+   "guest_linear_memory_mib": {
+    "median": 4.9,
+    "min": 4.9,
+    "max": 4.9
+   },
+   "guest_elapsed_ms": {
+    "median": 208.0,
+    "min": 201,
+    "max": 215
+   },
+   "chunk_bytes": 2081653,
+   "chunk_sha256": [
+    "7d24aa5c5256b10b348aca358ad8a80b878f59a81cc5847e62f7d4bd716a4cea"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s1000-p1",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 96.25,
+    "min": 91.5,
+    "max": 101.0
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 93.15,
+    "min": 88.4,
+    "max": 97.9
+   },
+   "ready_s": {
+    "median": 2.517,
+    "min": 2.42,
+    "max": 2.614
+   },
+   "node_read_mib": {
+    "median": 21.8,
+    "min": 21.8,
+    "max": 21.8
+   },
+   "guest_source_read_mib": {
+    "median": 16.6,
+    "min": 16.6,
+    "max": 16.6
+   },
+   "guest_linear_memory_mib": {
+    "median": 4.9,
+    "min": 4.9,
+    "max": 4.9
+   },
+   "guest_elapsed_ms": {
+    "median": 135.5,
+    "min": 129,
+    "max": 142
+   },
+   "chunk_bytes": 417926,
+   "chunk_sha256": [
+    "ed80df0a2aa302b1598a13741e26588d07429dfeef8589a67c0b114941094bfe"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s1000-p32",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 102.5,
+    "min": 99.0,
+    "max": 106.0
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 100.0,
+    "min": 96.6,
+    "max": 103.4
+   },
+   "ready_s": {
+    "median": 2.59,
+    "min": 2.574,
+    "max": 2.605
+   },
+   "node_read_mib": {
+    "median": 26.4,
+    "min": 26.4,
+    "max": 26.4
+   },
+   "guest_source_read_mib": {
+    "median": 19.9,
+    "min": 19.9,
+    "max": 19.9
+   },
+   "guest_linear_memory_mib": {
+    "median": 4.9,
+    "min": 4.9,
+    "max": 4.9
+   },
+   "guest_elapsed_ms": {
+    "median": 198.0,
+    "min": 194,
+    "max": 202
+   },
+   "chunk_bytes": 1249915,
+   "chunk_sha256": [
+    "7baa6900f93d4652906634c92e6e0aaf8c178fbb5138dbe8f48ce76509907d81"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s10000-late40",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 153.6,
+    "min": 137.9,
+    "max": 169.3
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 150.3,
+    "min": 134.0,
+    "max": 166.6
+   },
+   "ready_s": {
+    "median": 3.966,
+    "min": 3.81,
+    "max": 4.123
+   },
+   "node_read_mib": {
+    "median": 170.5,
+    "min": 170.5,
+    "max": 170.5
+   },
+   "guest_source_read_mib": {
+    "median": 163.1,
+    "min": 163.1,
+    "max": 163.1
+   },
+   "guest_linear_memory_mib": {
+    "median": 26.4,
+    "min": 26.4,
+    "max": 26.4
+   },
+   "guest_elapsed_ms": {
+    "median": 1398.0,
+    "min": 1324,
+    "max": 1472
+   },
+   "chunk_bytes": 2084923,
+   "chunk_sha256": [
+    "f8168ed606155ad5251a215cceb62f18c94fbd48a9c5710997ea225172646ffa"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s10000-p1",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 140.15,
+    "min": 133.5,
+    "max": 146.8
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 137.35,
+    "min": 131.3,
+    "max": 143.4
+   },
+   "ready_s": {
+    "median": 3.707,
+    "min": 3.495,
+    "max": 3.918
+   },
+   "node_read_mib": {
+    "median": 162.9,
+    "min": 162.9,
+    "max": 162.9
+   },
+   "guest_source_read_mib": {
+    "median": 157.7,
+    "min": 157.7,
+    "max": 157.7
+   },
+   "guest_linear_memory_mib": {
+    "median": 26.4,
+    "min": 26.4,
+    "max": 26.4
+   },
+   "guest_elapsed_ms": {
+    "median": 1240.5,
+    "min": 1205,
+    "max": 1276
+   },
+   "chunk_bytes": 418533,
+   "chunk_sha256": [
+    "ed193d79da444eee1c305169ca46f098cdc212648fd0e8b62805b45ea6dc18de"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s10000-p32",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 153.85,
+    "min": 146.8,
+    "max": 160.9
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 154.8,
+    "min": 152.4,
+    "max": 157.2
+   },
+   "ready_s": {
+    "median": 3.152,
+    "min": 2.443,
+    "max": 3.862
+   },
+   "node_read_mib": {
+    "median": 167.5,
+    "min": 167.5,
+    "max": 167.5
+   },
+   "guest_source_read_mib": {
+    "median": 161.0,
+    "min": 161.0,
+    "max": 161.0
+   },
+   "guest_linear_memory_mib": {
+    "median": 26.4,
+    "min": 26.4,
+    "max": 26.4
+   },
+   "guest_elapsed_ms": {
+    "median": 1125.0,
+    "min": 839,
+    "max": 1411
+   },
+   "chunk_bytes": 1251193,
+   "chunk_sha256": [
+    "f7e6492bc0565f286bd78c18b57472310de4550fcc9c69db9b3aae3b4b21e3cc"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s12-p1",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 96.05,
+    "min": 94.6,
+    "max": 97.5
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 92.85,
+    "min": 91.8,
+    "max": 93.9
+   },
+   "ready_s": {
+    "median": 2.295,
+    "min": 2.247,
+    "max": 2.343
+   },
+   "node_read_mib": {
+    "median": 6.3,
+    "min": 6.3,
+    "max": 6.3
+   },
+   "guest_source_read_mib": {
+    "median": 1.1,
+    "min": 1.1,
+    "max": 1.1
+   },
+   "guest_linear_memory_mib": {
+    "median": 3.3,
+    "min": 3.3,
+    "max": 3.3
+   },
+   "guest_elapsed_ms": {
+    "median": 24.5,
+    "min": 22,
+    "max": 27
+   },
+   "chunk_bytes": 418088,
+   "chunk_sha256": [
+    "dc9e6cf1f73829e68f6e778d6dda26abf79878932b61de3d7c8d3f05004ce340"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s12-p32",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 98.95,
+    "min": 98.4,
+    "max": 99.5
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 96.25,
+    "min": 96.0,
+    "max": 96.5
+   },
+   "ready_s": {
+    "median": 2.378,
+    "min": 2.349,
+    "max": 2.407
+   },
+   "node_read_mib": {
+    "median": 9.6,
+    "min": 9.6,
+    "max": 9.6
+   },
+   "guest_source_read_mib": {
+    "median": 3.4,
+    "min": 3.4,
+    "max": 3.4
+   },
+   "guest_linear_memory_mib": {
+    "median": 3.3,
+    "min": 3.3,
+    "max": 3.3
+   },
+   "guest_elapsed_ms": {
+    "median": 50.5,
+    "min": 50,
+    "max": 51
+   },
+   "chunk_bytes": 1277651,
+   "chunk_sha256": [
+    "dc35db44c88b6545faad05f45f55d9d8aef45037e726b34e600a980522172215"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s30000-late40",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 390.2,
+    "min": 389.5,
+    "max": 390.9
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 387.55,
+    "min": 387.1,
+    "max": 388.0
+   },
+   "ready_s": {
+    "median": 6.327,
+    "min": 6.283,
+    "max": 6.371
+   },
+   "node_read_mib": {
+    "median": 484.0,
+    "min": 484.0,
+    "max": 484.0
+   },
+   "guest_source_read_mib": {
+    "median": 476.6,
+    "min": 476.6,
+    "max": 476.6
+   },
+   "guest_linear_memory_mib": {
+    "median": 74.9,
+    "min": 74.9,
+    "max": 74.9
+   },
+   "guest_elapsed_ms": {
+    "median": 4052.0,
+    "min": 3974,
+    "max": 4130
+   },
+   "chunk_bytes": 2085236,
+   "chunk_sha256": [
+    "29f0418ead75682d14aa86588fbdbf5424c362cca3ddabd380c7d2b8e8f87a48"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s30000-p1",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 347.25,
+    "min": 339.8,
+    "max": 354.7
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 344.1,
+    "min": 337.0,
+    "max": 351.2
+   },
+   "ready_s": {
+    "median": 6.854,
+    "min": 6.818,
+    "max": 6.891
+   },
+   "node_read_mib": {
+    "median": 476.4,
+    "min": 476.4,
+    "max": 476.4
+   },
+   "guest_source_read_mib": {
+    "median": 471.2,
+    "min": 471.2,
+    "max": 471.2
+   },
+   "guest_linear_memory_mib": {
+    "median": 74.9,
+    "min": 74.9,
+    "max": 74.9
+   },
+   "guest_elapsed_ms": {
+    "median": 4217.5,
+    "min": 4198,
+    "max": 4237
+   },
+   "chunk_bytes": 418937,
+   "chunk_sha256": [
+    "aafe99919cd065ac8729c3cc0b22a97c999949eab2fb326cecbf16056f06ff80"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-s30000-p32",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 312.3,
+    "min": 271.2,
+    "max": 353.4
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 309.2,
+    "min": 268.2,
+    "max": 350.2
+   },
+   "ready_s": {
+    "median": 6.229,
+    "min": 6.19,
+    "max": 6.267
+   },
+   "node_read_mib": {
+    "median": 481.0,
+    "min": 481.0,
+    "max": 481.0
+   },
+   "guest_source_read_mib": {
+    "median": 474.5,
+    "min": 474.5,
+    "max": 474.5
+   },
+   "guest_linear_memory_mib": {
+    "median": 74.9,
+    "min": 74.9,
+    "max": 74.9
+   },
+   "guest_elapsed_ms": {
+    "median": 4004.0,
+    "min": 3983,
+    "max": 4025
+   },
+   "chunk_bytes": 1251896,
+   "chunk_sha256": [
+    "1b280587529dcdf58b1765f9c2e9fd81b244e6706377ef4aa0a3ea1e51ca8665"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-flpdf-t30000-late40",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 297.9,
+    "min": 281.7,
+    "max": 314.1
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 294.6,
+    "min": 278.1,
+    "max": 311.1
+   },
+   "ready_s": {
+    "median": 5.774,
+    "min": 5.773,
+    "max": 5.774
+   },
+   "node_read_mib": {
+    "median": 479.1,
+    "min": 479.1,
+    "max": 479.1
+   },
+   "guest_source_read_mib": {
+    "median": 473.3,
+    "min": 473.3,
+    "max": 473.3
+   },
+   "guest_linear_memory_mib": {
+    "median": 73.2,
+    "min": 73.2,
+    "max": 73.2
+   },
+   "guest_elapsed_ms": {
+    "median": 3572.5,
+    "min": 3545,
+    "max": 3600
+   },
+   "chunk_bytes": 444633,
+   "chunk_sha256": [
+    "e74d55b61a6930b70a589240751ce1b6ceb6c7ac6c52679093be6f0dbd07d5ee"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-otfpdf-s10000-late40",
+   "runs": 1,
+   "passed": 1,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 207.9,
+    "min": 207.9,
+    "max": 207.9
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 205.0,
+    "min": 205.0,
+    "max": 205.0
+   },
+   "ready_s": {
+    "median": 16.537,
+    "min": 16.537,
+    "max": 16.537
+   },
+   "node_read_mib": {
+    "median": 441.9,
+    "min": 441.9,
+    "max": 441.9
+   },
+   "guest_source_read_mib": {
+    "median": 439.2,
+    "min": 439.2,
+    "max": 439.2
+   },
+   "guest_linear_memory_mib": {
+    "median": 47.7,
+    "min": 47.7,
+    "max": 47.7
+   },
+   "guest_elapsed_ms": {
+    "median": 16083,
+    "min": 16083,
+    "max": 16083
+   },
+   "chunk_bytes": 2077968,
+   "chunk_sha256": [
+    "6a641a4ba7e3fcab4a689f7f8e6d8f503d37b483e1312e1b88efe4f10a68c0dd"
+   ],
+   "diagnostics": [
+    "repair: bad startxref at byte 416520356",
+    "repair: bad xref section at byte 416520360",
+    "repair: trailer recovered",
+    "repair: xref rebuilt by scanning"
+   ],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-otfpdf-s12-late40",
+   "runs": 1,
+   "passed": 1,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 39.5,
+    "min": 39.5,
+    "max": 39.5
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 37.4,
+    "min": 37.4,
+    "max": 37.4
+   },
+   "ready_s": {
+    "median": 0.542,
+    "min": 0.542,
+    "max": 0.542
+   },
+   "node_read_mib": {
+    "median": 2.4,
+    "min": 2.4,
+    "max": 2.4
+   },
+   "guest_source_read_mib": {
+    "median": 0.9,
+    "min": 0.9,
+    "max": 0.9
+   },
+   "guest_linear_memory_mib": {
+    "median": 3.9,
+    "min": 3.9,
+    "max": 3.9
+   },
+   "guest_elapsed_ms": {
+    "median": 38,
+    "min": 38,
+    "max": 38
+   },
+   "chunk_bytes": 827965,
+   "chunk_sha256": [
+    "d49ca7403887d050c444ef73d83f7c041755c1f2b05b33403010311ad8fc2712"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-otfpdf-s30000-late40",
+   "runs": 1,
+   "passed": 1,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 487.1,
+    "min": 487.1,
+    "max": 487.1
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 485.0,
+    "min": 485.0,
+    "max": 485.0
+   },
+   "ready_s": {
+    "median": 52.974,
+    "min": 52.974,
+    "max": 52.974
+   },
+   "node_read_mib": {
+    "median": 1316.2,
+    "min": 1316.2,
+    "max": 1316.2
+   },
+   "guest_source_read_mib": {
+    "median": 1313.4,
+    "min": 1313.4,
+    "max": 1313.4
+   },
+   "guest_linear_memory_mib": {
+    "median": 131.2,
+    "min": 131.2,
+    "max": 131.2
+   },
+   "guest_elapsed_ms": {
+    "median": 52509,
+    "min": 52509,
+    "max": 52509
+   },
+   "chunk_bytes": 2078282,
+   "chunk_sha256": [
+    "cf261c31ce8b815816bb6cd72a3bf35e01ddb8bd8914b64fc6878e96e81c0244"
+   ],
+   "diagnostics": [
+    "repair: bad startxref at byte 1249357520",
+    "repair: bad xref section at byte 1249357524",
+    "repair: trailer recovered",
+    "repair: xref rebuilt by scanning"
+   ],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  },
+  {
+   "run": "wasi-pdq-ref-t30000-late40",
+   "runs": 2,
+   "passed": 2,
+   "failed": [],
+   "exit_codes": [
+    0
+   ],
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 108.5,
+    "min": 108.3,
+    "max": 108.7
+   },
+   "node_peak_private_minus_baseline_mib": {
+    "median": 105.9,
+    "min": 105.9,
+    "max": 105.9
+   },
+   "ready_s": {
+    "median": 2.946,
+    "min": 2.588,
+    "max": 3.303
+   },
+   "node_read_mib": {
+    "median": 21.6,
+    "min": 21.6,
+    "max": 21.6
+   },
+   "guest_source_read_mib": null,
+   "guest_linear_memory_mib": null,
+   "guest_elapsed_ms": {
+    "median": 2423.0,
+    "min": 2152,
+    "max": 2694
+   },
+   "chunk_bytes": 442723,
+   "chunk_sha256": [
+    "e39fc2eb0b3064dc954854e32cd280daa0c9d09b9a7cc1529eed5bf7d2d04075"
+   ],
+   "diagnostics": [],
+   "mounts_unchanged": true,
+   "leaks": [],
+   "killed_by_memory_guard": false
+  }
+ ],
+ "bacalhau_startup_control": [
+  {
+   "run": "startup-flpdf-im96",
+   "runs": 3,
+   "exit_codes": [
+    1
+   ],
+   "terminal_s": {
+    "median": 2.54,
+    "min": 2.492,
+    "max": 2.548
+   },
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 89.1,
+    "min": 88.4,
+    "max": 90.9
+   }
+  },
+  {
+   "run": "startup-flpdf",
+   "runs": 3,
+   "exit_codes": [
+    1
+   ],
+   "terminal_s": {
+    "median": 2.637,
+    "min": 2.629,
+    "max": 3.082
+   },
+   "node_peak_wset_minus_baseline_mib": {
+    "median": 89.4,
+    "min": 86.3,
+    "max": 90.3
+   }
+  }
+ ],
+ "validation": {
+  "otfpdf-s30000-late40": {
+   "method": "pdftotext -layout; pdftoppm -gray -r 30",
+   "pages": [
+    {
+     "local": 1,
+     "physical": 29961,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "74b7d61d84741f82702ab8822688400d820fae9ca486517b4c41c3c2ce1d4927",
+     "markers_in_text": []
+    },
+    {
+     "local": 2,
+     "physical": 29962,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "0cabd96a142bf89b520ea8e463cdaec7cc45abcbfe0982689d1501df1f7b8b90",
+     "markers_in_text": []
+    },
+    {
+     "local": 3,
+     "physical": 29963,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "eb89e75b2267862af129862042b34ecf2dc923080d4fee1a72b9557031226421",
+     "markers_in_text": []
+    },
+    {
+     "local": 4,
+     "physical": 29964,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "b2c89fbe00fd66e05cb49c2f0fa5f29494cd2c00961c40d42ae63d34d9fa8d61",
+     "markers_in_text": []
+    },
+    {
+     "local": 5,
+     "physical": 29965,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "a2f15344fc795851dfd3f1dc95cca6865fde48f62088d43e5ec275a57a415689",
+     "markers_in_text": []
+    },
+    {
+     "local": 6,
+     "physical": 29966,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "746be3ba590f4ed659d418155af61bb45266c1f1a4d6cf52709dcdef0ffefd2c",
+     "markers_in_text": []
+    },
+    {
+     "local": 7,
+     "physical": 29967,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "084e971898df6c2f8a4ac2a54956ca3735a8579fd771ebfa1aadc2e12ba5dce0",
+     "markers_in_text": []
+    },
+    {
+     "local": 8,
+     "physical": 29968,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "7fa2b334abc4b521f8e252edda1646a082ebfe8c3c1df8b0e582d7323f6198b4",
+     "markers_in_text": []
+    },
+    {
+     "local": 9,
+     "physical": 29969,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "ff3e4075f2dfa7350893f162b129e3c9bcc54b1091e895a195da38a9f520eb51",
+     "markers_in_text": []
+    },
+    {
+     "local": 10,
+     "physical": 29970,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "3eea6e7263e8bb291f397e307ed71221e1d9b01aedabfb5fba32e9dddc32d64d",
+     "markers_in_text": []
+    },
+    {
+     "local": 11,
+     "physical": 29971,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "343f75b125dc18099fb5df82fb73c54f4eedaf8a75dd9273c5434a146a676021",
+     "markers_in_text": []
+    },
+    {
+     "local": 12,
+     "physical": 29972,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "1a7213d718e6b26f39e77e5f43b4a41acf6624d5126376f88836cfe8570ef531",
+     "markers_in_text": []
+    },
+    {
+     "local": 13,
+     "physical": 29973,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "4e7f1f01463402f5c448f5d78600fea188b9b5a82455a00d90054d0be0205816",
+     "markers_in_text": []
+    },
+    {
+     "local": 14,
+     "physical": 29974,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "72960d29bbd6c0b70b7f42dc2b36e4986f93a67190bbaa4a6bcf09127bcf0635",
+     "markers_in_text": []
+    },
+    {
+     "local": 15,
+     "physical": 29975,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "f2953977c378d74da6be3a73beb7c72504f1008510a26fc2aa95e681820ba934",
+     "markers_in_text": []
+    },
+    {
+     "local": 16,
+     "physical": 29976,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "ec0a80345eeb7ae2193b1751c20bd55f18827daa26b882cce40db8c25ed0c2d0",
+     "markers_in_text": []
+    },
+    {
+     "local": 17,
+     "physical": 29977,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "5be5622528c80cd51c155a9fdc71177e2663ed915a8fe575a0a772f31e0bffc7",
+     "markers_in_text": []
+    },
+    {
+     "local": 18,
+     "physical": 29978,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "79f225d55a7b80e809aafa8e87175ee7b8d82e7ee85e6ea99018792750201aa2",
+     "markers_in_text": []
+    },
+    {
+     "local": 19,
+     "physical": 29979,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "2aa91158d95859c3625a79407293f2538d13fe74ef89887b4a263b4d270bb95c",
+     "markers_in_text": []
+    },
+    {
+     "local": 20,
+     "physical": 29980,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "888125f733e0434660ccbea7838bf2841908d599168b5d074728f60a858cdc93",
+     "markers_in_text": []
+    },
+    {
+     "local": 21,
+     "physical": 29981,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "278b2764836eb4bb90d234fffbf9f66437de09d278e298cba1c22083e42cc8a9",
+     "markers_in_text": []
+    },
+    {
+     "local": 22,
+     "physical": 29982,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "36f1b3c79077482b179b77da9504f94c5459e3898e53af92f0b61b531ce0b072",
+     "markers_in_text": []
+    },
+    {
+     "local": 23,
+     "physical": 29983,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "16e37d3bd54cb5315db6448cac7acd58e8d910adbf429f105f3b84fc675d8dbd",
+     "markers_in_text": []
+    },
+    {
+     "local": 24,
+     "physical": 29984,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "9095085f3bbaf315417bba5e896de973ca0dd4171715fe3bd9c2c14ba5dcbcc3",
+     "markers_in_text": []
+    },
+    {
+     "local": 25,
+     "physical": 29985,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "76f8150c9046f98414c1d609d9487a7ac84d89d242b626b9297e22ffb1386d9d",
+     "markers_in_text": []
+    },
+    {
+     "local": 26,
+     "physical": 29986,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "307cd55fa47d1c76c47bacfed5e45a98dbbf77abeeaf8956f0153871224b1718",
+     "markers_in_text": []
+    },
+    {
+     "local": 27,
+     "physical": 29987,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "e775200f225481bb81b3bec0c2f9ccd8c088965e6c76b1fc3298a85a47a925af",
+     "markers_in_text": []
+    },
+    {
+     "local": 28,
+     "physical": 29988,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "0ca0d680584ac2b6f019c90bbadfb42b681b8d4edf6429262c2fd88681e9f5a1",
+     "markers_in_text": []
+    },
+    {
+     "local": 29,
+     "physical": 29989,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "b9818b54161833cee72618d00bade213468050594fd224edb3f4d8a86e56c620",
+     "markers_in_text": []
+    },
+    {
+     "local": 30,
+     "physical": 29990,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "7413d8fc2ed4da337f93f0afc84d042c024ce9e47d6963882d6a306d0fc4f5bc",
+     "markers_in_text": []
+    },
+    {
+     "local": 31,
+     "physical": 29991,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "440927813973507c50b651e945f1e0ecd41c59ae3bc4f345f1f2ae9081b59b4a",
+     "markers_in_text": []
+    },
+    {
+     "local": 32,
+     "physical": 29992,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "74ae634af208cd94e9530af59f873662bad1c1454160eccab0a729d7673d5ca2",
+     "markers_in_text": []
+    },
+    {
+     "local": 33,
+     "physical": 29993,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "a83d406b25ee0db491eabfdfa7f64cc32c9b0702bb00c7d968c6ab7abc71bd55",
+     "markers_in_text": []
+    },
+    {
+     "local": 34,
+     "physical": 29994,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "4fb63c0b5f6b79a6f5036bd1778ee6e9cc0c493f5b3058c32398860ea320928c",
+     "markers_in_text": []
+    },
+    {
+     "local": 35,
+     "physical": 29995,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "0d9e0890722c2558cf429bae1ac26230db323516ff0dbe2f0893c835911ed3ca",
+     "markers_in_text": []
+    },
+    {
+     "local": 36,
+     "physical": 29996,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "7673fbba97823db29fb36c4793b0262b14f4573746de555b51e8068135a7c505",
+     "markers_in_text": []
+    },
+    {
+     "local": 37,
+     "physical": 29997,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "efe2a3fac509dcb278a9adf4bf13c3a90fb500c75feaf677044681b3f1f1d692",
+     "markers_in_text": []
+    },
+    {
+     "local": 38,
+     "physical": 29998,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "14fa0ed08047e64151da2531c46c0e409bd7eafe907557929c2512cbcf9b45e4",
+     "markers_in_text": []
+    },
+    {
+     "local": 39,
+     "physical": 29999,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "86779ad5547aa2ecc22cbdd266700e2a0799653e90c8a2d76a640df483e47138",
+     "markers_in_text": []
+    },
+    {
+     "local": 40,
+     "physical": 30000,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "c4f420ecb5d97909dbeb88a61abeaebb7f9f51c53a67a022fe8d7af13f3c17a2",
+     "markers_in_text": []
+    }
+   ],
+   "text_pages_equal": 40,
+   "raster_pages_equal": 40,
+   "all_equal": true
+  },
+  "s1000-late40": {
+   "method": "pdftotext -layout; pdftoppm -gray -r 30",
+   "pages": [
+    {
+     "local": 1,
+     "physical": 961,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "d57333eba1a1ddc032a44e0ee76f84e960b1487285f12197866aff366edc6046",
+     "markers_in_text": []
+    },
+    {
+     "local": 2,
+     "physical": 962,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "d620fd364d46c1620beecf7792bc1752dc659fbb05f862426d207b9ef918649d",
+     "markers_in_text": []
+    },
+    {
+     "local": 3,
+     "physical": 963,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "10cc35e3ddec572e7d902dcb0264a843a31fc03a79d8b0161382d4dda23b2a0a",
+     "markers_in_text": []
+    },
+    {
+     "local": 4,
+     "physical": 964,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "5baa691299b4963a7446ae721932030c5d9e7e93a9d25d19e67ee5035414bc09",
+     "markers_in_text": []
+    },
+    {
+     "local": 5,
+     "physical": 965,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "4ac773cf9b924255436e8146da43dea0628cd0b87df07a405d547d86f67d555d",
+     "markers_in_text": []
+    },
+    {
+     "local": 6,
+     "physical": 966,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "fdeb03ade459e5fcb2d43ab2efb461f78a44e93d7815e7dfbd2af8ab3ad5ebc5",
+     "markers_in_text": []
+    },
+    {
+     "local": 7,
+     "physical": 967,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "66060a98c125f5d9fedbdf77c5d6e8c5bc807233b12a8d2d48eb86900696ae44",
+     "markers_in_text": []
+    },
+    {
+     "local": 8,
+     "physical": 968,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "7ff40fe1b3dff24589eacd468b417caa6fa6cfd1800a626e7f2822df71f7ec97",
+     "markers_in_text": []
+    },
+    {
+     "local": 9,
+     "physical": 969,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "f1bbc44cb1ba8ccf9e14aab9df5631e79923ab4239b6ed5903f3676201ec6871",
+     "markers_in_text": []
+    },
+    {
+     "local": 10,
+     "physical": 970,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "605f9c1464ec2e474cfa98cc7f7f56903a6d6bad0d0182794b7118e397e37221",
+     "markers_in_text": []
+    },
+    {
+     "local": 11,
+     "physical": 971,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "ccb4cfefe018a98126e051038520d6f341a5f15771fac9fc4f4aa940dc171cbc",
+     "markers_in_text": []
+    },
+    {
+     "local": 12,
+     "physical": 972,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "d454a2247b4206cc257ad721f5749e5a07259547a6853b58e591e47c07351f6c",
+     "markers_in_text": []
+    },
+    {
+     "local": 13,
+     "physical": 973,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "f62c07fc869599634c29873a5e992a8cce05c03bc5a00f082507dd8195cc400f",
+     "markers_in_text": []
+    },
+    {
+     "local": 14,
+     "physical": 974,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "fcab9f270fa00a5ed825c7d535705ff37ab098b05c2617c1995c6abb6010bc93",
+     "markers_in_text": []
+    },
+    {
+     "local": 15,
+     "physical": 975,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "dc4d7fe2d2ef62db56ce548649aeb556a74c7cb489c79d1d1d18b6e78a70ed9e",
+     "markers_in_text": []
+    },
+    {
+     "local": 16,
+     "physical": 976,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "e168b49ef509606adef5910ee7b9893eb05541c88474190377647757adb662d8",
+     "markers_in_text": []
+    },
+    {
+     "local": 17,
+     "physical": 977,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "b946dfb1e73a578a0cefcc079565d5110e81f131b76bb7bfa6da4f37541c90eb",
+     "markers_in_text": []
+    },
+    {
+     "local": 18,
+     "physical": 978,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "32251a38dae3222eb55bf00acb32659a580f024be5c8de1e03ebefc6b0f01744",
+     "markers_in_text": []
+    },
+    {
+     "local": 19,
+     "physical": 979,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "971b6f9676ee9fd5dd3b76991451eb5587d0410c9599ec5138d58c30a47ba9de",
+     "markers_in_text": []
+    },
+    {
+     "local": 20,
+     "physical": 980,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "2d360016464604c47392462326f3f0bef68a16c1704a1456766e5dbcc9188502",
+     "markers_in_text": []
+    },
+    {
+     "local": 21,
+     "physical": 981,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "daee8fad5e1232a819af31241b87c17b19a6b3d8757540e59ab42d56fb2d8f24",
+     "markers_in_text": []
+    },
+    {
+     "local": 22,
+     "physical": 982,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "70293add34c04a95e332fb7edc89f4a7654181140dc9fe8bfcb62a717f2896a5",
+     "markers_in_text": []
+    },
+    {
+     "local": 23,
+     "physical": 983,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "004144c94dbe75602a235fbcfa59b09978b570e8a0146327139aa8bbddd4d52e",
+     "markers_in_text": []
+    },
+    {
+     "local": 24,
+     "physical": 984,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "dc6e0b0d214cd491d6c17b2775923a4105f7b05cdbf813fa233059e19427ef94",
+     "markers_in_text": []
+    },
+    {
+     "local": 25,
+     "physical": 985,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "f86210a6297596f6c88c36d6cb36b40269069445a8916c1759db6044ddf33729",
+     "markers_in_text": []
+    },
+    {
+     "local": 26,
+     "physical": 986,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "ee85922c53f61729dddfdaf37274f408515192e53719b3b18f8320110829bcfb",
+     "markers_in_text": []
+    },
+    {
+     "local": 27,
+     "physical": 987,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "4af3f1c83cc645e0b00fdb0203b230e045e6a549c4df4b87f0589db078e6e3f0",
+     "markers_in_text": []
+    },
+    {
+     "local": 28,
+     "physical": 988,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "acdc2a60ae2ec1e535809327d67dacb76ed7091048551531dd06903d106ecb97",
+     "markers_in_text": []
+    },
+    {
+     "local": 29,
+     "physical": 989,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "1fb299515974d5db567cc90588d18f4f0aa63f6359b17a5d2d01e33fe6579d68",
+     "markers_in_text": []
+    },
+    {
+     "local": 30,
+     "physical": 990,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "2f89e4e56f0789b4b8d09f6e8859dad4198995c52e0910a7906f798c9eff7978",
+     "markers_in_text": []
+    },
+    {
+     "local": 31,
+     "physical": 991,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "cdcdca5d8fa0e7ec91a5b0da2778016782aa8a467aaa7c28fa3a13743b9f6f5d",
+     "markers_in_text": []
+    },
+    {
+     "local": 32,
+     "physical": 992,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "04789d149ba927755ab6ce11e9d07ca3a51cc87d29fb3836f29cc47c6a84b901",
+     "markers_in_text": []
+    },
+    {
+     "local": 33,
+     "physical": 993,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "f575bd88ad4bd06ae304cc2d0459425561467635105234052e95e694ff157ac2",
+     "markers_in_text": []
+    },
+    {
+     "local": 34,
+     "physical": 994,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "8453f639d60557eb6f4a1caa259d27322aa7974fdcd63bb86f5f93b6663abcd7",
+     "markers_in_text": []
+    },
+    {
+     "local": 35,
+     "physical": 995,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "1fb0333c72c42263a107d7029b34c2ef53f6612b67b5babdf39ed060a47d8788",
+     "markers_in_text": []
+    },
+    {
+     "local": 36,
+     "physical": 996,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "c6537a270e85230591911cd5d2465598f97bc1724aa4cc901bb666bef09228b1",
+     "markers_in_text": []
+    },
+    {
+     "local": 37,
+     "physical": 997,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "dbc6b349a6976c6b1e6071d22be8df80edaf88cddca601174ef7fa44cfb2313b",
+     "markers_in_text": []
+    },
+    {
+     "local": 38,
+     "physical": 998,
+     "text_equal": true,
+     "text_chars": 2889,
+     "raster_equal": true,
+     "raster_sha256": "ad0b33f8edc8c41dd3501cce1b3367527a963ac4b68288d0ede91e14e8cc961d",
+     "markers_in_text": []
+    },
+    {
+     "local": 39,
+     "physical": 999,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "783505f4e390f71395369b518dcc2b0a1400a3e005930be3923afc043c7558ed",
+     "markers_in_text": []
+    },
+    {
+     "local": 40,
+     "physical": 1000,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "b0704f1b370cc5f773408810b67669a0f0f71b25efffcfe944f5319f57989a54",
+     "markers_in_text": []
+    }
+   ],
+   "text_pages_equal": 40,
+   "raster_pages_equal": 40,
+   "all_equal": true
+  },
+  "s10000-late40": {
+   "method": "pdftotext -layout; pdftoppm -gray -r 30",
+   "pages": [
+    {
+     "local": 1,
+     "physical": 9961,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "d22417e1bd98d0cda8aa28e34ef8a2c19c871b5f98c2ca95fc7d43c0cd7419cd",
+     "markers_in_text": []
+    },
+    {
+     "local": 2,
+     "physical": 9962,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "755047b883e96a0322918459cb3f4feb1d86eda3f0ae1d67637d3e542770f242",
+     "markers_in_text": []
+    },
+    {
+     "local": 3,
+     "physical": 9963,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "61e022dce392c9cd6b708c0278bc48133a03e5461e7e070f74c926bf652bc9bd",
+     "markers_in_text": []
+    },
+    {
+     "local": 4,
+     "physical": 9964,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "bed85c1ba55c18998c466078dcc1dba8167b3641be85a6faaa94f6611ad5c86a",
+     "markers_in_text": []
+    },
+    {
+     "local": 5,
+     "physical": 9965,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "deb7a655b06bafe4b1dc297f3a6549a4b23a64e6b2d733542bc7bcfc09d20ae0",
+     "markers_in_text": []
+    },
+    {
+     "local": 6,
+     "physical": 9966,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "94dc5d4d6027779047af9fb247e4bb484b4c3b54697ab724f212695e348e119a",
+     "markers_in_text": []
+    },
+    {
+     "local": 7,
+     "physical": 9967,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "16db074acb81ec0cb1feeb165a9944b17e9fa57e6c57b395418570fdcf687343",
+     "markers_in_text": []
+    },
+    {
+     "local": 8,
+     "physical": 9968,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "6744d0ad19cdc853f654025d56a69762a55fa114e782a90a2712b3baaa3f6792",
+     "markers_in_text": []
+    },
+    {
+     "local": 9,
+     "physical": 9969,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "3cd5f63dd5440d966f2b209b4699aa1cc3aa3976ef2e70112b56ecef1c06f7eb",
+     "markers_in_text": []
+    },
+    {
+     "local": 10,
+     "physical": 9970,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "6227863f043db77bfc251b1f035afcd4cac54d2db6ab977086f51e7b949cd584",
+     "markers_in_text": []
+    },
+    {
+     "local": 11,
+     "physical": 9971,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "7b710cb9f24e2887e7c7c102baa7e38b327bb318fe5ede5cac8c7a41f1130726",
+     "markers_in_text": []
+    },
+    {
+     "local": 12,
+     "physical": 9972,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "df305f4e495e7c361cf18395a1b0977861a8b015d9bc77ecd57c32f08da7175a",
+     "markers_in_text": []
+    },
+    {
+     "local": 13,
+     "physical": 9973,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "1e379c4474c5729baa51972e5ad161b525843730e0fd9af22bb767efca58d940",
+     "markers_in_text": []
+    },
+    {
+     "local": 14,
+     "physical": 9974,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "2ce6f10801439d3e05b29c017fd4cdd1a8f9b7a9ff0de2d31d82f80d02fccaf7",
+     "markers_in_text": []
+    },
+    {
+     "local": 15,
+     "physical": 9975,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "0af495c0fe177b96345221fe265fab5a62ed05f48ac4ed2f3fb8563e869dc418",
+     "markers_in_text": []
+    },
+    {
+     "local": 16,
+     "physical": 9976,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "7cd026023ff0a862ee0bc453abee7d57528feda6bd41545be8bba948c5e7e951",
+     "markers_in_text": []
+    },
+    {
+     "local": 17,
+     "physical": 9977,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "6fcd732755f0d64e11881e9d06ed9a7cb371e9463b4558a10a2a9019d801af87",
+     "markers_in_text": []
+    },
+    {
+     "local": 18,
+     "physical": 9978,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "3f9dfd96cccee98de78abe4531af1449d5bb6d6b85ea88b42c6f5769f3a583b7",
+     "markers_in_text": []
+    },
+    {
+     "local": 19,
+     "physical": 9979,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "9400ad5830a6deb23e8dbd07419e5941ce15987c4621a90ef37faf79062720f8",
+     "markers_in_text": []
+    },
+    {
+     "local": 20,
+     "physical": 9980,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "a8a5411053901db098a14229a69d5c652dd149c5a098004599e50cded01308f8",
+     "markers_in_text": []
+    },
+    {
+     "local": 21,
+     "physical": 9981,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "b0efe9723dbc00260e69c285ee601dd0c91f2d5ce7ae9c6ce4ce50643fe2516c",
+     "markers_in_text": []
+    },
+    {
+     "local": 22,
+     "physical": 9982,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "c5a7d123b7a175d2cc5381f65e32a3437bc075772190df6d682c3f1208a2f2b8",
+     "markers_in_text": []
+    },
+    {
+     "local": 23,
+     "physical": 9983,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "de6e09c8da0f5a69cd9a57d44380a46d5f80e96cb89c55ed889527023f7055ac",
+     "markers_in_text": []
+    },
+    {
+     "local": 24,
+     "physical": 9984,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "8439f43e86caee191137c2a11fd1eb3ffa096a118d76ff889b8b4310d4c6ae8c",
+     "markers_in_text": []
+    },
+    {
+     "local": 25,
+     "physical": 9985,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "2d50c3087f567209cf48154fa05bf0274bc40e25861af73066545dc8c8cfd042",
+     "markers_in_text": []
+    },
+    {
+     "local": 26,
+     "physical": 9986,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "f90371e795fff8d4e4da83e4ca4feeea61114f764361c5582ed804394e33093a",
+     "markers_in_text": []
+    },
+    {
+     "local": 27,
+     "physical": 9987,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "fcbe338bed5bd157967229e5890868da686a99d7c4f99788a518eb3f3c3232ee",
+     "markers_in_text": []
+    },
+    {
+     "local": 28,
+     "physical": 9988,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "7134726ca7bc0f2af235e3812c7ba266221cbdfaa6a6a9792b837d6b71017072",
+     "markers_in_text": []
+    },
+    {
+     "local": 29,
+     "physical": 9989,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "5ba4f8fb55ba2ceddc713549e4dec887fe0f37e0485a5538a76c4172be7ba32e",
+     "markers_in_text": []
+    },
+    {
+     "local": 30,
+     "physical": 9990,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "d776b4f9230f45e378533ddfd838cedcad03313f6960666d82e98686528af741",
+     "markers_in_text": []
+    },
+    {
+     "local": 31,
+     "physical": 9991,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "cf2f4fd92bbbafacbe580b82ec759d1f1b5d803a73b9eb924206dcd268b0269b",
+     "markers_in_text": []
+    },
+    {
+     "local": 32,
+     "physical": 9992,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "6d7a30dd75cb87d0e6be235fc89da398e88105fa0a9c45c36cc9f3431ce0f6ee",
+     "markers_in_text": []
+    },
+    {
+     "local": 33,
+     "physical": 9993,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "8ae3e34b79ba1ad702749259788b9cf4aa74cdda5c9ac753b0ba1bb2da12f63e",
+     "markers_in_text": []
+    },
+    {
+     "local": 34,
+     "physical": 9994,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "304c4b5651839260c73458705dbe860b8d8823f195ba8ad8b89449f6f9fc14e1",
+     "markers_in_text": []
+    },
+    {
+     "local": 35,
+     "physical": 9995,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "6b8935f25822b5e60913c55eb2d539dd4e3f02280a8c56ceaac49d585dffeced",
+     "markers_in_text": []
+    },
+    {
+     "local": 36,
+     "physical": 9996,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "fdaf8efc73d66df045472b826e0779ee67ac19b4f5e282e604ef3be3efa78062",
+     "markers_in_text": []
+    },
+    {
+     "local": 37,
+     "physical": 9997,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "184b072d88033607eb4dd600042ff259553e990354171467935486e6af94162c",
+     "markers_in_text": []
+    },
+    {
+     "local": 38,
+     "physical": 9998,
+     "text_equal": true,
+     "text_chars": 2890,
+     "raster_equal": true,
+     "raster_sha256": "f6604c3089a3977523b77a0f2a9eb6beab6dc624449c71b2284703eeee0fe347",
+     "markers_in_text": []
+    },
+    {
+     "local": 39,
+     "physical": 9999,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "848d83e268ce19f38b5ad28ba2ab12ad9190fdce6dc56f2bf1c91f9cc5942502",
+     "markers_in_text": []
+    },
+    {
+     "local": 40,
+     "physical": 10000,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "ba0fb54d447f0cb6b25be1b5f12631e4e831d87ce0810ed3364b10e46787b14a",
+     "markers_in_text": []
+    }
+   ],
+   "text_pages_equal": 40,
+   "raster_pages_equal": 40,
+   "all_equal": true
+  },
+  "s12-p1": {
+   "method": "pdftotext -layout; pdftoppm -gray -r 30",
+   "pages": [
+    {
+     "local": 1,
+     "physical": 11,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "28d0c58cc775378c09b815c03fe875b13ac4d013e1e974d49f8a8caec783bf2c",
+     "markers_in_text": []
+    }
+   ],
+   "text_pages_equal": 1,
+   "raster_pages_equal": 1,
+   "all_equal": true
+  },
+  "s12-p32": {
+   "method": "pdftotext -layout; pdftoppm -gray -r 30",
+   "pages": [
+    {
+     "local": 1,
+     "physical": 1,
+     "text_equal": true,
+     "text_chars": 2887,
+     "raster_equal": true,
+     "raster_sha256": "ab9a54f9dcbc4683811f5ee1de89e338ba0c3c08b6fe980cdc5417962d6d122f",
+     "markers_in_text": []
+    },
+    {
+     "local": 2,
+     "physical": 2,
+     "text_equal": true,
+     "text_chars": 2887,
+     "raster_equal": true,
+     "raster_sha256": "004169a54b185c7522643125b1c5e22a182f6ac96a4df35350e29bcb10b407e5",
+     "markers_in_text": []
+    },
+    {
+     "local": 3,
+     "physical": 3,
+     "text_equal": true,
+     "text_chars": 2887,
+     "raster_equal": true,
+     "raster_sha256": "9dfd5b050e921127911e4b8e257ebb96faa5d73b96b3ba273089a57306ed43b1",
+     "markers_in_text": []
+    },
+    {
+     "local": 4,
+     "physical": 4,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "8247f07a5040c3a866aa2dbb0a124b58ea19cd3956b4733b8768a7c459c8f1fc",
+     "markers_in_text": []
+    },
+    {
+     "local": 5,
+     "physical": 5,
+     "text_equal": true,
+     "text_chars": 2887,
+     "raster_equal": true,
+     "raster_sha256": "58ebeb2f3637366624e73f01dd22a6892d33c134636af70c64671c053d4ec02b",
+     "markers_in_text": []
+    },
+    {
+     "local": 6,
+     "physical": 6,
+     "text_equal": true,
+     "text_chars": 2887,
+     "raster_equal": true,
+     "raster_sha256": "8a30050a090ac5366f39dd2e82b1bf73a1190b98d96273e4ebc8a3d8dad07101",
+     "markers_in_text": []
+    },
+    {
+     "local": 7,
+     "physical": 7,
+     "text_equal": true,
+     "text_chars": 2887,
+     "raster_equal": true,
+     "raster_sha256": "5292ab4c4661359313ab60fafa44be01242c5ce32501c30df8d7df2f1830c2f2",
+     "markers_in_text": []
+    },
+    {
+     "local": 8,
+     "physical": 8,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "32dc9fb8fe3e7aa03a16f84dde8659591d86fa52c171ae556a8d48c75b032761",
+     "markers_in_text": []
+    },
+    {
+     "local": 9,
+     "physical": 9,
+     "text_equal": true,
+     "text_chars": 2887,
+     "raster_equal": true,
+     "raster_sha256": "0eb59cb39a6f3cacbbf73e675262d2f1e0903751a59003ca12a1778968b4e767",
+     "markers_in_text": []
+    },
+    {
+     "local": 10,
+     "physical": 10,
+     "text_equal": true,
+     "text_chars": 2888,
+     "raster_equal": true,
+     "raster_sha256": "97b56926765d4c84f27c9cf516ee3727e0be01a982c97fabfcb4a174659fa270",
+     "markers_in_text": []
+    },
+    {
+     "local": 11,
+     "physical": 11,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "28d0c58cc775378c09b815c03fe875b13ac4d013e1e974d49f8a8caec783bf2c",
+     "markers_in_text": []
+    },
+    {
+     "local": 12,
+     "physical": 12,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "097ea90059cb95709241ee086313a76c7e122854371b9eb3d8dc8fb158801a25",
+     "markers_in_text": []
+    }
+   ],
+   "text_pages_equal": 12,
+   "raster_pages_equal": 12,
+   "all_equal": true
+  },
+  "s30000-late40": {
+   "method": "pdftotext -layout; pdftoppm -gray -r 30",
+   "pages": [
+    {
+     "local": 1,
+     "physical": 29961,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "74b7d61d84741f82702ab8822688400d820fae9ca486517b4c41c3c2ce1d4927",
+     "markers_in_text": []
+    },
+    {
+     "local": 2,
+     "physical": 29962,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "0cabd96a142bf89b520ea8e463cdaec7cc45abcbfe0982689d1501df1f7b8b90",
+     "markers_in_text": []
+    },
+    {
+     "local": 3,
+     "physical": 29963,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "eb89e75b2267862af129862042b34ecf2dc923080d4fee1a72b9557031226421",
+     "markers_in_text": []
+    },
+    {
+     "local": 4,
+     "physical": 29964,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "b2c89fbe00fd66e05cb49c2f0fa5f29494cd2c00961c40d42ae63d34d9fa8d61",
+     "markers_in_text": []
+    },
+    {
+     "local": 5,
+     "physical": 29965,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "a2f15344fc795851dfd3f1dc95cca6865fde48f62088d43e5ec275a57a415689",
+     "markers_in_text": []
+    },
+    {
+     "local": 6,
+     "physical": 29966,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "746be3ba590f4ed659d418155af61bb45266c1f1a4d6cf52709dcdef0ffefd2c",
+     "markers_in_text": []
+    },
+    {
+     "local": 7,
+     "physical": 29967,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "084e971898df6c2f8a4ac2a54956ca3735a8579fd771ebfa1aadc2e12ba5dce0",
+     "markers_in_text": []
+    },
+    {
+     "local": 8,
+     "physical": 29968,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "7fa2b334abc4b521f8e252edda1646a082ebfe8c3c1df8b0e582d7323f6198b4",
+     "markers_in_text": []
+    },
+    {
+     "local": 9,
+     "physical": 29969,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "ff3e4075f2dfa7350893f162b129e3c9bcc54b1091e895a195da38a9f520eb51",
+     "markers_in_text": []
+    },
+    {
+     "local": 10,
+     "physical": 29970,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "3eea6e7263e8bb291f397e307ed71221e1d9b01aedabfb5fba32e9dddc32d64d",
+     "markers_in_text": []
+    },
+    {
+     "local": 11,
+     "physical": 29971,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "343f75b125dc18099fb5df82fb73c54f4eedaf8a75dd9273c5434a146a676021",
+     "markers_in_text": []
+    },
+    {
+     "local": 12,
+     "physical": 29972,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "1a7213d718e6b26f39e77e5f43b4a41acf6624d5126376f88836cfe8570ef531",
+     "markers_in_text": []
+    },
+    {
+     "local": 13,
+     "physical": 29973,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "4e7f1f01463402f5c448f5d78600fea188b9b5a82455a00d90054d0be0205816",
+     "markers_in_text": []
+    },
+    {
+     "local": 14,
+     "physical": 29974,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "72960d29bbd6c0b70b7f42dc2b36e4986f93a67190bbaa4a6bcf09127bcf0635",
+     "markers_in_text": []
+    },
+    {
+     "local": 15,
+     "physical": 29975,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "f2953977c378d74da6be3a73beb7c72504f1008510a26fc2aa95e681820ba934",
+     "markers_in_text": []
+    },
+    {
+     "local": 16,
+     "physical": 29976,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "ec0a80345eeb7ae2193b1751c20bd55f18827daa26b882cce40db8c25ed0c2d0",
+     "markers_in_text": []
+    },
+    {
+     "local": 17,
+     "physical": 29977,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "5be5622528c80cd51c155a9fdc71177e2663ed915a8fe575a0a772f31e0bffc7",
+     "markers_in_text": []
+    },
+    {
+     "local": 18,
+     "physical": 29978,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "79f225d55a7b80e809aafa8e87175ee7b8d82e7ee85e6ea99018792750201aa2",
+     "markers_in_text": []
+    },
+    {
+     "local": 19,
+     "physical": 29979,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "2aa91158d95859c3625a79407293f2538d13fe74ef89887b4a263b4d270bb95c",
+     "markers_in_text": []
+    },
+    {
+     "local": 20,
+     "physical": 29980,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "888125f733e0434660ccbea7838bf2841908d599168b5d074728f60a858cdc93",
+     "markers_in_text": []
+    },
+    {
+     "local": 21,
+     "physical": 29981,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "278b2764836eb4bb90d234fffbf9f66437de09d278e298cba1c22083e42cc8a9",
+     "markers_in_text": []
+    },
+    {
+     "local": 22,
+     "physical": 29982,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "36f1b3c79077482b179b77da9504f94c5459e3898e53af92f0b61b531ce0b072",
+     "markers_in_text": []
+    },
+    {
+     "local": 23,
+     "physical": 29983,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "16e37d3bd54cb5315db6448cac7acd58e8d910adbf429f105f3b84fc675d8dbd",
+     "markers_in_text": []
+    },
+    {
+     "local": 24,
+     "physical": 29984,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "9095085f3bbaf315417bba5e896de973ca0dd4171715fe3bd9c2c14ba5dcbcc3",
+     "markers_in_text": []
+    },
+    {
+     "local": 25,
+     "physical": 29985,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "76f8150c9046f98414c1d609d9487a7ac84d89d242b626b9297e22ffb1386d9d",
+     "markers_in_text": []
+    },
+    {
+     "local": 26,
+     "physical": 29986,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "307cd55fa47d1c76c47bacfed5e45a98dbbf77abeeaf8956f0153871224b1718",
+     "markers_in_text": []
+    },
+    {
+     "local": 27,
+     "physical": 29987,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "e775200f225481bb81b3bec0c2f9ccd8c088965e6c76b1fc3298a85a47a925af",
+     "markers_in_text": []
+    },
+    {
+     "local": 28,
+     "physical": 29988,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "0ca0d680584ac2b6f019c90bbadfb42b681b8d4edf6429262c2fd88681e9f5a1",
+     "markers_in_text": []
+    },
+    {
+     "local": 29,
+     "physical": 29989,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "b9818b54161833cee72618d00bade213468050594fd224edb3f4d8a86e56c620",
+     "markers_in_text": []
+    },
+    {
+     "local": 30,
+     "physical": 29990,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "7413d8fc2ed4da337f93f0afc84d042c024ce9e47d6963882d6a306d0fc4f5bc",
+     "markers_in_text": []
+    },
+    {
+     "local": 31,
+     "physical": 29991,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "440927813973507c50b651e945f1e0ecd41c59ae3bc4f345f1f2ae9081b59b4a",
+     "markers_in_text": []
+    },
+    {
+     "local": 32,
+     "physical": 29992,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "74ae634af208cd94e9530af59f873662bad1c1454160eccab0a729d7673d5ca2",
+     "markers_in_text": []
+    },
+    {
+     "local": 33,
+     "physical": 29993,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "a83d406b25ee0db491eabfdfa7f64cc32c9b0702bb00c7d968c6ab7abc71bd55",
+     "markers_in_text": []
+    },
+    {
+     "local": 34,
+     "physical": 29994,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "4fb63c0b5f6b79a6f5036bd1778ee6e9cc0c493f5b3058c32398860ea320928c",
+     "markers_in_text": []
+    },
+    {
+     "local": 35,
+     "physical": 29995,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "0d9e0890722c2558cf429bae1ac26230db323516ff0dbe2f0893c835911ed3ca",
+     "markers_in_text": []
+    },
+    {
+     "local": 36,
+     "physical": 29996,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "7673fbba97823db29fb36c4793b0262b14f4573746de555b51e8068135a7c505",
+     "markers_in_text": []
+    },
+    {
+     "local": 37,
+     "physical": 29997,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "efe2a3fac509dcb278a9adf4bf13c3a90fb500c75feaf677044681b3f1f1d692",
+     "markers_in_text": []
+    },
+    {
+     "local": 38,
+     "physical": 29998,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "14fa0ed08047e64151da2531c46c0e409bd7eafe907557929c2512cbcf9b45e4",
+     "markers_in_text": []
+    },
+    {
+     "local": 39,
+     "physical": 29999,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "86779ad5547aa2ecc22cbdd266700e2a0799653e90c8a2d76a640df483e47138",
+     "markers_in_text": []
+    },
+    {
+     "local": 40,
+     "physical": 30000,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "c4f420ecb5d97909dbeb88a61abeaebb7f9f51c53a67a022fe8d7af13f3c17a2",
+     "markers_in_text": []
+    }
+   ],
+   "text_pages_equal": 40,
+   "raster_pages_equal": 40,
+   "all_equal": true
+  },
+  "s30000-p1": {
+   "method": "pdftotext -layout; pdftoppm -gray -r 30",
+   "pages": [
+    {
+     "local": 1,
+     "physical": 29999,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "86779ad5547aa2ecc22cbdd266700e2a0799653e90c8a2d76a640df483e47138",
+     "markers_in_text": []
+    }
+   ],
+   "text_pages_equal": 1,
+   "raster_pages_equal": 1,
+   "all_equal": true
+  },
+  "s30000-p32": {
+   "method": "pdftotext -layout; pdftoppm -gray -r 30",
+   "pages": [
+    {
+     "local": 1,
+     "physical": 14985,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "a51bcebd4543eb31e0c04484ba4f406d0085cb7d4a196404c1ca5124b8c684b3",
+     "markers_in_text": []
+    },
+    {
+     "local": 2,
+     "physical": 14986,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "fec7939d9ead1153a5470e5851c4f5f778e780513834f2eab205b6380d970de3",
+     "markers_in_text": []
+    },
+    {
+     "local": 3,
+     "physical": 14987,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "19a63fc1b33b190b4fa8974fdfa513caf0fcd46951d9fbb1ecfd85b3eac7c611",
+     "markers_in_text": []
+    },
+    {
+     "local": 4,
+     "physical": 14988,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "7fb067ad6bf693d99b54526bff4cfbc77c70f2f2d416643b8d06bffb1703dad2",
+     "markers_in_text": []
+    },
+    {
+     "local": 5,
+     "physical": 14989,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "b4f00ad5c7c6c3780d5bde56eaf583f1d06850315ff9d83162d4b435bc437904",
+     "markers_in_text": []
+    },
+    {
+     "local": 6,
+     "physical": 14990,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "89bb04bdba6f31bf57e6c2cf4233b6690e3160bc7edb77e553634ae9f7830002",
+     "markers_in_text": []
+    },
+    {
+     "local": 7,
+     "physical": 14991,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "222f64d905fa4283df6f7088c0d0abece722cea9e9120c5480bce92f52393d14",
+     "markers_in_text": []
+    },
+    {
+     "local": 8,
+     "physical": 14992,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "44951842e4dd18ad7d016bbac4fffd3bb7cde339d99da3f3f961f219a04bd48a",
+     "markers_in_text": []
+    },
+    {
+     "local": 9,
+     "physical": 14993,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "7106b2b37982ee65be22eb2ccfeeeda465a329282977d32cd98b0907d0927246",
+     "markers_in_text": []
+    },
+    {
+     "local": 10,
+     "physical": 14994,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "93ec14991510f89cdde44bcddabb1c4a6e6f2f768d56569f36b1f830b5e03d79",
+     "markers_in_text": []
+    },
+    {
+     "local": 11,
+     "physical": 14995,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "e983dfd2056e984ff7faab71ab1564eefff2cb1b0f797add0785583abf26d162",
+     "markers_in_text": []
+    },
+    {
+     "local": 12,
+     "physical": 14996,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "831c45b7cecae18ab3043c274c5987fa3d9eeb643fc7dc60a7c3793cf34d15dd",
+     "markers_in_text": []
+    },
+    {
+     "local": 13,
+     "physical": 14997,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "9f5fc171628b9cd116a51c7903e682cc322ac88f22c86801a644d31a9fd79598",
+     "markers_in_text": []
+    },
+    {
+     "local": 14,
+     "physical": 14998,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "dd009e3203435082c42b0030c83cacaad633603e89381aa8323761ae543dda3f",
+     "markers_in_text": []
+    },
+    {
+     "local": 15,
+     "physical": 14999,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "d126b688ae2aeb1c14f354bb87a0ccee527ebe9751013d613adf5277ffccd1e6",
+     "markers_in_text": []
+    },
+    {
+     "local": 16,
+     "physical": 15000,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "67bdd4f7a590c6387190ba1e04382e7837726d033824f665b84bbd06e8a76c2a",
+     "markers_in_text": []
+    },
+    {
+     "local": 17,
+     "physical": 15001,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "251209cc19c18ac042f4a2087d8c8a3d3ab8b027251af082e44e1681f63fedee",
+     "markers_in_text": []
+    },
+    {
+     "local": 18,
+     "physical": 15002,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "35acb6d90507a1ddac606db1a144a2033bd324166f5498fd170e10bb00a23c2d",
+     "markers_in_text": []
+    },
+    {
+     "local": 19,
+     "physical": 15003,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "4fc3e456aa2448ddfd48612ae17dcad584936c326e9378002fc9141bd0351bb4",
+     "markers_in_text": []
+    },
+    {
+     "local": 20,
+     "physical": 15004,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "02391e2f2dfbb9460980c0157e6ea8757bdc8841e7032f415eb3c5e087474a10",
+     "markers_in_text": []
+    },
+    {
+     "local": 21,
+     "physical": 15005,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "74fce9128c9384650331937c3b2ade6720263a45815460e20fe0bd678a205148",
+     "markers_in_text": []
+    },
+    {
+     "local": 22,
+     "physical": 15006,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "2ceac9284071dec8d5011b8707fe9fa8ad7cf137086021880d56b98989b303a4",
+     "markers_in_text": []
+    },
+    {
+     "local": 23,
+     "physical": 15007,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "5842313d74b4c9bccf8997e6b0fc7ad997f527635f7211774d8d175686a2f492",
+     "markers_in_text": []
+    },
+    {
+     "local": 24,
+     "physical": 15008,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "c760f4509fedf96a53baa676b313af98a3ba4e9ba4b6d807f3c844a222874ec5",
+     "markers_in_text": []
+    },
+    {
+     "local": 25,
+     "physical": 15009,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "238b9dc75a1c0af6afdc15d1a4451f7ca6ec4ad236d06f444196c2b383439c89",
+     "markers_in_text": []
+    },
+    {
+     "local": 26,
+     "physical": 15010,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "8ea0b069b1bcc4ff2fcd1c1f83fa274cfc54bd9569f0669a5a89ea57f0fd5f1e",
+     "markers_in_text": []
+    },
+    {
+     "local": 27,
+     "physical": 15011,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "ab3aa0230fc97747f2276de8840212ad0e1f5fbb82194816229e29a59c2b7683",
+     "markers_in_text": []
+    },
+    {
+     "local": 28,
+     "physical": 15012,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "9d8758d5024bb40b5f38060d665e7f9aac4ad9f9f98e88b892166654ac10d47f",
+     "markers_in_text": []
+    },
+    {
+     "local": 29,
+     "physical": 15013,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "9c82483ebf80a1eefaf0514ebd6b0853d66b802caf52ebc05667a36765f94a9f",
+     "markers_in_text": []
+    },
+    {
+     "local": 30,
+     "physical": 15014,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "9f00be04b53ab053d98c02d3e539b034751b244d547e021e253b93908264105d",
+     "markers_in_text": []
+    },
+    {
+     "local": 31,
+     "physical": 15015,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "70adcfb7ca378619af94339bf489ed63244c717ed5c046c5549b47ebb6ded2c1",
+     "markers_in_text": []
+    },
+    {
+     "local": 32,
+     "physical": 15016,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "f91664ca4c88cd40e30f492883eb4a09d63aa0d60c5d58490840518dec647ddd",
+     "markers_in_text": []
+    }
+   ],
+   "text_pages_equal": 32,
+   "raster_pages_equal": 32,
+   "all_equal": true
+  },
+  "t30000-late40": {
+   "method": "pdftotext -layout; pdftoppm -gray -r 30",
+   "pages": [
+    {
+     "local": 1,
+     "physical": 29961,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "74b7d61d84741f82702ab8822688400d820fae9ca486517b4c41c3c2ce1d4927",
+     "markers_in_text": []
+    },
+    {
+     "local": 2,
+     "physical": 29962,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "0cabd96a142bf89b520ea8e463cdaec7cc45abcbfe0982689d1501df1f7b8b90",
+     "markers_in_text": []
+    },
+    {
+     "local": 3,
+     "physical": 29963,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "eb89e75b2267862af129862042b34ecf2dc923080d4fee1a72b9557031226421",
+     "markers_in_text": []
+    },
+    {
+     "local": 4,
+     "physical": 29964,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "b2c89fbe00fd66e05cb49c2f0fa5f29494cd2c00961c40d42ae63d34d9fa8d61",
+     "markers_in_text": []
+    },
+    {
+     "local": 5,
+     "physical": 29965,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "a2f15344fc795851dfd3f1dc95cca6865fde48f62088d43e5ec275a57a415689",
+     "markers_in_text": []
+    },
+    {
+     "local": 6,
+     "physical": 29966,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "746be3ba590f4ed659d418155af61bb45266c1f1a4d6cf52709dcdef0ffefd2c",
+     "markers_in_text": []
+    },
+    {
+     "local": 7,
+     "physical": 29967,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "084e971898df6c2f8a4ac2a54956ca3735a8579fd771ebfa1aadc2e12ba5dce0",
+     "markers_in_text": []
+    },
+    {
+     "local": 8,
+     "physical": 29968,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "7fa2b334abc4b521f8e252edda1646a082ebfe8c3c1df8b0e582d7323f6198b4",
+     "markers_in_text": []
+    },
+    {
+     "local": 9,
+     "physical": 29969,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "ff3e4075f2dfa7350893f162b129e3c9bcc54b1091e895a195da38a9f520eb51",
+     "markers_in_text": []
+    },
+    {
+     "local": 10,
+     "physical": 29970,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "19f003e1a969cc292278b6de465ff5710b6efc37ea5cb184e1010c8263b7cd95",
+     "markers_in_text": []
+    },
+    {
+     "local": 11,
+     "physical": 29971,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "343f75b125dc18099fb5df82fb73c54f4eedaf8a75dd9273c5434a146a676021",
+     "markers_in_text": []
+    },
+    {
+     "local": 12,
+     "physical": 29972,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "1a7213d718e6b26f39e77e5f43b4a41acf6624d5126376f88836cfe8570ef531",
+     "markers_in_text": []
+    },
+    {
+     "local": 13,
+     "physical": 29973,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "4e7f1f01463402f5c448f5d78600fea188b9b5a82455a00d90054d0be0205816",
+     "markers_in_text": []
+    },
+    {
+     "local": 14,
+     "physical": 29974,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "72960d29bbd6c0b70b7f42dc2b36e4986f93a67190bbaa4a6bcf09127bcf0635",
+     "markers_in_text": []
+    },
+    {
+     "local": 15,
+     "physical": 29975,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "f2953977c378d74da6be3a73beb7c72504f1008510a26fc2aa95e681820ba934",
+     "markers_in_text": []
+    },
+    {
+     "local": 16,
+     "physical": 29976,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "ec0a80345eeb7ae2193b1751c20bd55f18827daa26b882cce40db8c25ed0c2d0",
+     "markers_in_text": []
+    },
+    {
+     "local": 17,
+     "physical": 29977,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "5be5622528c80cd51c155a9fdc71177e2663ed915a8fe575a0a772f31e0bffc7",
+     "markers_in_text": []
+    },
+    {
+     "local": 18,
+     "physical": 29978,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "79f225d55a7b80e809aafa8e87175ee7b8d82e7ee85e6ea99018792750201aa2",
+     "markers_in_text": []
+    },
+    {
+     "local": 19,
+     "physical": 29979,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "2aa91158d95859c3625a79407293f2538d13fe74ef89887b4a263b4d270bb95c",
+     "markers_in_text": []
+    },
+    {
+     "local": 20,
+     "physical": 29980,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "32e2a6c3b3106c5033dfb3d0c981b58ded8e4be8d862cd0454082fc4991cabb3",
+     "markers_in_text": []
+    },
+    {
+     "local": 21,
+     "physical": 29981,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "278b2764836eb4bb90d234fffbf9f66437de09d278e298cba1c22083e42cc8a9",
+     "markers_in_text": []
+    },
+    {
+     "local": 22,
+     "physical": 29982,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "36f1b3c79077482b179b77da9504f94c5459e3898e53af92f0b61b531ce0b072",
+     "markers_in_text": []
+    },
+    {
+     "local": 23,
+     "physical": 29983,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "16e37d3bd54cb5315db6448cac7acd58e8d910adbf429f105f3b84fc675d8dbd",
+     "markers_in_text": []
+    },
+    {
+     "local": 24,
+     "physical": 29984,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "9095085f3bbaf315417bba5e896de973ca0dd4171715fe3bd9c2c14ba5dcbcc3",
+     "markers_in_text": []
+    },
+    {
+     "local": 25,
+     "physical": 29985,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "76f8150c9046f98414c1d609d9487a7ac84d89d242b626b9297e22ffb1386d9d",
+     "markers_in_text": []
+    },
+    {
+     "local": 26,
+     "physical": 29986,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "307cd55fa47d1c76c47bacfed5e45a98dbbf77abeeaf8956f0153871224b1718",
+     "markers_in_text": []
+    },
+    {
+     "local": 27,
+     "physical": 29987,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "e775200f225481bb81b3bec0c2f9ccd8c088965e6c76b1fc3298a85a47a925af",
+     "markers_in_text": []
+    },
+    {
+     "local": 28,
+     "physical": 29988,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "0ca0d680584ac2b6f019c90bbadfb42b681b8d4edf6429262c2fd88681e9f5a1",
+     "markers_in_text": []
+    },
+    {
+     "local": 29,
+     "physical": 29989,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "b9818b54161833cee72618d00bade213468050594fd224edb3f4d8a86e56c620",
+     "markers_in_text": []
+    },
+    {
+     "local": 30,
+     "physical": 29990,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "3e738d360739838a69dd9cdd41d2e3704768ba03add459c87669b86d5a8e7876",
+     "markers_in_text": []
+    },
+    {
+     "local": 31,
+     "physical": 29991,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "440927813973507c50b651e945f1e0ecd41c59ae3bc4f345f1f2ae9081b59b4a",
+     "markers_in_text": []
+    },
+    {
+     "local": 32,
+     "physical": 29992,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "74ae634af208cd94e9530af59f873662bad1c1454160eccab0a729d7673d5ca2",
+     "markers_in_text": []
+    },
+    {
+     "local": 33,
+     "physical": 29993,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "a83d406b25ee0db491eabfdfa7f64cc32c9b0702bb00c7d968c6ab7abc71bd55",
+     "markers_in_text": []
+    },
+    {
+     "local": 34,
+     "physical": 29994,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "4fb63c0b5f6b79a6f5036bd1778ee6e9cc0c493f5b3058c32398860ea320928c",
+     "markers_in_text": []
+    },
+    {
+     "local": 35,
+     "physical": 29995,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "0d9e0890722c2558cf429bae1ac26230db323516ff0dbe2f0893c835911ed3ca",
+     "markers_in_text": []
+    },
+    {
+     "local": 36,
+     "physical": 29996,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "7673fbba97823db29fb36c4793b0262b14f4573746de555b51e8068135a7c505",
+     "markers_in_text": []
+    },
+    {
+     "local": 37,
+     "physical": 29997,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "efe2a3fac509dcb278a9adf4bf13c3a90fb500c75feaf677044681b3f1f1d692",
+     "markers_in_text": []
+    },
+    {
+     "local": 38,
+     "physical": 29998,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "14fa0ed08047e64151da2531c46c0e409bd7eafe907557929c2512cbcf9b45e4",
+     "markers_in_text": []
+    },
+    {
+     "local": 39,
+     "physical": 29999,
+     "text_equal": true,
+     "text_chars": 0,
+     "raster_equal": true,
+     "raster_sha256": "86779ad5547aa2ecc22cbdd266700e2a0799653e90c8a2d76a640df483e47138",
+     "markers_in_text": []
+    },
+    {
+     "local": 40,
+     "physical": 30000,
+     "text_equal": true,
+     "text_chars": 2891,
+     "raster_equal": true,
+     "raster_sha256": "983d4d82fcf15cfc95f50714fae6db3bc5b6adc707e1f0e630a16e3ae12f6ec6",
+     "markers_in_text": []
+    }
+   ],
+   "text_pages_equal": 40,
+   "raster_pages_equal": 40,
+   "all_equal": true
+  }
+ },
+ "adversarial": [
+  {
+   "case": "broken-xref",
+   "candidate": "qpdf",
+   "mode": "native",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "broken-xref",
+   "candidate": "flpdf",
+   "mode": "native",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "broken-xref",
+   "candidate": "flpdf",
+   "mode": "wasi-bacalhau",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "wasi_state": "Completed",
+   "manifest_diagnostics": [],
+   "verify_reason": "ok"
+  },
+  {
+   "case": "encrypted-owner",
+   "candidate": "qpdf",
+   "mode": "native",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "encrypted-owner",
+   "candidate": "flpdf",
+   "mode": "native",
+   "exit_code": 1,
+   "oracle": false,
+   "pages": null,
+   "content_equal": null,
+   "output_kb": null,
+   "outcome": "failed-cleanly",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "encrypted-owner",
+   "candidate": "flpdf",
+   "mode": "wasi-bacalhau",
+   "exit_code": 1,
+   "oracle": false,
+   "pages": null,
+   "content_equal": null,
+   "output_kb": null,
+   "outcome": "failed-cleanly",
+   "wasi_state": "Completed",
+   "verify_reason": null
+  },
+  {
+   "case": "encrypted-user",
+   "candidate": "qpdf",
+   "mode": "native",
+   "exit_code": 2,
+   "oracle": "oracle failed: pdftotext failed: b'Command Line Error: Incorrect password\\r\\n'",
+   "pages": null,
+   "content_equal": null,
+   "output_kb": null,
+   "outcome": "failed-cleanly",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "encrypted-user",
+   "candidate": "flpdf",
+   "mode": "native",
+   "exit_code": 1,
+   "oracle": "oracle failed: pdftotext failed: b'Command Line Error: Incorrect password\\r\\n'",
+   "pages": null,
+   "content_equal": null,
+   "output_kb": null,
+   "outcome": "failed-cleanly",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "encrypted-user",
+   "candidate": "flpdf",
+   "mode": "wasi-bacalhau",
+   "exit_code": 1,
+   "oracle": "oracle failed: pdftotext failed: b'Command Line Error: Incorrect password\\r\\n'",
+   "pages": null,
+   "content_equal": null,
+   "output_kb": null,
+   "outcome": "failed-cleanly",
+   "wasi_state": "Completed",
+   "verify_reason": null
+  },
+  {
+   "case": "incremental",
+   "candidate": "qpdf",
+   "mode": "native",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.4,
+   "outcome": "correct",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "incremental",
+   "candidate": "flpdf",
+   "mode": "native",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.4,
+   "outcome": "correct",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "incremental",
+   "candidate": "flpdf",
+   "mode": "wasi-bacalhau",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.4,
+   "outcome": "correct",
+   "wasi_state": "Completed",
+   "manifest_diagnostics": [],
+   "verify_reason": "ok"
+  },
+  {
+   "case": "object-streams",
+   "candidate": "qpdf",
+   "mode": "native",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "object-streams",
+   "candidate": "flpdf",
+   "mode": "native",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "object-streams",
+   "candidate": "flpdf",
+   "mode": "wasi-bacalhau",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "wasi_state": "Completed",
+   "manifest_diagnostics": [],
+   "verify_reason": "ok"
+  },
+  {
+   "case": "shared-resources",
+   "candidate": "qpdf",
+   "mode": "native",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "shared-resources",
+   "candidate": "flpdf",
+   "mode": "native",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "reported_damage_or_warning": false
+  },
+  {
+   "case": "shared-resources",
+   "candidate": "flpdf",
+   "mode": "wasi-bacalhau",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "wasi_state": "Completed",
+   "manifest_diagnostics": [],
+   "verify_reason": "ok"
+  },
+  {
+   "case": "truncated",
+   "candidate": "qpdf",
+   "mode": "native",
+   "exit_code": 3,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "reported_damage_or_warning": true
+  },
+  {
+   "case": "truncated",
+   "candidate": "flpdf",
+   "mode": "native",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "reported_damage_or_warning": true
+  },
+  {
+   "case": "truncated",
+   "candidate": "flpdf",
+   "mode": "wasi-bacalhau",
+   "exit_code": 0,
+   "oracle": false,
+   "pages": 2,
+   "content_equal": true,
+   "output_kb": 1.7,
+   "outcome": "correct",
+   "wasi_state": "Completed",
+   "manifest_diagnostics": [
+    "repair: file is damaged",
+    "repair: can't find startxref",
+    "repair: Attempting to reconstruct cross-reference table",
+    "warning: file is damaged",
+    "warning: can't find startxref",
+    "warning: Attempting to reconstruct cross-reference table"
+   ],
+   "verify_reason": "ok"
+  }
+ ],
+ "modules": {
+  "flpdf-im96.wasm": {
+   "bytes": 4985424
+  },
+  "flpdf.wasm": {
+   "bytes": 4985423
+  },
+  "otfpdf.wasm": {
+   "bytes": 752477
+  },
+  "pdq-ref.wasm": {
+   "bytes": 1439942
+  }
+ }
+}

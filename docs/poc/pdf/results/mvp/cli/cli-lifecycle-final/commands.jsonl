@@ -1,0 +1,5 @@
+{"kind":"start","value":{"pid":17404},"at":"2026-11-18T15:09:18.1403602Z"}
+{"kind":"paused","value":{"id":"4bb6da6385b54b03914a16461ed40cf0","requested_at":"2026-11-18T15:09:46.5142243Z","completed":true,"stopped_at":"2026-11-18T15:09:47.2775011Z","accounted_at":null},"at":"2026-11-18T15:09:47.3336968Z"}
+{"kind":"resume","value":{"pid":28692},"at":"2026-11-18T15:09:50.6492832Z"}
+{"kind":"resumed","value":{"pause":"4bb6da6385b54b03914a16461ed40cf0","user_pause_ms":4122.1567000000005},"at":"2026-11-18T15:09:51.4751610Z"}
+{"kind":"completed","value":{"summary":"C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\cli final-20261118-150916/summary.json"},"at":"2026-11-18T15:11:14.2271735Z"}

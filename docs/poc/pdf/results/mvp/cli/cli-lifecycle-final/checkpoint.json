@@ -1,0 +1,53 @@
+{
+    "commands":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\cli final-20261118-150916/commands.jsonl",
+    "results":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\cli final-20261118-150916",
+    "control":  {
+                    "state":  "paused",
+                    "at":  "2026-11-18T15:09:47.2775011Z"
+                },
+    "progress":  {
+                     "at":  "2026-11-18T15:09:46.7636802Z",
+                     "status":  {
+                                    "document":  {
+                                                     "evidence_id":  "643bea8ac24978c6060fff7d3bf1ffa304be64bda8e4d08a5772f31cf22e877b",
+                                                     "sha256":  "643bea8ac24978c6060fff7d3bf1ffa304be64bda8e4d08a5772f31cf22e877b",
+                                                     "phase":  "ocr",
+                                                     "attempt":  "ddqzz7d57fo7sdsjptsa52mcce",
+                                                     "first":  1,
+                                                     "last":  2,
+                                                     "paused":  false,
+                                                     "complete":  false,
+                                                     "diagnostic":  null
+                                                 },
+                                    "failed":  0,
+                                    "failures":  [
+
+                                                 ],
+                                    "ocr_processed":  0,
+                                    "pending":  1,
+                                    "searchable":  1
+                                }
+                 },
+    "pause":  {
+                  "id":  "4bb6da6385b54b03914a16461ed40cf0",
+                  "requested_at":  "2026-11-18T15:09:46.5142243Z",
+                  "completed":  true,
+                  "stopped_at":  "2026-11-18T15:09:47.2775011Z",
+                  "accounted_at":  null
+              },
+    "runtime_running":  false,
+    "summary":  null,
+    "scope":  "partial",
+    "collector_running":  false,
+    "events":  "C:\\Users\\vinic\\Documents\\Code\\vmenezesdev\\viii\\viii-pdf-mvp\\.poc-runtime\\pdf\\cli final-20261118-150916/events.jsonl",
+    "app_running":  false,
+    "metrics":  {
+                    "started":  "2026-11-18T15:09:19.1559993Z",
+                    "peak_windows_private_bytes":  291708928,
+                    "peak_windows_working_set":  249700352,
+                    "user_pause_ms":  null,
+                    "first_search_ms":  24693.9579,
+                    "peak_temporary_bytes":  0
+                },
+    "live":  false
+}

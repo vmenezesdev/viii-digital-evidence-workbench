@@ -1,0 +1,15 @@
+01:13:27 | INF Config loaded from: [C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\.poc-runtime\pdf\ocr-proof-08\node.yaml], and with data-dir C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\.poc-runtime\pdf\ocr-proof-08\node
+01:13:27 | INF Initializing repo at C:\Users\vinic\Documents\Code\viii\viii-pdf-mvp\.poc-runtime\pdf\ocr-proof-08\node
+01:13:27 | INF persisted node name viii-pdf-wasi
+01:13:27 | INF Starting bacalhau...
+01:13:30 | INF Starting connection manager node_id=viii-pdf-wasi start_time=2026-11-17T01:13:30.5387417-03:00
+01:13:30 | INF Attempting to establish connection node_id=viii-pdf-wasi
+01:13:30 | INF bacalhau node running name=viii-pdf-wasi orchestrators=["nats://127.0.0.1:44222"]
+01:13:30 | INF handshake successful with node viii-pdf-wasi
+01:13:30 | INF waiting on execution executionID=e-bfc7d7b2-eafc-4231-8456-cef1dabb6159
+01:13:30 | INF instantiating wasm modules entrypoint=_start execution=e-bfc7d7b2-eafc-4231-8456-cef1dabb6159 job=j-eabda74b-b257-4616-86a8-c5519cd9796c
+01:13:31 | INF running execution entrypoint=_start execution=e-bfc7d7b2-eafc-4231-8456-cef1dabb6159 job=j-eabda74b-b257-4616-86a8-c5519cd9796c
+01:13:34 | INF execution ended entrypoint=_start execution=e-bfc7d7b2-eafc-4231-8456-cef1dabb6159 exit_code=0 job=j-eabda74b-b257-4616-86a8-c5519cd9796c
+01:13:34 | INF received results from execution executionID=e-bfc7d7b2-eafc-4231-8456-cef1dabb6159
+01:13:34 | INF Job completed successfully Details={"NewState":"Completed"} EvalID=705303c3-791d-4b75-b36f-2b84ed15b11d Event=Completed JobID=j-eabda74b-b257-4616-86a8-c5519cd9796c NewState=Completed NodeID=viii-pdf-wasi OldRevision=2 OldState=Running
+01:13:34 | ERR Error handling message error="execution e-bfc7d7b2-eafc-4231-8456-cef1dabb6159 is in terminal state Completed and cannot transition to Cancelled" Bacalhau-EventTime=1794888814252541900 Bacalhau-MessageID=seq-6 Bacalhau-PayloadEncoding=json Bacalhau-SeqNum=6 Bacalhau-Source=orchestrator-viii-pdf-wasi Bacalhau-Subject=bacalhau.global.compute.viii-pdf-wasi.in.msgs Bacalhau-Type=CancelExecution PayloadEncoding=json Type=CancelExecution

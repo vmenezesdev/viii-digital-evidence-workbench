@@ -641,6 +641,9 @@ func (p *pdfService) advance(ctx context.Context, d *pdfDocument) error {
 			d.Phase = "ocr"
 			return nil
 		}
+		if d.Prepare != "" {
+			return nil // the preparation job's history must be terminal first
+		}
 		d.Complete = true
 		d.Diagnostic = ""
 		return nil

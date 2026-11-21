@@ -27,8 +27,9 @@ const (
 	defaultChunkSize    = 40
 	maxPrepareFailures  = 2
 	flpdfVersion        = "0.10.0"
-	// defaultPDFJobs is set from the 1/2/4 measurement (docs/poc/pdf-chunking.md).
-	defaultPDFJobs = 1
+	// defaultPDFJobs: 4 simultaneous chunk jobs gave 3.4x the OCR throughput of 1
+	// with unchanged UI latency (docs/poc/pdf-chunking.md, 1/2/4 measurement).
+	defaultPDFJobs = 4
 )
 
 type chunkPage struct {
@@ -237,15 +238,18 @@ func (p *pdfService) preparing(d *pdfDocument) bool {
 // advancePrepare submits, reconciles and ingests the preparation job. It never
 // blocks page jobs on chunks that are already verified.
 func (p *pdfService) advancePrepare(ctx context.Context, d *pdfDocument) error {
-	if !p.preparing(d) {
+	if d.Prepare == "" && !p.preparing(d) {
 		return nil
 	}
-	if p.runtime.Chunker == "" {
-		d.Chunking = chunkingUnavailable
-		d.ChunkDiagnostic = "Chunker not bundled; processing the original in place"
-		return nil
+	// A ready chunk set still reconciles its job until it is terminal.
+	if p.preparing(d) {
+		if p.runtime.Chunker == "" {
+			d.Chunking = chunkingUnavailable
+			d.ChunkDiagnostic = "Chunker not bundled; processing the original in place"
+			return nil
+		}
+		d.Chunking = chunkingPreparing
 	}
-	d.Chunking = chunkingPreparing
 	if d.Prepare == "" {
 		if d.Paused || d.Cancel {
 			return nil

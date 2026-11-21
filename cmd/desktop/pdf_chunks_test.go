@@ -168,6 +168,17 @@ func TestPDFPreparationStoresChunksProgressivelyAndVerifiesManifest(t *testing.T
 	if err != nil || len(stored) != 2 || stored[0].PrepareAttempt != a.Attempt || stored[0].ChunkerSHA256 != p.runtime.ChunkerSHA || stored[0].EvidenceID != d.EvidenceID {
 		t.Fatal("chunk records lack provenance", stored, err)
 	}
+	// The ready set's job is still reconciled to a terminal, recorded state.
+	fake.mu.Lock()
+	fake.state["j-"+a.Attempt] = "Completed"
+	fake.mu.Unlock()
+	if err := p.advance(ctx, d); err != nil {
+		t.Fatal(err)
+	}
+	finished, _ := p.s.load(d.EvidenceID, a.Attempt)
+	if d.Prepare != "" || finished.Finished == nil || finished.Status != "completed" {
+		t.Fatalf("preparation history not finished: prepare=%q %+v", d.Prepare, finished)
+	}
 }
 
 func TestPDFPreparationRejectsTamperedOrForeignChunks(t *testing.T) {

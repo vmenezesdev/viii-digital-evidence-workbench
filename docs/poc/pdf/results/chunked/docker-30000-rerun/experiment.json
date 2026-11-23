@@ -1,0 +1,7 @@
+{
+  "engine": "docker",
+  "jobs": 4,
+  "pdf": "<workspace>\\viii-pdf-integration\\.poc-runtime\\pdf\\fixtures\\mixed-30000.pdf",
+  "port": 49183,
+  "package": "<workspace>\\viii-pdf-integration\\bin\\pdf-chunked-04"
+}

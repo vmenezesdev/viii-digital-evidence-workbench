@@ -463,3 +463,26 @@ func TestPDFCapacityRejectionLowersConcurrencyInsteadOfPausing(t *testing.T) {
 		t.Fatal("single-job rejection did not pause", err, d.Paused)
 	}
 }
+
+func TestPDFDockerCleanupIsBatched(t *testing.T) {
+	now := time.Now()
+	recent := now.Add(-time.Second)
+	for _, c := range []struct {
+		pending, active int
+		last            time.Time
+		want            bool
+		why             string
+	}{
+		{0, 0, time.Time{}, false, "nothing to clean"},
+		{1, 4, recent, false, "single job while others run"},
+		{dockerCleanBatch - 1, 4, recent, false, "batch not full"},
+		{dockerCleanBatch, 4, recent, true, "full batch"},
+		{1, 4, now.Add(-dockerCleanInterval), true, "interval elapsed"},
+		{1, 0, recent, true, "no job left running"},
+		{1, 4, time.Time{}, true, "first cleanup"},
+	} {
+		if got := dueDockerCleanup(c.pending, c.active, c.last, now); got != c.want {
+			t.Errorf("%s: got %v", c.why, got)
+		}
+	}
+}

@@ -86,7 +86,21 @@ type pdfService struct {
 	viewer   originalCheck
 	// dockerDone lists finished Docker attempts whose staged chunk and outputs
 	// can be removed from the Docker volume (best effort, batched).
-	dockerDone []string
+	dockerDone      []string
+	lastDockerClean time.Time
+}
+
+// Each cleanup starts a helper container and blocks the scheduler pass; doing it
+// after every finished job made the 30k Docker run 17% slower. Clean in batches.
+const (
+	dockerCleanBatch    = 64
+	dockerCleanInterval = 2 * time.Minute
+)
+
+// dueDockerCleanup reports whether finished Docker jobs' staging should be
+// removed now: a full batch, an elapsed interval, or no job left running.
+func dueDockerCleanup(pending, active int, last, now time.Time) bool {
+	return pending > 0 && (pending >= dockerCleanBatch || active == 0 || now.Sub(last) >= dockerCleanInterval)
 }
 
 // originalCheck is a full sha256 verification of a file at a given size and
@@ -649,8 +663,11 @@ func (p *pdfService) advance(ctx context.Context, d *pdfDocument) error {
 		}
 	}
 	d.Jobs = active
-	if len(p.dockerDone) > 0 && p.runtime.cleanDocker(ctx, p.dockerDone) == nil {
-		p.dockerDone = nil
+	if now := time.Now(); dueDockerCleanup(len(p.dockerDone), len(d.Jobs), p.lastDockerClean, now) {
+		if p.runtime.cleanDocker(ctx, p.dockerDone) == nil {
+			p.dockerDone = nil
+		}
+		p.lastDockerClean = now
 	}
 	if d.Paused || len(d.Jobs) > 0 && d.Engine != d.DesiredEngine {
 		return nil

@@ -180,7 +180,11 @@ the first Docker run paused at the start of OCR, kept as
 Docker jobs left their staging in the Docker volume (`54fc169`); cleaning it after every scheduler
 pass kept the volume at ≤ 61 MiB in a 30k Docker rerun but made that run 17% slower
 (175.6 vs 149.9 min, [`docker-30000-rerun`](results/chunked/docker-30000-rerun/summary.json)),
-so cleanup is batched (`76213db`; not re-measured at 30k).
+so cleanup is batched (`76213db`). A 30k Docker run with batched cleanup took 130.0 min with
+extraction back to 47.3 min and the volume at ≤ 109 MiB
+([`docker-30000-batched`](results/chunked/docker-30000-batched/summary.json)); its OCR rate
+(2,173 vs 1,750 pages/h) ran with more free memory than the baselines and is not credited to
+the change.
 
 **Package audit** ([`package-identity.json`](results/chunked/package-identity.json)): every
 bundled file matches the manifest, chunker linear memory is exactly 128 MiB, Bacalhau

@@ -1,0 +1,15 @@
+{
+  "chunk_size": 40,
+  "chunker_sha256": "19e968480f6b79930e1d64b459f46bb9dcd35117b16d06efa7e5ff20c3c4fb12",
+  "chunks": 750,
+  "completed": "2026-11-23T02:17:30.4188324Z",
+  "diagnostics": [],
+  "evidence_id": "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+  "execution_id": "e-44635cb4-505c-470f-9346-d90892847f45",
+  "job_id": "j-7c7ec8a4-c91c-4266-99a3-fbf3d5fd6b97",
+  "pages": 30000,
+  "prepare_attempt": "wmtdcbnv7qyec6mow6enhq2j24",
+  "schema": "viii.pdf-chunk-set-record.v1",
+  "tool": "flpdf",
+  "tool_version": "0.10.0"
+}

@@ -1,0 +1,66 @@
+{
+    "chunk_store_bytes":  1252093075,
+    "first_useful_search_ms":  28591.2838,
+    "chunks_ready_ms":  123283.47910000001,
+    "target_hits":  [
+                        {
+                            "page":  29999,
+                            "text":  " ... confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\nA prova documental confirma a obrigaÃ§Ã£o de pagamento e o prazo contratual.\n\nJABUTICABA: pagamento previsto para 15 de marÃ§o.\n",
+                            "url":  "/api/pdf/original?evidence=eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699#page=29999"
+                        }
+                    ],
+    "bytes":  1250617698,
+    "first_chunk_ms":  23341.7122,
+    "engine":  "docker",
+    "peak_windows_temporary_bytes":  1137551750,
+    "passed":  true,
+    "sha256":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+    "elapsed_ms":  7802245.8523,
+    "sampling":  "RAM 5s, disk/docker 30s. Sampled peaks are lower bounds; Windows processes exclude Docker VM. Docker stats and volume samples retained separately in events.jsonl. Active times exclude only explicitly recorded user pauses.",
+    "ocr_pages_per_second":  0.60357786690445536,
+    "chunks":  750,
+    "ocr_phase_wall_seconds":  4972.0179690999994,
+    "pages":  30000,
+    "ocr_pages":  3001,
+    "active_elapsed_ms":  7802245.8523,
+    "peak_active_jobs":  4,
+    "ocr_ratio":  0.10003333333333334,
+    "user_pause_ms":  0,
+    "jobs":  4,
+    "chunking":  "ready",
+    "peak_windows_private_sum":  542556160,
+    "ocr_phase_seconds":  4972.0179690999994,
+    "peak_windows_working_set_sum":  552812544,
+    "final_status":  {
+                         "active_jobs":  0,
+                         "chunked_pages":  30000,
+                         "chunks":  750,
+                         "document":  {
+                                          "evidence_id":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+                                          "sha256":  "eb3ca405ce4b3601b2a06903283fecae52c19eda59521898ae86a70753ebb699",
+                                          "name":  "mixed-30000.pdf",
+                                          "bytes":  1250617698,
+                                          "pages":  30000,
+                                          "engine":  "docker",
+                                          "desired_engine":  "docker",
+                                          "phase":  "ocr",
+                                          "first":  29970,
+                                          "last":  30000,
+                                          "authorized_nodes":  {
+                                                                   "viii-pdf-bfb8e3121783-docker":  true,
+                                                                   "viii-pdf-bfb8e3121783-wasi":  true
+                                                               },
+                                          "paused":  false,
+                                          "complete":  true,
+                                          "chunking":  "ready",
+                                          "chunk_size":  40
+                                      },
+                         "failed":  0,
+                         "failures":  [
+
+                                      ],
+                         "ocr_processed":  3001,
+                         "pending":  0,
+                         "searchable":  30000
+                     }
+}
